@@ -15,7 +15,8 @@ export function conversationMessages(events: DisplayEvent[]) {
     } else if (event.type === "tool.started" || event.type === "tool.completed") {
       const item = event.data.item as { type?: string } | undefined;
       if (item?.type !== "agentMessage" && item?.type !== "reasoning") result.push(event);
-    } else if (["task.started", "reasoning", "command.output", "task.failed", "task.interrupted"].includes(event.type)) result.push(event);
+    } else if (["task.started", "reasoning", "command.output", "task.failed", "task.interrupted"].includes(event.type)
+      || (event.type === "task.completed" && typeof event.data.workflowReport === "string")) result.push(event);
   }
   return result;
 }

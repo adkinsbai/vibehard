@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { createInterface } from "node:readline";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { ProjectWorkflow } from "./project-workflow";
 import type { AgentEvent, TaskStart } from "@/lib/agent/protocol";
 import type { RuntimeLlm } from "@/lib/agent/llm";
 import type { AgentMessageDeltaNotification } from "./generated/codex/v2/AgentMessageDeltaNotification";
@@ -95,6 +96,7 @@ export class CodexSession {
   private terminalEmitted = false;
   private providerSecrets: Record<string, string> = {};
   private watchdog: NodeJS.Timeout | undefined;
+  private workflow: ProjectWorkflow | undefined;
 
   private resetWatchdog() {
     clearTimeout(this.watchdog);
@@ -130,7 +132,12 @@ export class CodexSession {
     if (this.terminalEmitted && ["task.completed", "task.failed", "task.interrupted"].includes(type)) return;
     if (["task.completed", "task.failed", "task.interrupted"].includes(type)) { this.terminalEmitted = true; clearTimeout(this.watchdog); }
     else if (type !== "command.output" || (data.stream !== "stderr" && data.stream !== "system")) this.resetWatchdog();
-    const safeData = redactData(data, { ...process.env, ...this.providerSecrets }) as Record<string, unknown>;
+    const secrets = { ...process.env, ...this.providerSecrets };
+    const safeData = redactData(data, secrets) as Record<string, unknown>;
+    this.workflow?.observe(type, safeData);
+    if (this.workflow && ["task.completed", "task.failed", "task.interrupted"].includes(type)) {
+      safeData.workflowReport = redactSensitiveText(this.workflow.finish(type), secrets);
+    }
     this.emit({ eventId: randomUUID(), sequence: this.sequence++, timestamp: new Date().toISOString(), type, data: safeData }, this.threadId);
   }
 
@@ -217,6 +224,9 @@ export class CodexSession {
   }
 
   async start(task: TaskStart, provider?: RuntimeLlm) {
+    this.workflow = process.env.RUNNER_ENGINEERING_WORKFLOW === "true" ? new ProjectWorkflow() : undefined;
+    // Explicitly clear an older workflow override when the rollout flag is disabled on resume.
+    const developerInstructions = this.workflow?.instructions ?? "";
     const parsedArgs = process.env.CODEX_APP_SERVER_ARGS ? JSON.parse(process.env.CODEX_APP_SERVER_ARGS) as unknown : ["app-server", "--listen", "stdio://"];
     if (!Array.isArray(parsedArgs) || !parsedArgs.every((item) => typeof item === "string")) throw new Error("CODEX_APP_SERVER_ARGS must be a JSON string array");
     const command = codexCommand(process.env.CODEX_BIN ?? "codex", parsedArgs, this.workspaceRoot, task.workspaceKey);
@@ -251,13 +261,13 @@ export class CodexSession {
       this.send({ method: "initialized", params: {} });
       if (task.codexThreadId) {
         this.threadId = task.codexThreadId;
-        await this.request("thread/resume", { threadId: this.threadId, model: task.model, modelProvider: task.modelProvider, config, cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], sandbox: "read-only", approvalPolicy: "on-request" });
+        await this.request("thread/resume", { threadId: this.threadId, model: task.model, modelProvider: task.modelProvider, config, developerInstructions, cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], sandbox: "read-only", approvalPolicy: "on-request" });
       } else {
-        const result = await this.request("thread/start", { model: task.model, modelProvider: task.modelProvider, config, cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], sandbox: "read-only", approvalPolicy: "on-request" }) as { thread?: { id?: string } } | undefined;
+        const result = await this.request("thread/start", { model: task.model, modelProvider: task.modelProvider, config, developerInstructions, cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], sandbox: "read-only", approvalPolicy: "on-request" }) as { thread?: { id?: string } } | undefined;
         this.threadId = result?.thread?.id;
       }
       if (!this.threadId) throw new Error("Codex did not return a thread id");
-      this.event("task.started", { input: task.input, model: task.model });
+      this.event("task.started", { input: task.input, model: task.model, ...(this.workflow ? { workflow: this.workflow.metadata } : {}) });
       const turn = await this.request("turn/start", { threadId: this.threadId, input: [{ type: "text", text: task.input }], cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], model: task.model, approvalPolicy: "on-request", sandboxPolicy: { type: "readOnly", networkAccess: false } }) as { turn?: { id?: string } } | undefined;
       this.turnId = turn?.turn?.id;
       if (!this.turnId) throw new Error("Codex did not return a turn id");
@@ -285,6 +295,7 @@ export class CodexSession {
     const approval = this.approvals.get(approvalId);
     if (!approval) return;
     this.send({ id: approval.requestId, result: { decision: decision === "approve" ? "accept" : "decline" } });
+    this.workflow?.decide(approvalId, decision);
     this.approvals.delete(approvalId);
     this.resetWatchdog();
   }

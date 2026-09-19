@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { apiPath } from "@/lib/utils";
 import { conversationMessages } from "@/lib/agent/messages";
+import { WorkflowEvidence } from "./workflow-evidence";
 
 type Project = { id: string; name: string; workspaceKey: string; defaultModel: string; runnerKey?: string | null };
 type Thread = { id: string; title: string; codexThreadId?: string | null };
@@ -308,7 +309,7 @@ export function AgentWorkbench() {
       <div className="flex justify-end border-b border-border/40 px-5 py-1"><button onClick={() => void refreshModels()} className="text-xs text-primary hover:underline">刷新模型列表</button></div>
       <div className="flex-1 space-y-3 overflow-y-auto p-5">
         {messages.length === 0 && <div className="flex h-full min-h-[300px] flex-col items-center justify-center text-center text-sm text-muted-foreground"><Terminal className="mb-3 h-8 w-8 text-primary/60" /><p>选择项目并发送第一个 Agent 任务</p></div>}
-        {messages.map((event) => <div key={event.eventId} className={`rounded-md border p-3 text-sm ${event.type === "command.output" ? "border-border/60 bg-muted/40 font-mono text-xs" : "border-border/70 bg-card"}`}><div className="mb-1 flex items-center gap-2 text-[11px] text-muted-foreground"><Wrench className="h-3 w-3" />{event.type}</div><p className="whitespace-pre-wrap break-words leading-6">{eventText(event)}</p></div>)}
+        {messages.map((event) => <div key={event.eventId} className={`rounded-md border p-3 text-sm ${event.type === "command.output" ? "border-border/60 bg-muted/40 font-mono text-xs" : "border-border/70 bg-card"}`}><div className="mb-1 flex items-center gap-2 text-[11px] text-muted-foreground"><Wrench className="h-3 w-3" />{event.type}</div><p className="whitespace-pre-wrap break-words leading-6">{eventText(event)}</p><WorkflowEvidence data={event.data} /></div>)}
       </div>
       <div className="border-t border-border/70 p-4"><Textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if ((event.metaKey || event.ctrlKey) && event.key === "Enter") void send(); }} placeholder="描述要交给 Agent 的任务..." className="min-h-[90px] resize-none" /><div className="mt-2 flex items-center justify-end"><Button onClick={send} disabled={sending || !threadId || !input.trim() || !modelProfileId} className="gap-2">{sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}{sending ? "提交中" : "发送任务"}</Button></div></div>
     </section>

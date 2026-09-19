@@ -1,4 +1,4 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 import { build } from "esbuild";
 
 const entries = {
@@ -9,11 +9,13 @@ const entries = {
 };
 
 await mkdir("dist/services", { recursive: true });
+const workflowSkill = await readFile(new URL("../runner/skills/cloud-project-workflow/SKILL.md", import.meta.url), "utf8");
 
 await Promise.all(Object.entries(entries).map(([name, entry]) => build({
   entryPoints: [entry],
   outfile: `dist/services/${name}.cjs`,
   bundle: true,
+  define: { __VIBEHARD_WORKFLOW_SKILL__: JSON.stringify(workflowSkill) },
   platform: "node",
   target: "node22",
   format: "cjs",

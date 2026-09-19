@@ -2,6 +2,17 @@
 
 最新更新：2026-09-19，北京时间。以下核查结果分别标注时间，不代表持续监控。
 
+## 2026-09-19 工程 Agent 工作流上线与真实验收
+
+- 新增平台自有 `cloud-project-workflow` v1：会话新建/恢复时注入工程分析、受控修改、变更报告规则；沿用原沙箱、网页审批与事件协议。
+- 已发布 `20260919-engineering-workflow`，平台和云端 Runner 指向新 release；云端 unit 显式开启 `RUNNER_ENGINEERING_WORKFLOW=true`，代码默认仍关闭。工作台新增版本提示、可折叠和下载的执行证据报告。
+- 无运行任务时切换，保留原 Runner 凭据、模型 Key、账号、数据库与现场设备 Runner。Gateway/VibeBoard PID 不变。候选及正式 PCB/renderer、15 个资源、五个 Demo GIF、管理员分区/API、Cookie、方案页与新工作流 bundle 验证通过；公网登录/Demo 为 200。预检 unit 已回收、3211 无监听。
+- 真实验收项目“工程工作流上线验收-20260919”保留在 `ldkj@admin.com` 下，ID `5b2696cb-75d8-4aae-83f6-5624492804f4`。第一轮实际只读工程、识别加法函数写成减法，106.6 秒完成；没有声称已运行测试。第二轮恢复同一会话，经过一次文件修改审批、一次执行审批，仅将 math.c 的 `a-b` 改为 `a+b`，`make test` 退出 0 并输出 `WORKFLOW_TEST_OK`，211.3 秒完成（含人工审批等待）。
+- 独立核验 README.md、test.c、Makefile 与原始 fixture 逐字一致；目录只有四个预设文件和允许的 ELF 产物 test_app。两轮都有同一技能版本/哈希与真实事件报告。Chrome 已确认新页面、SSE 事件、刷新恢复、报告展开和 Markdown 下载完成。
+- 这是原生 C 验收，不是泰山派或硬件测试；未重新实测拒绝/中断分支（本地合约覆盖），未做压力或连续稳定性测试。模型中间有已批准后仍说“等待审批”的滞后文案，最终报告与工具证据一致；不能据两轮成功宣称长期稳定。
+- 本地完整测试 73 项通过、2 项独立数据库用例跳过；构建、类型、lint 与技能格式校验通过。归档 SHA-256：`5bbdf70ac2e9340d20da4f587c213bcd6f251198534aada3cb6ffb6d953eb224`。发布根目录 0700 导致初次 Runner 无法读取，修正该目录为 0755 后恢复，未放宽密钥/备份权限；发布经验及回滚见部署文档。
+- 实现和验证边界见 [嵌入式 Skills 接入方案](embedded-skills-integration-plan.md)。
+
 ## 2026-09-19 方案参考价与内置规则资料上线
 
 - 平台已发布 `20260919-design-knowledge-pricing`，上一版为 `20260919-auth-cookies`；只有平台服务重启，Gateway/VibeBoard PID 保持不变，没有数据库、账号或模型配置变更。
@@ -107,7 +118,7 @@
 - 主站：https://ldcx.tech/vibehard/
 - PCB 示例：https://ldcx.tech/vibehard/app/pcb（需要登录）
 - 宣传展示：https://ldcx.tech/vibehard/demo
-- 活跃平台发布：`/opt/vibehard/releases/20260919-design-knowledge-pricing/standalone`；Gateway 保留 `20260918-cloud-runner`。
+- 活跃平台发布：`/opt/vibehard/releases/20260919-engineering-workflow/standalone`；云端 Runner 使用该 release 的 `services/runner.cjs`；Gateway 保留 `20260918-cloud-runner`。
 - PCB v0.2 已恢复上线，包含精细绘图、装配／布线切换、图层显示、缩放和平移、PNG 下载。它是固定示例预览，并非已接通真实 EDA 自动设计；Gerber 导出仍禁用。
 - Demo 保留标题下简介、下方模块说明和五段自动循环 GIF，PCB GIF 使用已裁剪版本。
 - 本次平台发布包含当前完整前端、真实方案生成与 LLM 设置，云端 Runner 同步更新，已执行数据库迁移 `0003`。

@@ -4,14 +4,31 @@
 
 As of 2026-09-19:
 
-- Active platform release: `/opt/vibehard/releases/20260919-design-knowledge-pricing/standalone`.
+- Active platform release: `/opt/vibehard/releases/20260919-engineering-workflow/standalone`.
 - Active Gateway release: `/opt/vibehard/releases/20260918-cloud-runner`.
 - Previous platform unit, Runner bundle/environment and DB dumps are retained inside `/opt/vibehard/releases/20260918-llm-settings/backup/` (root-only).
-- Cloud Runner service bundle: `/opt/vibehard/cloud-runner/runner.cjs`; its versioned source is in the active release.
+- Cloud Runner service bundle: `/opt/vibehard/releases/20260919-engineering-workflow/services/runner.cjs`; working directory remains `/opt/vibehard/cloud-runner`. The previous bundle is preserved there for rollback.
 - Platform and Gateway run on `47.102.197.71`.
 - `cloud-runner` is the default production node and stores workspaces in `/var/lib/vibehard-runner/workspaces`.
 - `device-runner` runs on the Mac mini for USB, serial and flashing tasks; its workspace root is `/Users/hushaohong/vibehard/.runner-workspaces`.
 - The server runs pinned Codex CLI 0.149.1 through the unprivileged `vibehard-runner` service and bubblewrap wrapper. Provider requests returned 429 during release verification but recovered on September 19: three real browser conversation turns, context retention and reload recovery passed. This does not establish sustained availability or revalidate compilation/flashing.
+
+### Engineering workflow, 2026-09-19
+
+`20260919-engineering-workflow` deploys the versioned cloud-project-workflow rule pack and workbench evidence reports. The cloud Runner unit enables `RUNNER_ENGINEERING_WORKFLOW=true` and points directly to the versioned bundle. No account, database, provider, credential or device Runner changes. Gateway and VibeBoard PIDs stayed unchanged. Both preflight and active releases passed protected PCB/renderer/assets, all Demo GIFs, administrator API/sections, auth-cookie and design/workflow bundle checks. Public login/Demo return 200; preflight unit is not-found/inactive and port 3211 is closed.
+
+Archive SHA-256: `5bbdf70ac2e9340d20da4f587c213bcd6f251198534aada3cb6ffb6d953eb224`.
+
+Packaging note: extracting the mktemp staging root preserved mode 0700. The new release root was changed to 0755 so the unprivileged Runner can traverse it; backup and verification directories remain root-only. Verify `runuser -u vibehard-runner -- test -r <release>/services/runner.cjs` before activation in future releases. On this release the first Runner startup was denied until that permission correction; systemd then recovered and a new heartbeat was verified before task testing.
+
+Rollback after checking active tasks:
+
+```bash
+node --env-file=/etc/vibehard/platform.env \
+  /opt/vibehard/releases/20260919-engineering-workflow/scripts/deploy-engineering-workflow.mjs rollback
+```
+
+This restores both saved units from the root-only `backup/` directory, returning the platform to `20260919-design-knowledge-pricing` and Runner to its previous bundle. Do not restore database dumps or replace Runner credentials. Real task verification and remaining boundaries are tracked in `docs/current-status.md`.
 
 ### Design reference prices and built-in rules, 2026-09-19
 
