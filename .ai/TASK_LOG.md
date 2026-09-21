@@ -4,6 +4,14 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-21 Task: 拉取 GitHub 并整合本地成果
+
+- Request/scope: 用户授权拉取远端并整合信息；保护未提交成果、merge 保留双方历史、补齐兼容并测试。本轮不 push、不上线、不改数据库/认证/Runner/硬件。
+- Git: 本地原有 54fa2ca 和未提交成果保留，100 文件快照为 a972b99；fetch GitHub 至 bc8b57a（泰山派入口及 PR 合并），侧边栏自动合并，没有文本冲突或丢弃历史。
+- Compatibility: 发现远端新页缺少本地必需的 PageHeader.helpKey，补齐 taishan 帮助与独立账号/iframe边界说明，加入页面测试。
+- Validation: 127 常规测试通过，10 数据库用例本轮跳过；Next.js 生产构建、类型和针对性 ESLint 通过。未验收目标平台真实登录、模型或设备功能。
+- Handoff: 更新 current-status、PROJECT_STATUS 和整合说明，准备保留 merge commit；线上仍为 module-help，方案后台任务及泰山派入口仍待发布。
+
 ## 2026-09-20 Task: 方案生成持久化与项目归档
 
 - Request/approval: 用户要求点击生成自动创建或关联项目、保存需求、后台生成并保存方案；明确确认新增任务表/归属校验，本轮仅本地测试。

@@ -2,6 +2,11 @@ export type ModuleGuide = { title: string; purpose: string; steps: string[]; not
 
 // User-facing capability descriptions: update alongside the corresponding feature.
 export const moduleHelp = {
+  taishan: {
+    title: "泰山派开发", purpose: "在工作台内打开独立的 VibeBoard 嵌入式开发平台。",
+    steps: ["进入“泰山派开发”，等待内嵌平台加载。", "按内嵌平台要求单独登录；其账号体系与 VibeHard 独立。", "若加载异常，使用“重新加载”或“在新窗口打开”，检查目标平台是否可访问。"],
+    notes: ["当前只整合网页入口，不自动同步 VibeHard 的 Agent 项目、方案或知识库，也不等于硬件烧录调试链路已验证。", "默认访问站点根目录 /Vibeboard/，不在 /vibehard 子路径内；本地独立平台需要另外启动。", "页面加载完成不代表设备已连接、模型可用或部署成功，请在目标平台检查执行结果。"],
+  },
   dashboard: {
     title: "工作台", purpose: "找到硬件研发各模块的入口，按任务进入对应页面。",
     steps: ["先生成硬件方案，或直接进入已有 Agent 项目。", "需要整理图纸时进入原理图识别；需要辅助计算时进入实用工具箱。"],

@@ -4,9 +4,11 @@
 
 - Phase: 云端 Agent 平台内测与设备闭环准备
 - Active focus: 管理台功能分区已上线；完善云端 Agent 与设备闭环
-- Last updated: 2026-09-20
+- Last updated: 2026-09-21
 
 ## 最新补充（覆盖以下历史验收结论）
+
+- 9/21 本地整合完成：保存原有修改为 `a972b99`，merge GitHub `bc8b57a` 泰山派开发入口；修复新页面缺少 helpKey 的类型兼容问题，加入独立平台说明。127 常规测试、类型/生产构建/ESLint 通过，10 DB 测试本轮跳过。本地成果已提交，未 push、未上线，云端版本与数据库保持不变。泰山派入口只是 iframe，并未统一账号/Agent/项目数据；见 `docs/remote-integration-20260921.md`。
 
 - 9/20 方案后台任务本地完成，未上线：用户确认新增表/归属校验，事务创建或关联 Agent 项目并保存需求；独立 worker 串行生成，项目方案记录恢复/下载/原项目重试。124 常规 + 10 临时 PG 测试、类型/lint/生产与服务构建、真 HTTP/独立进程与浏览器离开刷新恢复通过。真实供应商超时未复测；不自动入知识库或写工作区。迁移 `0005_design_jobs` 待生产审批与部署；未 commit/push，线上版本不变。见 `docs/design-background-jobs.md`。
 
