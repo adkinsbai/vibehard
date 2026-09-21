@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { createHmac } from "node:crypto";
+import { createHmac, randomUUID } from "node:crypto";
 import { spawnSync } from "node:child_process";
 
 const base = process.argv[2];
@@ -28,6 +28,7 @@ if (staticOnly) {
 
 assert.ok(process.env.DATABASE_URL);
 assert.ok(process.env.SESSION_SECRET);
+assert.equal(process.env.ALLOW_DESIGN_JOB_TEST, "synthetic-only", "Non-static verification persists a synthetic project/job and uses model quota; require explicit opt-in");
 const database = new URL(process.env.DATABASE_URL);
 const env = { ...process.env, PGHOST: database.hostname, PGPORT: database.port || "5432", PGUSER: decodeURIComponent(database.username), PGPASSWORD: decodeURIComponent(database.password), PGDATABASE: database.pathname.slice(1) };
 const query = spawnSync("/usr/bin/psql", ["-X", "-t", "-A", "-F", "\t", "-v", "ON_ERROR_STOP=1", "-c", "select id,email,name from users where role='admin' order by created_at limit 1"], { env, encoding: "utf8" });
@@ -39,19 +40,20 @@ const signature = createHmac("sha256", process.env.SESSION_SECRET).update(payloa
 const response = await fetch(`${base}/api/design`, {
   method: "POST",
   headers: { "Content-Type": "application/json", Cookie: `vibehard_session=${payload}.${signature}` },
-  body: JSON.stringify({ requirement: "生成一个 USB 供电、带温度传感器和状态指示灯的最小测试节点，请给出 BOM。" }),
-  signal: AbortSignal.timeout(100_000),
+  body: JSON.stringify({ requestId: randomUUID(), requirement: "生成一个 USB 供电、带温度传感器和状态指示灯的最小测试节点，请给出 BOM。" }),
+  signal: AbortSignal.timeout(15_000),
 });
-assert.equal(response.status, 200);
-const events = (await response.text()).trim().split("\n").map((line) => JSON.parse(line));
-const failure = events.find((event) => event.type === "error");
-assert.ok(!failure, failure?.error);
-const result = events.find((event) => event.type === "result");
-assert.equal(result?.knowledgeBase?.id, "platform-hardware-design");
-assert.ok(result?.knowledgeBase?.version);
-assert.ok(result?.result?.bom?.length > 0);
-for (const row of result.result.bom) {
-  assert.match(row.estCost, /[¥￥]\s*\d/);
-  assert.doesNotMatch(row.estCost, /未核价|待核价|待询价|询价后/);
+assert.equal(response.status, 202);
+let { job } = await response.json();
+console.log(JSON.stringify({ jobId: job.id, projectId: job.projectId, note: "Synthetic record retained for review; no automatic deletion" }));
+const deadline = Date.now() + 140_000;
+while (["queued", "running"].includes(job.status) && Date.now() < deadline) {
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  const status = await fetch(`${base}/api/design/${job.id}`, { headers: { Cookie: `vibehard_session=${payload}.${signature}` }, signal: AbortSignal.timeout(10_000) });
+  assert.equal(status.status, 200); job = (await status.json()).job;
 }
-console.log(JSON.stringify({ base, knowledgeBase: result.knowledgeBase, bomRows: result.result.bom.length, everyRowHasPrice: true }));
+assert.equal(job.status, "completed", job.error ?? "Background worker did not finish within verification window");
+assert.ok(job.knowledgeVersion);
+assert.ok(job.result?.bom?.length > 0);
+for (const row of job.result.bom) assert.ok((/[¥￥]\s*\d/.test(row.estCost) && /估算/.test(row.estCost)) || /^无法估算[：:]/.test(row.estCost));
+console.log(JSON.stringify({ base, jobId: job.id, projectId: job.projectId, knowledgeVersion: job.knowledgeVersion, bomRows: job.result.bom.length }));

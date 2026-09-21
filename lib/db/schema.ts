@@ -1,4 +1,6 @@
 import { relations } from "drizzle-orm";
+import type { KnowledgeDocument } from "@/lib/agent/knowledge";
+import type { DesignResult } from "@/lib/agent/llm";
 import {
   boolean,
   integer,
@@ -50,6 +52,36 @@ export const runnerNodes = pgTable("runner_nodes", {
   instanceId: uuid("instance_id"),
   lastHeartbeatAt: timestamp("last_heartbeat_at", { withTimezone: true }),
   secretHash: text("secret_hash"),
+  ...timestamps,
+});
+
+export const designJobs = pgTable("design_jobs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  requestId: uuid("request_id").notNull(),
+  requestedProjectId: uuid("requested_project_id"),
+  requirement: text("requirement").notNull(),
+  status: text("status").$type<"queued" | "running" | "completed" | "failed">().notNull().default("queued"),
+  model: text("model"),
+  knowledgeVersion: text("knowledge_version"),
+  result: jsonb("result").$type<DesignResult>(),
+  error: text("error"),
+  leaseToken: uuid("lease_token"),
+  deadlineAt: timestamp("deadline_at", { withTimezone: true }).notNull(),
+  startedAt: timestamp("started_at", { withTimezone: true }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  ...timestamps,
+}, table => [
+  uniqueIndex("design_jobs_request_uidx").on(table.userId, table.requestId),
+  index("design_jobs_queue_idx").on(table.status, table.createdAt),
+  index("design_jobs_project_idx").on(table.projectId, table.createdAt),
+]);
+
+// Small reviewed document library; not arbitrary uploads or a vector index.
+export const projectKnowledge = pgTable("project_knowledge", {
+  projectId: uuid("project_id").primaryKey().references(() => projects.id, { onDelete: "cascade" }),
+  documents: jsonb("documents").$type<KnowledgeDocument[]>().notNull().default([]),
   ...timestamps,
 });
 

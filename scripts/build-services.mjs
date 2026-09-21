@@ -2,6 +2,7 @@ import { mkdir, readFile } from "node:fs/promises";
 import { build } from "esbuild";
 
 const entries = {
+  "design-worker": "scripts/design-worker.ts",
   gateway: "gateway/index.ts",
   runner: "runner/index.ts",
   migrate: "scripts/migrate.ts",

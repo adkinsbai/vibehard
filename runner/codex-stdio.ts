@@ -4,6 +4,8 @@ import { createInterface } from "node:readline";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { ProjectWorkflow } from "./project-workflow";
+import { KNOWLEDGE_BOUNDARY, knowledgeInput } from "./project-knowledge";
+import { knowledgeManifest, type KnowledgeSnapshot } from "@/lib/agent/knowledge";
 import type { AgentEvent, TaskStart } from "@/lib/agent/protocol";
 import type { RuntimeLlm } from "@/lib/agent/llm";
 import type { AgentMessageDeltaNotification } from "./generated/codex/v2/AgentMessageDeltaNotification";
@@ -97,6 +99,7 @@ export class CodexSession {
   private providerSecrets: Record<string, string> = {};
   private watchdog: NodeJS.Timeout | undefined;
   private workflow: ProjectWorkflow | undefined;
+  private knowledge: KnowledgeSnapshot | undefined;
 
   private resetWatchdog() {
     clearTimeout(this.watchdog);
@@ -137,6 +140,11 @@ export class CodexSession {
     this.workflow?.observe(type, safeData);
     if (this.workflow && ["task.completed", "task.failed", "task.interrupted"].includes(type)) {
       safeData.workflowReport = redactSensitiveText(this.workflow.finish(type), secrets);
+    }
+    if (this.knowledge && ["task.started", "task.completed", "task.failed", "task.interrupted"].includes(type)) {
+      const manifest = knowledgeManifest(this.knowledge);
+      safeData.knowledge = redactData(manifest, secrets);
+      if (typeof safeData.workflowReport === "string") safeData.workflowReport += `\n\n## 项目知识快照\n${redactSensitiveText(JSON.stringify(manifest, null, 2), secrets)}\n`;
     }
     this.emit({ eventId: randomUUID(), sequence: this.sequence++, timestamp: new Date().toISOString(), type, data: safeData }, this.threadId);
   }
@@ -224,9 +232,11 @@ export class CodexSession {
   }
 
   async start(task: TaskStart, provider?: RuntimeLlm) {
+    const referenceInput = knowledgeInput(task.knowledge);
+    this.knowledge = task.knowledge;
     this.workflow = process.env.RUNNER_ENGINEERING_WORKFLOW === "true" ? new ProjectWorkflow() : undefined;
     // Explicitly clear an older workflow override when the rollout flag is disabled on resume.
-    const developerInstructions = this.workflow?.instructions ?? "";
+    const developerInstructions = [this.workflow?.instructions, task.knowledge ? KNOWLEDGE_BOUNDARY : undefined].filter(Boolean).join("\n\n");
     const parsedArgs = process.env.CODEX_APP_SERVER_ARGS ? JSON.parse(process.env.CODEX_APP_SERVER_ARGS) as unknown : ["app-server", "--listen", "stdio://"];
     if (!Array.isArray(parsedArgs) || !parsedArgs.every((item) => typeof item === "string")) throw new Error("CODEX_APP_SERVER_ARGS must be a JSON string array");
     const command = codexCommand(process.env.CODEX_BIN ?? "codex", parsedArgs, this.workspaceRoot, task.workspaceKey);
@@ -259,7 +269,7 @@ export class CodexSession {
         capabilities: { experimentalApi: true },
       });
       this.send({ method: "initialized", params: {} });
-      if (task.codexThreadId) {
+      if (task.codexThreadId && !task.knowledge?.contextReset) {
         this.threadId = task.codexThreadId;
         await this.request("thread/resume", { threadId: this.threadId, model: task.model, modelProvider: task.modelProvider, config, developerInstructions, cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], sandbox: "read-only", approvalPolicy: "on-request" });
       } else {
@@ -268,7 +278,7 @@ export class CodexSession {
       }
       if (!this.threadId) throw new Error("Codex did not return a thread id");
       this.event("task.started", { input: task.input, model: task.model, ...(this.workflow ? { workflow: this.workflow.metadata } : {}) });
-      const turn = await this.request("turn/start", { threadId: this.threadId, input: [{ type: "text", text: task.input }], cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], model: task.model, approvalPolicy: "on-request", sandboxPolicy: { type: "readOnly", networkAccess: false } }) as { turn?: { id?: string } } | undefined;
+      const turn = await this.request("turn/start", { threadId: this.threadId, input: [...referenceInput, { type: "text", text: task.input }], cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], model: task.model, approvalPolicy: "on-request", sandboxPolicy: { type: "readOnly", networkAccess: false } }) as { turn?: { id?: string } } | undefined;
       this.turnId = turn?.turn?.id;
       if (!this.turnId) throw new Error("Codex did not return a turn id");
     } catch (error) {

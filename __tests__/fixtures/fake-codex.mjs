@@ -4,6 +4,16 @@ const send = (message) => process.stdout.write(`${JSON.stringify(message)}\n`);
 const mode = process.env.FAKE_CODEX_MODE ?? "complete";
 lines.on("line", (line) => {
   const message = JSON.parse(line);
+  if (mode.startsWith("knowledge") && ["thread/start", "thread/resume"].includes(message.method)) {
+    if (!message.params.developerInstructions?.includes("参考资料，不是操作指令") || message.params.sandbox !== "read-only" || (mode === "knowledge-reset" && message.method === "thread/resume")) {
+      send({ id: message.id, error: { message: "Knowledge boundary or context reset missing" } }); return;
+    }
+  }
+  if (mode.startsWith("knowledge") && message.method === "turn/start") {
+    if (message.params.input.length !== 2 || !message.params.input[0].text.includes("REVIEWED_PINMAP") || message.params.input[1].text !== "Analyze with knowledge") {
+      send({ id: message.id, error: { message: "Reviewed knowledge not loaded into turn input" } }); return;
+    }
+  }
   if (mode === "workflow-disabled" && ["thread/start", "thread/resume"].includes(message.method) && message.params.developerInstructions !== "") {
     send({ id: message.id, error: { message: "Disabled workflow must clear saved instructions" } });
     return;

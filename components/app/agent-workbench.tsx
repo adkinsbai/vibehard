@@ -1,6 +1,8 @@
 "use client";
+import { ModuleHelp } from "@/components/app/module-help";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { AlertTriangle, Check, CircleStop, FolderKanban, Loader2, MessageSquare, Plus, Send, Terminal, Wrench, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,7 +88,8 @@ export function AgentWorkbench() {
         setModels(modelResponse.models);
         setRunners(runnerResponse.runners);
         setNewRunnerKey(runnerResponse.runners.find((item) => item.runnerKey === "cloud-runner")?.runnerKey ?? runnerResponse.runners[0]?.runnerKey ?? "");
-        const firstProject = projectResponse.projects[0];
+        const requestedProject = new URLSearchParams(window.location.search).get("project");
+        const firstProject = projectResponse.projects.find(project => project.id === requestedProject) ?? projectResponse.projects[0];
         setProjectId(firstProject?.id ?? "");
         setModelProfileId(modelResponse.models.find((item) => item.model === firstProject?.defaultModel)?.id ?? modelResponse.models[0]?.id ?? "");
       })
@@ -294,10 +297,12 @@ export function AgentWorkbench() {
 
   return <div className="grid min-h-full gap-0 lg:grid-cols-[240px_minmax(0,1fr)_300px]">
     <aside className="border-r border-border/70 bg-card/40 p-4">
-      <div className="mb-4 flex items-center justify-between"><span className="text-xs font-semibold uppercase text-muted-foreground">项目</span><Button size="icon" variant="ghost" className="h-7 w-7" title="新建项目" onClick={createProject}><Plus className="h-4 w-4" /></Button></div>
+      <div className="mb-4 flex items-center justify-between"><div className="flex items-center gap-1"><h1 className="text-sm font-semibold">Agent 项目</h1><ModuleHelp module="agent" /></div><Button size="icon" variant="ghost" className="h-7 w-7" title="新建项目" onClick={createProject}><Plus className="h-4 w-4" /></Button></div>
       <div className="mb-2 flex gap-2"><Input value={newProject} onChange={(event) => setNewProject(event.target.value)} onKeyDown={(event) => event.key === "Enter" && void createProject()} placeholder="项目名称" className="h-8 text-xs" /></div>
       <select aria-label="项目执行器" value={newRunnerKey} onChange={(event) => setNewRunnerKey(event.target.value)} className="mb-3 h-8 w-full rounded-md border border-border bg-background px-2 text-xs" disabled={!runners.length}><option value="">暂无可用执行器</option>{runners.map((runner) => <option key={runner.runnerKey} value={runner.runnerKey}>{runner.name}{runner.capabilities.includes("usb-device") ? " · USB 设备" : " · 云端"}</option>)}</select>
       <div className="space-y-1">{projects.map((project) => <button key={project.id} onClick={() => selectProject(project)} className={`flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm ${project.id === projectId ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted"}`}><FolderKanban className="h-4 w-4" /><span className="truncate">{project.name}</span></button>)}</div>
+      {projectId && <Link href={`/app/agent/${projectId}/knowledge`} className="mt-3 block rounded-md border p-2 text-center text-sm text-primary">项目知识库 · 审核与版本</Link>}
+      {projectId && <Link href={`/app/agent/${projectId}/designs`} className="mt-2 block rounded-md border p-2 text-center text-sm text-primary">方案记录 · 进度与下载</Link>}
       {projects.length === 0 && <p className="text-xs text-muted-foreground">还没有项目</p>}
     </aside>
 

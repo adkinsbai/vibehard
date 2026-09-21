@@ -190,7 +190,7 @@ export default function DebugPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <PageHeader
+      <PageHeader helpKey="debug"
         icon={Bug}
         title="AI 调试"
         description="连接接入全部外设的开发板，AI 自动逐项调试并流式输出过程，异常自动给出修复策略"

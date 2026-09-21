@@ -2,9 +2,30 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CodexSession, codexEnvironment, redactSensitiveText } from "./codex-stdio";
 import { envelope, type AgentEvent, type TaskStart } from "@/lib/agent/protocol";
+import { changeKnowledge, publishedSnapshot } from "@/lib/server/knowledge-state";
 
 describe("CodexSession", () => {
   afterEach(() => vi.unstubAllEnvs());
+  it.each([false, true])("loads reviewed knowledge and records snapshot on resume/reset (%s)", async (reset) => {
+    vi.stubEnv("RUNNER_ENGINEERING_WORKFLOW", "true");
+    vi.stubEnv("CODEX_BIN", process.execPath);
+    vi.stubEnv("CODEX_APP_SERVER_ARGS", JSON.stringify([path.resolve("__tests__/fixtures/fake-codex.mjs")]));
+    vi.stubEnv("CODEX_PROVIDER_ENV_ALLOWLIST", "FAKE_CODEX_MODE");
+    vi.stubEnv("FAKE_CODEX_MODE", reset ? "knowledge-reset" : "knowledge");
+    const owner = crypto.randomUUID();
+    const docs = changeKnowledge([], { action: "create", draft: { title: "Pins", source: "schematic p1", kind: "schematic", content: "REVIEWED_PINMAP" } }, owner);
+    const knowledge = publishedSnapshot(changeKnowledge(docs, { action: "publish", documentId: docs[0].id, expectedRevision: docs[0].revision, confirmed: true }, owner));
+    knowledge.contextReset = reset;
+    const events: AgentEvent[] = [];
+    const session = new CodexSession(event => events.push(event));
+    try {
+      await session.start({ ...envelope(), type: "task.start", taskId: crypto.randomUUID(), projectId: crypto.randomUUID(), threadId: crypto.randomUUID(), codexThreadId: "old-thread", workspaceKey: process.cwd(), input: "Analyze with knowledge", model: "fake", knowledge });
+      await vi.waitFor(() => expect(events.some(event => event.type === "task.completed")).toBe(true));
+      expect(events.find(event => event.type === "task.started")?.data.knowledge).toMatchObject({ hash: knowledge.hash, contextReset: reset, documents: [{ version: 1, title: "Pins" }] });
+      expect(events.at(-1)?.data.workflowReport).toContain(knowledge.hash);
+      expect(JSON.stringify(events)).not.toContain("REVIEWED_PINMAP");
+    } finally { session.dispose(); }
+  });
   it("can disable the workflow on a resumed thread without changing normal event output", async () => {
     vi.stubEnv("RUNNER_ENGINEERING_WORKFLOW", "false");
     vi.stubEnv("CODEX_BIN", process.execPath);

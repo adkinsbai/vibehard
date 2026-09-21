@@ -120,7 +120,7 @@ export default function BomPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <PageHeader
+      <PageHeader helpKey="bom"
         icon={Package}
         title="物料与 BOM"
         description="从物料库自动选型组合生成 BOM，一键导出或对接立创商城下单、SMT 贴片"

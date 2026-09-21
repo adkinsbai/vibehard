@@ -34,7 +34,7 @@ export default function ToolsPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <PageHeader
+      <PageHeader helpKey="tools"
         icon={Wrench}
         title="实用工具箱"
         description={`${allZutilsTools.length} 个嵌入式研发常用工具与仿真实验台，即开即用，数据不出浏览器`}

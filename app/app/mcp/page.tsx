@@ -27,7 +27,7 @@ export default function McpPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <PageHeader
+      <PageHeader helpKey="mcp"
         icon={Zap}
         title="MCP Server"
         description="发现、安装和管理硬件研发相关的 MCP Server，扩展 AI 的能力边界"

@@ -66,7 +66,10 @@ const navSections: NavSection[] = [
   },
   {
     title: "平台管理",
-    items: [{ href: "/app/admin", label: "管理概览", icon: ShieldCheck }],
+    items: [
+      { href: "/app/admin", label: "管理概览", icon: ShieldCheck },
+      { href: "/app/knowledge-review", label: "知识库审核", icon: BookOpen },
+    ],
   },
 ];
 

@@ -27,7 +27,7 @@ type(scope): summary
 
 - 普通开发只需提交独立分支和 PR；涉及生产发布或项目知识导入时，才必须阅读 `docs/team-cloud-delivery.md`。
 - 平台代码和文档通过 Git 分支、评审、版本化 release 发布，不直接修改 `/opt/vibehard/releases/*`。
-- 项目知识只能进入目标项目自己的 workspace；交付时写项目 ID 和相对路径，不猜测服务器绝对路径。
+- 项目知识正文由所有者通过目标项目页面/API 提交草稿，存入 PostgreSQL；仅管理员/开发者审核后发布，普通用户不能自审。新规则 9/20 已上线（详见 current-status）；不要直接写 workspace。固件/工程文件交付仍需标明项目 ID 与相对路径，不猜测服务器绝对路径。
 - 禁止向 `/etc/vibehard`、`/opt/vibehard/cloud-runner`、`/var/lib/vibehard-runner/codex` 或 `/opt/vibehard/incoming` 投递团队文档。
 - 未实现受控导入工具前，同伴的 agent 只生成并提交交付包，不直接 SSH/SCP 到生产服务器。
 - 不提交密钥、令牌、密码、真实 `.env`、Runner credential、用户数据或生产日志。

@@ -32,13 +32,24 @@ export function upstreamError(status: number, body = "") {
   return new LlmRequestError(`模型服务请求失败（HTTP ${status}），请检查协议和模型配置`, 502);
 }
 
+export type LlmAttachment = { filename: string; mimeType: "image/png" | "image/jpeg" | "application/pdf"; base64: string };
+export function llmRequestBody(config: RuntimeLlm, system: string, prompt: string, attachment?: LlmAttachment) {
+  const url = attachment ? `data:${attachment.mimeType};base64,${attachment.base64}` : "";
+  if (config.protocol === "responses") return { model: config.model, instructions: system, input: attachment ? [{ role: "user", content: [
+    { type: "input_text", text: prompt },
+    attachment.mimeType === "application/pdf" ? { type: "input_file", filename: attachment.filename, file_data: url } : { type: "input_image", image_url: url, detail: "high" },
+  ] }] : prompt, stream: false, store: false };
+  return { model: config.model, messages: [{ role: "system", content: system }, { role: "user", content: attachment ? [
+    { type: "text", text: prompt },
+    attachment.mimeType === "application/pdf" ? { type: "file", file: { filename: attachment.filename, file_data: url } } : { type: "image_url", image_url: { url, detail: "high" } },
+  ] : prompt }], stream: false };
+}
+
 // DNS is validated and pinned to the TLS request; redirects are never followed.
-export async function callLlm(config: RuntimeLlm, system: string, prompt: string, signal?: AbortSignal, timeoutMs = 90_000) {
+export async function callLlm(config: RuntimeLlm, system: string, prompt: string, signal?: AbortSignal, timeoutMs = 90_000, attachment?: LlmAttachment) {
   const address = await providerAddress(config.baseUrl);
   const url = new URL(config.baseUrl + (config.protocol === "responses" ? "/responses" : "/chat/completions"));
-  const body = JSON.stringify(config.protocol === "responses"
-    ? { model: config.model, instructions: system, input: prompt, stream: false, store: false }
-    : { model: config.model, messages: [{ role: "system", content: system }, { role: "user", content: prompt }], stream: false });
+  const body = JSON.stringify(llmRequestBody(config, system, prompt, attachment));
   const timeout = AbortSignal.timeout(timeoutMs);
   const combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
   const response = await new Promise<{ status: number; body: string }>((resolve, reject) => {

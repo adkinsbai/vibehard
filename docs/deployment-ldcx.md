@@ -2,16 +2,61 @@
 
 ## Current deployment
 
-As of 2026-09-19:
+As of 2026-09-20:
 
-- Active platform release: `/opt/vibehard/releases/20260919-engineering-workflow/standalone`.
+- Active platform release: `/opt/vibehard/releases/20260920-module-help/standalone`.
 - Active Gateway release: `/opt/vibehard/releases/20260918-cloud-runner`.
 - Previous platform unit, Runner bundle/environment and DB dumps are retained inside `/opt/vibehard/releases/20260918-llm-settings/backup/` (root-only).
-- Cloud Runner service bundle: `/opt/vibehard/releases/20260919-engineering-workflow/services/runner.cjs`; working directory remains `/opt/vibehard/cloud-runner`. The previous bundle is preserved there for rollback.
+- Cloud Runner service bundle: `/opt/vibehard/releases/20260919-project-knowledge/services/runner.cjs`; working directory remains `/opt/vibehard/cloud-runner`. Previous versioned bundles remain available for rollback.
 - Platform and Gateway run on `47.102.197.71`.
 - `cloud-runner` is the default production node and stores workspaces in `/var/lib/vibehard-runner/workspaces`.
 - `device-runner` runs on the Mac mini for USB, serial and flashing tasks; its workspace root is `/Users/hushaohong/vibehard/.runner-workspaces`.
 - The server runs pinned Codex CLI 0.149.1 through the unprivileged `vibehard-runner` service and bubblewrap wrapper. Provider requests returned 429 during release verification but recovered on September 19: three real browser conversation turns, context retention and reload recovery passed. This does not establish sustained availability or revalidate compilation/flashing.
+
+### Module usage help, 2026-09-20 13:51
+
+`20260920-module-help` adds title-adjacent question-mark dialogs for 15 guide categories across 17 page entry points. Only `vibehard.service` restarts. Backend/API/auth/schema/Runner/Gateway/dependency/Next/proxy source is byte-identical to `20260920-knowledge-review`; this release has no migration, model call, fixture/user write or nginx reload. A loopback-only candidate with existing production configuration is exercised strictly through read-only page/API checks (logout checks only Cookie response headers). No temporary database is created.
+
+118 regular tests passed, including 17 help-dialog component cases; 3 database-only tests skipped because no DB code changed. Types, targeted lint and standalone production build passed. Candidate, active and public checks cover 15 help page bindings/bundles, PCB detailed renderer, 18 shared assets/five GIFs, authentication Cookie, administrator/knowledge review and design/workflow UI. Browser automation connection timed out; actual browser click-through/mobile visual verification was not completed. No provider or hardware availability claim is added.
+
+Backup of the prior platform unit: `/opt/vibehard/releases/20260920-module-help/backup/vibehard.service`. Rollback after checking no active tasks: `node --env-file=/etc/vibehard/platform.env /opt/vibehard/releases/20260920-module-help/scripts/deploy-module-help.mjs rollback`. No database or proxy restoration is involved. The Runner/Gateway/VibeBoard/nginx PIDs and platform/Runner/model/nginx configuration hashes are checked unchanged. Preview `vibehard-help-preflight.service` is stopped and port 3211 reclaimed.
+
+Archive `/opt/vibehard/releases/vibehard-20260920-module-help.tar.gz`; SHA-256 `93c8cd9298ddd70b5e5d5a86f2112b893dd24e6a7fac504064751fa62e2f140c`. Complete source snapshot based on `54fa2ca`, pending commit/push, includes `RELEASE.json` and protected PCB/Demo source overlay. No active release source is edited after activation.
+
+Timing caveat: protected PID checks passed during activation. A later public verification observed a different VibeBoard PID (776211 versus the initial 775438), still active. This deployment script never stopped/started/restarted that external service or edited its files; do not interpret the activation check as proof that its PID remained unchanged for the entire session.
+
+### Knowledge review roles and schematic requests, 2026-09-20
+
+Platform-only `20260920-knowledge-review`: ordinary owners submit/edit candidates; only persisted `admin`/`developer` roles publish/reject/disable. Reviewers can inspect knowledge across projects but cannot edit others' drafts or access their chats/workspaces. Developer has no administrator model/password privileges. New review queue `/vibehard/app/knowledge-review`; schematic result submission links to the candidate's status page. No account/role/password/model configuration changes and no DB migration.
+
+101 regular and 3 isolated PostgreSQL tests passed. Candidate HTTP checks exercise role separation, forged/stale Cookie roles, developer restrictions, rejection audit, edit/resubmit and idempotent applications. Candidate/production/public PCB, renderer, 15 assets, five GIFs, authentication, administrator sections, design/workflow bundles passed. Only `vibehard.service` restarted; Runner/Gateway/VibeBoard PIDs remained unchanged. Current model request results/limitations are in `current-status.md`.
+
+Nginx previously inherited its default upload limit. Only `location /vibehard/` gained `client_max_body_size 6m;`, preserving the application's 5 MiB bound. The script writes in place to preserve the single-file bind mount inode, validates `nginx -t` then gracefully reloads; container/master PID unchanged. Do not replace that mounted file's inode. Other routes/configuration unchanged.
+
+Backup: `<release>/backup/platform.dump` (custom pg_dump, archive directory verified), prior `vibehard.service` and nginx.conf in root-only backup directory. No full restore drill. The pre-deployment inventory found zero active versions reviewed by non-admin/non-developer users; no legacy knowledge was deleted or rewritten. Temporary database/role `vibehard_knowledge_test_20260919`, credentials and tunnel removed; preflight unit inactive, port 3211 closed.
+
+Archive `/opt/vibehard/releases/vibehard-20260920-knowledge-review.tar.gz`, SHA-256 `47f0fc1524a561014605790155bbed5f6b4ca12322c30b65fe434a68e2a92f04`. Complete source snapshot based on `54fa2ca`, pending commit/push; `RELEASE.json` records protected source overlays. Later verification-script/doc updates are local and do not mutate the active release.
+
+Rollback (check idle tasks and confirm nginx has not received unrelated changes since backup first): `node --env-file=/etc/vibehard/platform.env /opt/vibehard/releases/20260920-knowledge-review/scripts/deploy-knowledge-review.mjs rollback`. This restores the preceding platform unit and proxy configuration, not the database or Runner. Beware: rolling back re-enables the preceding owner-review policy. If nginx has newer unrelated edits, do not restore the whole backup; reconcile only VibeHard's upload limit separately.
+
+### Project knowledge, 2026-09-19
+
+`20260919-project-knowledge` adds project-owner review, versioned knowledge and immutable per-task snapshots. Migration `0004_project_knowledge` only adds a table. Production was backed up to `<release>/backup/platform.dump` with `pg_dump --format=custom`; its archive directory was checked with `pg_restore --list`. This is not a full restore drill.
+
+85 normal tests and all 3 isolated PostgreSQL tests passed. Candidate HTTP checks used only `vibehard_knowledge_test_20260919`, including a test-only administrator, another user, lifecycle and stale-revision rejection. Candidate and activated versions passed PCB/renderer/15 assets/5 GIFs, administrator sections/API, Cookie and design/workflow checks. Platform and cloud Runner switched only with zero active tasks; fresh `project-knowledge-v1` heartbeat verified. Gateway/VibeBoard PIDs unchanged; no account, secret or device Runner update. Runtime task results are recorded in `current-status.md`.
+
+Archive: `/opt/vibehard/releases/vibehard-20260919-project-knowledge-v2.tar.gz`; SHA-256 `51253c8e5a308868dde81c21b5db9d936fa14b63c18c163031c2d5cdbd55a449`. Complete uncommitted source snapshot based on `54fa2ca` is included, with all protected frontend overlays. Subsequent documentation/evidence updates live in the repository.
+
+Packaging: Node `cpSync` must use `verbatimSymlinks: true`; otherwise relative pnpm links become Mac absolute paths. The first candidate failed readiness because of this and was never activated. Use `--no-xattrs` and `COPYFILE_DISABLE=1` when producing Linux release archives on macOS. Keep release root traversable by the unprivileged Runner. Failed candidate is retained as `20260919-project-knowledge-failed-packaging` pending deliberate retention cleanup.
+
+Rollback after checking active tasks:
+
+```bash
+node --env-file=/etc/vibehard/platform.env \
+  /opt/vibehard/releases/20260919-project-knowledge/scripts/deploy-project-knowledge.mjs rollback
+```
+
+This restores the saved platform/Runner units to engineering-workflow. Keep the additive knowledge table and new user records; do not restore the old database over current data. Preflight must load `/opt/vibehard/test-state/20260919-project-knowledge/test.env` for both the driver and transient service, never production credentials. Recreate a fresh isolated test environment before rerunning preflight after cleanup.
 
 ### Engineering workflow, 2026-09-19
 

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { knowledgeSnapshotSchema, type KnowledgeSnapshot } from "./knowledge";
 
 export const RUNNER_PROTOCOL_VERSION = 1 as const;
 
@@ -56,6 +57,7 @@ export interface TaskStart extends Envelope {
   input: string;
   model: string;
   modelProvider?: string;
+  knowledge?: KnowledgeSnapshot;
 }
 
 export interface TaskInterrupt extends Envelope {
@@ -148,6 +150,7 @@ const taskStartSchema = envelopeSchema.extend({
   input: z.string().min(1).max(50_000),
   model: z.string().min(1).max(200),
   modelProvider: z.string().min(1).max(100).optional(),
+  knowledge: knowledgeSnapshotSchema.optional(),
 });
 
 const taskInterruptSchema = envelopeSchema.extend({

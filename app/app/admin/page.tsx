@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ModuleHelp } from "@/components/app/module-help";
 import { Activity, AlertTriangle, Bot, CheckCircle2, CircleX, Clock3, FolderKanban, RefreshCw, ShieldCheck, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiPath } from "@/lib/utils";
@@ -65,7 +67,8 @@ export default function AdminPage() {
     { id: "audit", label: "审计日志", icon: Clock3, description: "查看近期平台操作记录" },
   ] as const;
   return <div className="mx-auto max-w-7xl p-5 sm:p-8">
-    <div className="mb-5 flex flex-wrap items-start justify-between gap-4"><div><p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">Platform Control</p><h1 className="text-2xl font-semibold tracking-tight">平台管理</h1><p className="mt-2 text-sm text-muted-foreground">按功能分区管理平台，点击下方导航切换。</p></div><Button variant="outline" size="sm" onClick={refresh} disabled={loading} className="gap-2"><RefreshCw className={loading ? "h-4 w-4 animate-spin" : "h-4 w-4"} />刷新</Button></div>
+    <div className="mb-5 flex flex-wrap items-start justify-between gap-4"><div><p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">Platform Control</p><div className="flex items-center gap-2"><h1 className="text-2xl font-semibold tracking-tight">平台管理</h1><ModuleHelp module="admin" /></div><p className="mt-2 text-sm text-muted-foreground">按功能分区管理平台，点击下方导航切换。</p></div><Button variant="outline" size="sm" onClick={refresh} disabled={loading} className="gap-2"><RefreshCw className={loading ? "h-4 w-4 animate-spin" : "h-4 w-4"} />刷新</Button></div>
+    <Link href="/app/knowledge-review" className="mb-5 inline-block text-sm text-primary underline">知识库审核：查看用户入库申请 →</Link>
     {error && <div className="mb-5 rounded-lg border border-amber-500/20 bg-amber-500/10 p-3 text-sm text-amber-600"><AlertTriangle className="mr-2 inline h-4 w-4" />{error}</div>}
     <nav aria-label="管理功能分区" className="mb-5 flex gap-2 overflow-x-auto rounded-xl border border-border bg-card p-2">
       {sections.map(({ id, label, icon: Icon }) => <Button key={id} id={`admin-nav-${id}`} type="button" variant={section === id ? "default" : "ghost"} aria-pressed={section === id} aria-controls={`admin-panel-${id}`} onClick={() => setSection(id)} className="shrink-0 gap-2">

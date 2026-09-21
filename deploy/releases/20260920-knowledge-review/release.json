@@ -1,0 +1,24 @@
+{
+  "release": "20260920-knowledge-review",
+  "baseCommit": "54fa2ca",
+  "source": "Complete working-tree snapshot; pending commit",
+  "archiveSha256": "47f0fc1524a561014605790155bbed5f6b4ca12322c30b65fe434a68e2a92f04",
+  "platform": "/opt/vibehard/releases/20260920-knowledge-review/standalone",
+  "previousPlatform": "/opt/vibehard/releases/20260919-project-knowledge/standalone",
+  "runnerUnchanged": "/opt/vibehard/releases/20260919-project-knowledge/services/runner.cjs",
+  "gatewayUnchanged": "/opt/vibehard/releases/20260918-cloud-runner",
+  "protectedFrontend": ["app/demo", "public/demo", "next.config.ts", "app/app/pcb", "components/pcb"],
+  "databaseMigration": null,
+  "restartedServices": ["vibehard.service"],
+  "proxy": "Only /vibehard/ client_max_body_size 6m; nginx graceful reload, no container restart",
+  "verification": {
+    "regularTestsPassed": 101,
+    "isolatedPostgresTestsPassed": 3,
+    "candidateRoleLifecycle": "passed",
+    "publicFrontendRegression": "passed",
+    "legacyUnprivilegedActivePublications": 0,
+    "publicRealSchematicRequests": "two synthetic PDFs timed out after 90 seconds; recognition availability not verified",
+    "browserClickThrough": "not completed; browser tool timed out",
+    "temporaryTestDatabaseRemoved": true
+  }
+}

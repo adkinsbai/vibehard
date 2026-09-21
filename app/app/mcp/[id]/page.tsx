@@ -2,6 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
+import { ModuleHelp } from "@/components/app/module-help";
 import { notFound } from "next/navigation";
 import {
   Zap,
@@ -106,6 +107,7 @@ export default function McpDetailPage({
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl font-bold text-foreground">{server.name}</h1>
+                <ModuleHelp module="mcp" />
                 {server.verified && (
                   <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-500">
                     官方认证

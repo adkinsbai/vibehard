@@ -1,0 +1,81 @@
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { ProjectKnowledge } from "@/components/app/project-knowledge";
+import { changeKnowledge } from "@/lib/server/knowledge-state";
+import { knowledgeActionSchema } from "@/lib/agent/knowledge";
+
+afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+describe("project knowledge UI", () => {
+  it("lets cross-project reviewers inspect and reject but not edit the owner's draft", async () => {
+    const reviewer = crypto.randomUUID();
+    let docs = changeKnowledge([], { action: "create", draft: { title: "PINMAP", kind: "schematic", source: "p1", content: "LED GPIO1" } }, crypto.randomUUID());
+    vi.stubGlobal("fetch", vi.fn(async (_url: string, init?: RequestInit) => {
+      if (init?.method === "POST") docs = changeKnowledge(docs, knowledgeActionSchema.parse(JSON.parse(String(init.body))), reviewer);
+      return { ok: true, json: async () => ({ documents: docs, permissions: { canEdit: false, canReview: true } }) };
+    }));
+    render(<ProjectKnowledge projectId={crypto.randomUUID()} initialDocumentId={docs[0].id} />);
+    await screen.findByRole("button", { name: "审核并发布" });
+    expect(screen.getByLabelText("资料标题")).toBeDisabled();
+    expect(screen.queryByRole("button", { name: "保存草稿" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "新建资料草稿" })).toBeNull();
+    expect(screen.getByRole("button", { name: "退回修改" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("退回原因"), { target: { value: "请补充网络标签证据" } });
+    fireEvent.click(screen.getByRole("button", { name: "退回修改" }));
+    await screen.findByText("已退回并记录原因；提交者修改后可重新申请。");
+    expect(docs[0].rejection?.reason).toBe("请补充网络标签证据");
+    expect(docs[0].publishedVersion).toBeNull();
+    expect(screen.getByRole("button", { name: "审核并发布" })).toBeDisabled();
+  });
+  it("requires saved review confirmation and keeps published text unchanged while editing", async () => {
+    const owner = crypto.randomUUID();
+    let docs = changeKnowledge([], { action: "create", draft: { title: "引脚表", kind: "schematic", source: "board.pdf p2", content: "LED GPIO1 <script>bad()</script>" } }, owner);
+    const fetcher = vi.fn(async (_url: string, init?: RequestInit) => {
+      if (init?.method === "POST") docs = changeKnowledge(docs, knowledgeActionSchema.parse(JSON.parse(String(init.body))), owner);
+      return { ok: true, json: async () => ({ documents: docs, permissions: { canEdit: true, canReview: true } }) };
+    });
+    vi.stubGlobal("fetch", fetcher);
+    const { container } = render(<ProjectKnowledge projectId={crypto.randomUUID()} />);
+    fireEvent.click(await screen.findByRole("button", { name: /引脚表/ }));
+    expect(screen.getByRole("button", { name: "审核并发布" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("button", { name: "审核并发布" }));
+    await screen.findByText("已审核发布，下一个 Agent 任务会使用此版本。");
+    expect(docs[0].publishedVersion).toBe(1);
+    expect(container.querySelector("script")).toBeNull();
+    fireEvent.change(screen.getByLabelText(/正文 ·/), { target: { value: "LED GPIO2" } });
+    expect(screen.getByRole("checkbox")).toBeDisabled();
+    expect(screen.getByRole("button", { name: "审核并发布" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: "保存草稿" }));
+    await screen.findByText("草稿已保存，尚未进入 Agent 正式上下文。");
+    expect(docs[0].draft.content).toBe("LED GPIO2");
+    expect(docs[0].versions[0].content).toContain("GPIO1");
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("button", { name: "审核并发布" }));
+    await waitFor(() => expect(docs[0].publishedVersion).toBe(2));
+    fireEvent.click(screen.getByRole("button", { name: "停用正式版本" }));
+    expect(screen.getByRole("group", { name: "停用确认" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "取消停用" }));
+    expect(docs[0].publishedVersion).toBe(2);
+    expect(screen.queryByRole("group", { name: "停用确认" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "停用正式版本" }));
+    fireEvent.click(screen.getByRole("button", { name: "确认停用" }));
+    await screen.findByText("已停用；正在运行的任务仍使用启动时快照。");
+    expect(docs[0].publishedVersion).toBeNull();
+    fireEvent.click(screen.getAllByRole("button", { name: "复制此版本为草稿（需重新审核）", hidden: true })[1]);
+    await screen.findByText("草稿已保存，尚未进入 Agent 正式上下文。");
+    expect(docs[0].publishedVersion).toBeNull();
+    expect(docs[0].draft.content).toContain("GPIO1");
+    expect(screen.getByRole("button", { name: "审核并发布" })).toBeDisabled();
+  });
+  it("preserves unsaved input when a conflicting update is rejected", async () => {
+    const docs = changeKnowledge([], { action: "create", draft: { title: "PINMAP", kind: "manual", source: "p1", content: "original" } }, crypto.randomUUID());
+    vi.stubGlobal("fetch", vi.fn(async (_url: string, init?: RequestInit) => ({ ok: init?.method !== "POST", json: async () => init?.method === "POST" ? { error: "资料已更新，请刷新" } : { documents: docs, permissions: { canEdit: true, canReview: true } } })));
+    render(<ProjectKnowledge projectId={crypto.randomUUID()} />);
+    fireEvent.click(await screen.findByRole("button", { name: /PINMAP/ }));
+    fireEvent.change(screen.getByLabelText(/正文 ·/), { target: { value: "my unsaved work" } });
+    fireEvent.click(screen.getByRole("button", { name: "保存草稿" }));
+    await screen.findByRole("alert");
+    expect(screen.getByLabelText(/正文 ·/)).toHaveValue("my unsaved work");
+    expect(screen.getByRole("button", { name: "审核并发布" })).toBeDisabled();
+  });
+});
