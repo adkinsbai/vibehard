@@ -1,0 +1,23 @@
+[Unit]
+Description=VibeHard isolated KiCad desktop manager
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/vibehard/eda-manager/current
+EnvironmentFile=/etc/vibehard/eda-manager.env
+ExecStart=/opt/vibehard/eda-manager/venv/bin/python /opt/vibehard/eda-manager/current/manager.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/vibehard-eda
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

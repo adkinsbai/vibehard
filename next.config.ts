@@ -16,6 +16,16 @@ const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
   allowedDevOrigins: ["127.0.0.1", "localhost"],
+  async rewrites() {
+    // Only the ticket-authenticated RFB endpoint is public; never proxy the broker control API.
+    const desktop = process.env.NODE_ENV === 'development' ? (process.env.EDA_DESKTOP_URL ?? 'http://127.0.0.1:6081') : '';
+    return desktop ? [{ source: '/eda-desktop/ws', destination: `${desktop}/client/ws` }] : [];
+  },
+  webpack(config) {
+    // noVNC's feature detection uses top-level await; supported browsers are modern ESM clients.
+    config.output.environment = { ...config.output.environment, asyncFunction: true };
+    return config;
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

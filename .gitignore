@@ -22,6 +22,8 @@
 /build
 /dist
 /.runner-workspaces
+/.eda-data
+__pycache__/
 
 # misc
 .DS_Store

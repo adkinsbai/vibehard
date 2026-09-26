@@ -41,6 +41,7 @@ const navSections: NavSection[] = [
   {
     title: "硬件研发",
     items: [
+      { href: "/app/eda", label: "电路工作台", icon: CircuitBoard },
       { href: "/app/design", label: "方案生成", icon: Layers },
       { href: "/app/datasheets", label: "芯片资料", icon: BookOpen },
       { href: "/app/schematic", label: "原理图识别", icon: Cpu },

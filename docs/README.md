@@ -22,6 +22,7 @@
 - [模块使用说明弹窗](module-help.md)：已上线的各模块标题问号、集中帮助文案、演示/真实能力边界。
 
 - [当前状态与交接](current-status.md)：线上功能、实时复测结果、Runner 心跳、模型请求路径与待办。
+- [KiCad / noVNC 工作台](eda-desktop.md)：原生原理图/PCB 网页编辑、启动、保存、下载及当前功能边界；[云端发布验收](eda-cloud-acceptance-2026-09-26.md)记录多账号隔离和真实模型测试。
 - [部署与回滚](deployment-ldcx.md)：服务边界、发布历史、SSH 钥匙串使用和验收命令。
 - [项目说明](../README.md)：架构、开发启动、数据库与功能说明；仓库能力不等同于已部署能力。
 - [脚本说明](../scripts/README.md)：构建、数据库迁移、素材处理和发布检查入口。
@@ -32,6 +33,6 @@
 - [原理图识别与知识库备选](schematic-knowledge-candidates.md)：真实附件识别、申请按钮、目标项目、重复提交保护及审核入口（9/20 已发布；模型可用性见当前状态）。
 - [嵌入式 Skills 接入方案](embedded-skills-integration-plan.md)：参考小智技能库的云端选技能、现场设备执行和项目文档交接设计（尚未实现）。
 - [团队云端交付规范](team-cloud-delivery.md)：同伴和 Agent 的交付包格式、目标目录、审核流程与负载限制。
-- [当前发布清单](../deploy/releases/20260922-taishan-integration/release.json)：泰山派融合范围、前端保护及验收结果；模型限制和历史归档见当前状态及部署文档。
+- [当前发布与回滚](deployment-ldcx.md)：`20260926-eda-grid-v1` 的服务状态和回滚步骤；历史发布清单见部署文档。
 
 维护约定：运行情况写入 `current-status.md` 并注明核查时间；发布变更记录在 `deployment-ldcx.md`；不在文档中保存密钥或会话令牌。

@@ -196,7 +196,50 @@
 - Evidence: 实际 50 份 SKILL.md（含模板）；检查归档分析、流程章节和代表性技能/脚本。当前每项目一个 runnerKey，任务仅发送文本，缺少平台技能版本记录和跨节点交接。
 - Result: `docs/embedded-skills-integration-plan.md` 给出分批接入、只读技能包、项目知识路径、审批、资源与泰山派 APP 部署边界；澄清现有链路已打通但最近模型超时，不能称稳定。
 - Validation: 文档 diff 检查；未运行构建/设备测试，未声明已安装技能。
+## 2026-09-26 Task: 云端 KiCad 多账号隔离发布与真实模型验收
 
+- Goal: 让每个账号使用自己的 KiCad 工程和文件系统，多个账号可同时编辑各自工程；同工程多个窗口可重连。通过公网在真实服务上验证 Agent → 原生文件 → KiCad。
+- Implementation: 非 root KiCad 9.0.8 worker、每工程独立 Docker 容器和持久卷、私有 manager、一次性票据及同源 nginx WebSocket 路由；平台归属鉴权和原生文件 API。固定单机容量 3 工程、每账号 2 工程。正式平台先发布 `20260925-eda-isolated-v2`，后以 `20260926-eda-grid-v1` 修复原生符号 1.27 mm 连接网格偏移。
+- Evidence: 三账号/三 worker 并发、跨账号 404/403、票据重放 401、三个同工程窗口 RFB、manager 重启与文件哈希恢复、真实 ERC/DRC/ZIP 通过；公网 HTTPS 和普通账号复测。正式设计模型返回 6 条有效命令，3 器件/3 网络原生文件；修复前 ERC 3 个 off-grid，修复后同一提案 KiCad ERC 0；PCB 无走线，DRC 仍 3 个未连接且一致性 0。候选首版遗漏 `/vibehard` 构建参数，未切换；重建后候选与公网均 200。测试账号和卷已清理。
+- Validation: 网格修复后 EDA 定向 65 通过、2 跳过（包含导出/再导入坐标回归），Python 20 通过；TypeScript 和带 basePath 的生产构建通过。此前全仓为 237 通过、2 个既有 Windows `EPERM` 失败、13 跳过，不称全绿。没有人工登录浏览器拖动/保存或长期稳定性验收。
+- Boundary: 未实现 Agent 就地修改原生工程、PCB 自动布线、广泛器件/立创/PDF/复杂多页导入、硬配额/排队扩容及制造验证。完整记录见 `docs/eda-cloud-acceptance-2026-09-26.md`。
+
+## 2026-09-25 Task: 明确云端 KiCad 账号与工程隔离方案
+
+- Goal: 按用户澄清的真实场景设计每个账号独立使用自己的 KiCad 工程，删除多人共同编辑同一工程的假设。
+- Result: 形成按 `(账号 ID, 工程 ID)` 隔离的云端运行实例、工程卷、票据网关及重连/资源回收设计；同一账号的同一工程多标签页连接同一桌面。
+- Evidence: `docs/superpowers/specs/2026-09-25-cloud-kicad-isolation-design.md`；对照现有单账号 broker、生产禁用适配器和静态 WebSocket 重写。
+- Boundary: 本次仅为设计文档，未修改认证、租户隔离、部署代码或生产环境，云端多用户尚未验收。
+
+## 2026-09-25 Task: 原生 EDA 工作台逐项验收及检查修复
+
+- Goal: 验证 Agent 基础任务、已保存 KiCad 输入文件、ERC/DRC 的真实有效性，并划清测试夹具与 AI 生成边界。
+- Finding: 三项 Agent 基础任务均因本机未配置设计模型返回 503；当前工程原生文件真实存在，ERC 报 10 项；原默认 DRC 0 遗漏 3 项原理图/PCB 不一致；KiCad 10 库源数据使 KiCad 9 无法加载测试导出文件。
+- Implementation: 受控 7 类器件改用桌面 KiCad 9 官方库；补齐工程库表；原生/旧版 DRC 都启用原理图一致性检查；页面区分问题数量与检查边界。
+- Validation: 浏览器 ERC 10、DRC 一致性 3；隔离的三器件测试工程 ERC/DRC 0、故意改错 PCB 后 DRC 2；EDA 定向 63 项通过、Python 9 项、TypeScript、ESLint、生产构建和源文件哈希检查通过。全仓 126 通过、2 个既有 Windows 符号链接权限 `EPERM` 失败、2 跳过。
+- Boundary: 测试工程不是 Agent 生成；原生工作台制造包、模型闭环和完整器件/导入覆盖未完成，未发布生产。详见 `docs/eda-acceptance-2026-09-25.md`。
+
+## 2026-09-25 Task: 在 KiCad 工作台加入原理图 Agent 对话
+
+- Goal: 用户在 `/eda` 直接和 Agent 对话，审阅电路修改，再打开可编辑的原生 KiCad 工程。
+- Implementation: 右侧对话面板、设计模型状态与设置入口、逐条命令预览、确认后从受控电路草稿新建原生工程；只读读取已保存原理图和 KiCad CLI 网表，保存期间变化则拒绝快照。
+- Validation: EDA 60 项通过、2 项跳过；Python broker 7 项通过；TypeScript、定向 ESLint、生产构建通过。浏览器确认面板、模型禁用状态、已保存 `4xxx:4001` 的明确拒绝及 KiCad 重连；当前设计模型未配置，真实 AI 生成未验收。
+- Boundary: 不覆盖现有 KiCad 工程，不支持 `4xxx:4001` 等库外器件、复杂单页结构和原生就地应用；本机分支未发布生产。详见 `docs/eda-desktop.md`。
+
+## 2026-09-25 Task: KiCad / noVNC 原生网页编辑
+
+- Goal: 根据用户明确选择，用 noVNC 将实际 KiCad 原理图/PCB 编辑器接入现有平台。
+- Implementation: 本机 Linux 桌面 broker、项目权限 API、单次票据、原生持久化/ZIP/检查、主工作台和旧版入口；WSL 依赖、独立本地数据库、启动与验收脚本。
+- Validation: 浏览器放置和修改 470R 电阻、0603 封装，下载核对、真实 ERC 5/DRC 0、RFB 与认证、源文件哈希不变、服务重启恢复。EDA 56 项通过；新增边界后相关 9 项通过；Python 5 项、定向 lint/构建通过。
+- Boundary: 未修改生产或 Runner。只支持可信本机单账号，不是托管多租户；Agent 原生编辑与生产制造包迁移尚未完成。见 `docs/eda-desktop.md`。
+
+## 2026-09-24 Task: 真实网页 EDA 工作台
+
+- Goal: Agent 与用户共同编辑可交付的原理图和 PCB，用户明确要求不提供示例代替实现。
+- Implementation: 原子电路编辑内核、真实官方 KiCad 库、空白画布、PCB 精确焊盘布线、保存冲突保护、Agent 校验提案、原生导入/导出及实际 CLI 检查/生产文件生成。
+- Validation: 48 项 EDA 测试含真实 KiCad；全仓 111 passed / 2 existing EPERM failed / 2 database skipped；构建通过。实际 HTTP 导入、保存、冲突、ERC/DRC、19 项 ZIP；桌面编辑/撤销/刷新及移动布局检查。
+- Boundary: 未部署；无本地模型配置，未完成真实 AI 端到端。任意库、复杂原生结构、立创/PDF、高级 PCB 与真机仍未完成。长期任务因账户用量限制受限。
+- Evidence: `docs/eda-workbench.md`，`docs/superpowers/plans/2026-09-24-web-eda-workbench.md`。
 ## 2026-09-19 Task: 方案 BOM 参考价与知识资料文案
 
 - Goal: 自动填写 BOM 参考价，并让知识库文案有实际调用依据。
