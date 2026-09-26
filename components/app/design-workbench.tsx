@@ -112,7 +112,7 @@ export function DesignWorkbench({ projectId }: { projectId?: string }) {
       </select>
       <div className="mb-3 flex items-center justify-between"><label htmlFor="requirement" className="text-sm font-semibold">功能需求</label><button disabled={sending} onClick={() => setRequirement(example)} className="text-xs text-primary">填入示例</button></div>
       <Textarea id="requirement" value={requirement} disabled={sending} maxLength={12000} onChange={e => setRequirement(e.target.value)} placeholder="描述功能、供电、通信、尺寸等约束..." className="min-h-[140px]" />
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs text-muted-foreground">内置工程规则 + 已发布资料检索；无匹配会明确提示。BOM 将填写人民币参考单价。</span><Button onClick={() => void submit()} disabled={loading || !validProject || sending || requirement.trim().length < 2 || Boolean(activeJob)}>{sending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{sending ? "保存需求中…" : "生成方案"}</Button></div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs text-muted-foreground">内置工程规则 + 已发布与自动索引资料检索；无匹配会明确提示。BOM 将填写人民币参考单价。</span><Button onClick={() => void submit()} disabled={loading || !validProject || sending || requirement.trim().length < 2 || Boolean(activeJob)}>{sending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{sending ? "保存需求中…" : "生成方案"}</Button></div>
       {activeJob && <p className="mt-3 text-sm">已有方案{designStatus[activeJob.status]}。<button className="text-primary underline" onClick={() => { setSelected(null); setSelectedId(activeJob.id); setRefresh(value => value + 1); }}>查看进度</button>，可安全离开本页。</p>}
       {error && <p role="alert" className="mt-3 text-sm text-red-500">{error}</p>}
     </div>

@@ -18,7 +18,7 @@ const bundles = await Promise.all(scripts.map(async (source) => {
   return response.text();
 }));
 const code = bundles.join("\n");
-assert.ok(code.includes("内置工程规则 + 已发布资料检索；无匹配会明确提示。BOM 将填写人民币参考单价。"));
+assert.ok(code.includes("内置工程规则 + 已发布与自动索引资料检索；无匹配会明确提示。BOM 将填写人民币参考单价。"));
 assert.ok(code.includes("参考单价（人民币）"));
 assert.ok(code.includes("知识库检索记录"));
 assert.ok(!code.includes("直接调用管理员配置的模型，当前不接入知识库。"));

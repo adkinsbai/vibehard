@@ -34,9 +34,10 @@ export const designResultSchema = z.object({
   // Added by the server after parsing model output; never trust model-provided citations.
   retrieval: z.object({
     status: z.enum(["matched", "no-match"]),
-    method: z.literal("keyword-chunks-v1"),
+    method: z.enum(["keyword-chunks-v1", "keyword-chunks-fts5-v1"]),
     references: z.array(z.object({
       scope: z.enum(["platform", "project"]), id: z.uuid(), projectId: z.uuid().optional(),
+      reviewStatus: z.literal("auto-indexed").optional(),
       title: z.string(), source: z.string(), version: z.number().int().positive(),
       sha256: z.string(), excerpt: z.string(),
     })).max(5),

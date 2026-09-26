@@ -24,7 +24,7 @@ export function designMarkdown(job: DesignJob) {
   if (!job.result) throw new Error("方案尚未生成");
   return ["# 硬件方案草案", `项目：${job.projectName}`, `任务：${job.id}`, `模型：${job.model}`, `内置规则：${job.knowledgeVersion}`,
     `时间：${job.completedAt}`, `需求：${job.requirement}`, "参考价格为小批量 AI 估算，未经过实时询价、数据手册逐项核验或电气验证。",
-    "## 知识库检索记录", !job.result.retrieval ? "历史方案未记录检索来源。" : job.result.retrieval.status === "no-match" ? "未检索到匹配的已发布资料；使用内置规则和模型通用知识，关键参数仍需核验。" : job.result.retrieval.references.map(r => `- ${r.title} v${r.version}（${r.scope === "platform" ? "平台" : "本项目"}已发布）；来源：${r.source}；SHA256：${r.sha256}；片段：${r.excerpt.replace(/\s+/g, " ")}`).join("\n"),
+    "## 知识库检索记录", !job.result.retrieval ? "历史方案未记录检索来源。" : job.result.retrieval.status === "no-match" ? "未检索到匹配的可用资料；使用内置规则和模型通用知识，关键参数仍需核验。" : job.result.retrieval.references.map(r => `- ${r.title} v${r.version}（${r.reviewStatus === "auto-indexed" ? "平台自动入库、未人工复核" : r.scope === "platform" ? "平台已发布" : "本项目已发布"}）；来源：${r.source}；SHA256：${r.sha256}；片段：${r.excerpt.replace(/\s+/g, " ")}`).join("\n"),
     "## 架构", ...job.result.architecture.map(x => `- ${x}`), "## BOM", ...job.result.bom.map(x => `- ${x.item}：${x.model} × ${x.qty}；参考单价 ${x.estCost}`),
     "## 接口", ...job.result.interfaces.map(x => `- ${x}`), "## 风险", ...job.result.risks.map(x => `- [${x.level}] ${x.desc}`)].join("\n\n");
 }

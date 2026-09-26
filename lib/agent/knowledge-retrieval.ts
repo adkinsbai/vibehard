@@ -4,6 +4,7 @@ export type RetrievalSource = {
   scope: "platform" | "project";
   id: string;
   projectId?: string;
+  reviewStatus?: "auto-indexed";
   version: KnowledgeVersion;
 };
 export type KnowledgeReference = {
@@ -15,10 +16,11 @@ export type KnowledgeReference = {
   version: number;
   sha256: string;
   excerpt: string;
+  reviewStatus?: "auto-indexed";
 };
 export type RetrievalResult = {
   status: "matched" | "no-match";
-  method: "keyword-chunks-v1";
+  method: "keyword-chunks-v1" | "keyword-chunks-fts5-v1";
   references: KnowledgeReference[];
   context: string;
 };
@@ -69,9 +71,10 @@ export function retrieveKnowledge(requirement: string, sources: RetrievalSource[
     const key = `${candidate.source.scope}:${candidate.source.id}`;
     // A PDF page is stored as a separate small entry in the proof batch. Do
     // not let five pages of the same datasheet crowd out board-level evidence.
-    const importedFile = candidate.source.scope === "platform" && /^(?:RV1106|RV1126B)\//.test(candidate.source.version.source)
+    const importedFile = candidate.source.scope === "platform" && (/^(?:RV1106|RV1126B)\//.test(candidate.source.version.source) || candidate.source.reviewStatus === "auto-indexed")
       ? candidate.source.version.source.split("#", 1)[0] : undefined;
-    const block = `[资料 ${selected.length + 1}] ${candidate.source.version.title}（${candidate.source.scope === "platform" ? "平台已发布" : "本项目已发布"}，v${candidate.source.version.version}）\n来源：${candidate.source.version.source.split(" (file SHA256", 1)[0]}\n${candidate.content}`;
+    const label = candidate.source.reviewStatus === "auto-indexed" ? "平台自动入库，未人工复核" : candidate.source.scope === "platform" ? "平台已发布" : "本项目已发布";
+    const block = `[资料 ${selected.length + 1}] ${candidate.source.version.title}（${label}，v${candidate.source.version.version}）\n来源：${candidate.source.version.source.split(" (file SHA256", 1)[0]}\n文件 SHA256：${candidate.source.version.sha256}\n${candidate.content}`;
     if (seen.has(key) || (importedFile && (importedFileCounts.get(importedFile) ?? 0) >= 2) || used + block.length + (selected.length ? 2 : 0) > MAX_CONTEXT) continue;
     selected.push(candidate); contextBlocks.push(block); seen.add(key); used += block.length + (selected.length > 1 ? 2 : 0);
     if (importedFile) importedFileCounts.set(importedFile, (importedFileCounts.get(importedFile) ?? 0) + 1);
@@ -79,10 +82,11 @@ export function retrieveKnowledge(requirement: string, sources: RetrievalSource[
   }
   const references = selected.map(({ source, content }) => ({
     scope: source.scope, id: source.id, ...(source.projectId ? { projectId: source.projectId } : {}),
+    ...(source.reviewStatus ? { reviewStatus: source.reviewStatus } : {}),
     title: source.version.title, source: source.version.source, version: source.version.version,
     sha256: source.version.sha256, excerpt: content.slice(0, 240),
   }));
-  return { status: references.length ? "matched" : "no-match", method: "keyword-chunks-v1", references,
+  return { status: references.length ? "matched" : "no-match", method: selected.some(candidate => candidate.source.reviewStatus === "auto-indexed") ? "keyword-chunks-fts5-v1" : "keyword-chunks-v1", references,
     context: contextBlocks.join("\n\n"),
   };
 }

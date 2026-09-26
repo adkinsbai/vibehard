@@ -3,6 +3,7 @@ import { retrieveKnowledge, type RetrievalSource } from "@/lib/agent/knowledge-r
 import { requireDb } from "@/lib/db";
 import { projectKnowledge, projects, sharedKnowledge } from "@/lib/db/schema";
 import { publishedSnapshot } from "./knowledge-state";
+import { searchIndexedKnowledge } from "./oss-knowledge-index";
 
 // Retrieve only reviewed, currently published bodies. The catalog is metadata,
 // not an uploaded document, and another user's project is never a source.
@@ -24,5 +25,8 @@ export async function retrieveDesignKnowledge(userId: string, projectId: string,
     const version = entry.document.versions.find(item => item.version === entry.document.publishedVersion);
     if (version) sources.push({ scope: "platform", id: entry.id, version });
   }
+  // The private FTS index is queried only after current project ownership is
+  // checked. Auto-screened sources never enter the reviewed publication table.
+  sources.push(...await searchIndexedKnowledge(requirement));
   return retrieveKnowledge(requirement, sources);
 }
