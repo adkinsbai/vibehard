@@ -29,13 +29,23 @@ async function main() {
   const artifacts: { run: number; step: number; schematic: string; schematicSha256: string; netlist: string; netlistSha256: string; nativeNetlistPassed: boolean }[] = [];
   const ercEvidence: { run: number; step: number; file: string; sha256: string; reportFile?: string; rawReportSha256?: string; available: boolean; exitCode?: number }[] = [];
   const proposals: { run: number; step: number; file: string; sha256: string }[] = [];
+  const modelResponses: { run: number; step: number; model: string; file: string; sha256: string }[] = [];
   const promptSha256 = sha256(JSON.stringify(LED_AGENT_SCENARIO.steps.map(step => step.prompt)));
   const scenarioSha256 = sha256(JSON.stringify(LED_AGENT_SCENARIO));
   const results = [];
   for (let index = 0; index < runs; index++) {
+    let nextStep = 0;
     const schematicFiles = new Map<number, { file: string; sha256: string }>();
     const result = await evaluateAgentScenario(LED_AGENT_SCENARIO, {
-      propose: (document, prompt) => proposeEdaEdit(document, prompt),
+      propose: (document, prompt) => {
+        const step = nextStep++;
+        return proposeEdaEdit(document, prompt, undefined, async (raw, model) => {
+          if (Buffer.byteLength(raw, 'utf8') > 1_000_000) throw new Error('Model response exceeds evidence size limit');
+          const file = `run-${index + 1}-step-${step + 1}-model-raw.txt`;
+          await writeFile(join(evidenceDirectory, file), raw, { encoding: 'utf8', mode: 0o600 });
+          modelResponses.push({ run: index + 1, step: step + 1, model, file, sha256: sha256(raw) });
+        });
+      },
       checkErc: async (document, step) => {
         const stem = `run-${index + 1}-step-${step + 1}`;
         const schematicFile = `${stem}.kicad_sch`;
@@ -97,9 +107,9 @@ async function main() {
   const passed = results.filter(result => result.passed).length;
   const modelRequestsSucceeded = results.reduce((total, result) => total + result.steps.filter(step => Boolean(step.model)).length, 0);
   const nativeErcExecuted = results.reduce((total, result) => total + result.steps.filter(step => step.ercAvailable && step.ercViolationCount !== undefined).length, 0);
-  const report = { execution: 'live-model-attempt', kicadCliVersion, scenarioId: LED_AGENT_SCENARIO.id, scenarioVersion: LED_AGENT_SCENARIO.version, scenarioSha256, promptSha256, runs, passed, modelRequestsSucceeded, nativeErcExecuted, proposals, ercEvidence, artifacts, results };
+  const report = { execution: 'live-model-attempt', kicadCliVersion, scenarioId: LED_AGENT_SCENARIO.id, scenarioVersion: LED_AGENT_SCENARIO.version, scenarioSha256, promptSha256, runs, passed, modelRequestsSucceeded, modelResponsesReceived: modelResponses.length, nativeErcExecuted, modelResponses, proposals, ercEvidence, artifacts, results };
   await writeFile(join(evidenceDirectory, 'report.json'), JSON.stringify(report, null, 2), { encoding: 'utf8', mode: 0o600 });
-  const summary = { evidenceDirectory, kicadCliVersion, scenarioId: report.scenarioId, scenarioVersion: report.scenarioVersion, scenarioSha256, promptSha256, runs, passed, modelRequestsSucceeded, nativeErcExecuted, proposals, ercEvidence, artifacts, outcomes: results.map(result => ({ run: result.run, passed: result.passed, steps: result.steps.map(step => ({ index: step.index, passed: step.passed, ercClean: step.ercClean, nativeNetlistPassed: step.nativeNetlist?.passed ?? null, findingCodes: [...step.intent.findings, ...(step.preservation?.findings || []), ...(step.nativeNetlist?.findings || [])].map(finding => finding.code) })) })) };
+  const summary = { evidenceDirectory, kicadCliVersion, scenarioId: report.scenarioId, scenarioVersion: report.scenarioVersion, scenarioSha256, promptSha256, runs, passed, modelRequestsSucceeded, modelResponsesReceived: modelResponses.length, nativeErcExecuted, modelResponses, proposals, ercEvidence, artifacts, outcomes: results.map(result => ({ run: result.run, passed: result.passed, steps: result.steps.map(step => ({ index: step.index, passed: step.passed, ercClean: step.ercClean, nativeNetlistPassed: step.nativeNetlist?.passed ?? null, findingCodes: [...step.intent.findings, ...(step.preservation?.findings || []), ...(step.nativeNetlist?.findings || [])].map(finding => finding.code) })) })) };
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
   if (passed !== runs) process.exitCode = 1;
 }

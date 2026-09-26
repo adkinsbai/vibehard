@@ -26,4 +26,11 @@ describe('Agent edits are validated proposals', () => {
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify({ summary: 'broken', commands: [{ type: 'removeComponent', id: 'missing' }] }));
     await expect(proposeEdaEdit(createStarterDocument(), 'remove')).rejects.toThrow();
   });
+  it('captures raw model output before rejecting an invalid proposal during an audit run', async () => {
+    vi.mocked(runtimeLlm).mockResolvedValue({ model: 'test' } as Awaited<ReturnType<typeof runtimeLlm>>);
+    vi.mocked(callLlm).mockResolvedValue('not valid JSON');
+    const capture = vi.fn(async () => undefined);
+    await expect(proposeEdaEdit(createStarterDocument(), '请修改电路', undefined, capture)).rejects.toThrow(/模型返回的修改/);
+    expect(capture).toHaveBeenCalledWith('not valid JSON', 'test');
+  });
 });

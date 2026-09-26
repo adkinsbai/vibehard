@@ -16,6 +16,8 @@ pnpm exec tsx scripts/evaluate-eda-agent.ts --runs 3
 
 运行报告中的 `execution: live-model-attempt` 只表示尝试执行真实链路。只有 `modelRequestsSucceeded` 与 `nativeErcExecuted` 均覆盖实际执行轮次时，才有真实模型加原生 KiCad 证据。本地未配置设计模型时会在第一轮如实失败，不会使用预制模型答案替代。
 
+评估器收到模型文本后，会先在私有证据目录保存限额 1 MiB 的 `*-model-raw.txt`，因此 JSON 解析或命令校验失败也能复核原始回复。`modelResponsesReceived` 是收到的原始回复数，`modelRequestsSucceeded` 是通过提案解析的轮次数。原始回复可能包含电路需求或其他敏感内容，不应上传到公开 PR、公开 CI 日志或共享目录。
+
 ## 判定规则
 
 | 层次 | 判定依据 | 能发现的错误 |
