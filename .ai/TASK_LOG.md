@@ -4,6 +4,14 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-26 Task: Agent 候选工程与自动布线适配器
+
+- Goal: 继续推进用户已确定的 AI 原理图修改与 PCB FreeRouting，保留真实验收证据。
+- Implementation: Agent 面板保留源工程及已保存原理图哈希，创建候选前复核源文件；审阅器展示器件、参数与引脚网络变化。评估脚本保存模型原始回复供解析失败复核。新增隔离的 FreeRouting DSN/SES 作业适配器、源快照/DRC/板结构校验及文档。
+- Validation: EDA 定向 114 通过、2 跳过；TypeScript、定向 ESLint、`git diff --check`、`NEXT_PUBLIC_BASE_PATH=/vibehard pnpm build` 通过。WSL KiCad 9.0.8 原生 DSN 导出 5,328 字节，板结构指纹保存/重载后相同。`evaluate-eda-agent.ts --runs 1` 因本地未配置设计模型退出 1，模型响应 0、ERC 0。
+- Boundary: 候选检查不是原工程的原子就地修改；FreeRouting 适配器未接入云端 worker 或 UI，未获得真实 jar 的有效 SES 回环证据。云端浏览器会话未登录，本次未完成线上三轮 Agent 验收；本次未发布生产。
+- Evidence: `docs/eda-agent-candidate.md`、`docs/eda-agent-evaluation.md`、`docs/eda-freerouting.md`。
+
 ## 2026-09-26 Task: 原理图 Agent 工作流、三轮验收与模块接口
 
 - Goal: 不以“模型输出合法 JSON/ERC 0”代替用户需求验收；建立能重复检查建图与连续两轮改图的真实模型任务，并为团队后续交付的审核电路模块预留原生端口契约。
