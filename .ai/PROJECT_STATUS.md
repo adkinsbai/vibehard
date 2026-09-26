@@ -1,5 +1,11 @@
 # 项目状态
 
+## 2026-09-26 原理图 Agent 能力验收基线（开发分支，未部署）
+
+- `codex/eda-agent-workflow` 新增三轮真实模型验收入口：按用户要求生成 LED 电路、修改电阻值、保留原支路并增加第二支路。确定性评估检查器件/参数、必须/禁止引脚网络、无关电路保留；另运行原生 KiCad ERC 与导出网表核对器件身份、封装及实际引脚拓扑。提案、原始 ERC、原生图/网表和哈希写入 Git 忽略的私有目录。新增电路模块包的结构预检与端口映射接口，团队真实模块包、KiCad 原生审核及目录发布尚未完成。
+- 本机验证：EDA 定向 97 通过/2 跳过，TypeScript、定向 ESLint、带 `/vibehard` basePath 的生产构建通过；WSL KiCad 9.0.8 真实导出的 LED 网表经新解析器复核通过。Windows 进程 PATH 中没有可直接调用的 `kicad-cli`；真实模型入口运行一次因本地设计模型未配置在第一轮失败，模型成功 0、ERC 执行 0，本轮**没有新的模型画图通过证据**。线上既有单轮 LED 证据仍见 `docs/eda-cloud-acceptance-2026-09-26.md`，不能替代三轮验收。
+- 架构、测试与团队模块交付说明见 `docs/superpowers/specs/2026-09-26-eda-agent-native-workflow-design.md`、`docs/eda-agent-evaluation.md`、`docs/eda-module-contract.md`。FreeRouting、立创/PDF、原生多轮修改仍处于后续阶段；本次未发布生产。
+
 ## 2026-09-26 云端 KiCad / noVNC 已上线
 
 - 当前正式平台 release 为 `20260926-eda-grid-v1`；云端每 `(账号, 工程)` 独立 worker 与持久卷，同一工程多标签页共享自己的桌面。公网 `/vibehard/eda`、WebSocket/RFB、归属隔离、三账号并发、保存后重启恢复、真实 KiCad ERC/DRC 和 ZIP 已验收。没有多人共编工程的需求。

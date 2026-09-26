@@ -4,6 +4,13 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-26 Task: 原理图 Agent 工作流、三轮验收与模块接口
+
+- Goal: 不以“模型输出合法 JSON/ERC 0”代替用户需求验收；建立能重复检查建图与连续两轮改图的真实模型任务，并为团队后续交付的审核电路模块预留原生端口契约。
+- Implementation: 新增版本化三轮 LED 场景、确定性器件/参数/拓扑/保留评估器、真实 `proposeEdaEdit` + KiCad ERC 运行入口；提案、原始 ERC、原生图/网表与 SHA-256 写入私有目录。原生网表核对器件库身份、封装和所有受控引脚网络，偏离草稿则失败。模块包预检验证路径、哈希、审核元数据、单页层级标签和端口方向，返回 `nativeCheckRequired`。架构规格包括需求抽取、模块目录、候选版本、FreeRouting DSN/SES、立创/PDF 分级导入。
+- Validation: TDD 中模块预检五项、网表漏单引脚/身份替换用例先红后绿；最终 EDA 定向 97 通过/2 跳过，TypeScript、定向 ESLint 和带 `/vibehard` basePath 的生产构建通过。WSL KiCad 9.0.8 实际导出 LED `.net`，新解析器复核通过；该烟测图 ERC 仍有 3 项网格错误，不能算电路验收。本地真实模型入口一次运行：0 个模型请求成功、0 次原生 ERC，退出码 1；原因是本地设计模型未配置，Windows PATH 无可直接调用的 KiCad CLI，因此本轮没有新的模型能力通过结论。
+- Boundary: 结构预检不是模块获批；没有团队真实模块文件、原生多轮写回、FreeRouting、立创/PDF 自动导入，也没有发布生产。线上 9/26 单轮 LED 实测属此前证据。详见 `docs/eda-agent-evaluation.md` 和 `docs/eda-module-contract.md`。
+
 ## 2026-09-26 Task: 云端 KiCad 多账号隔离发布与真实模型验收
 
 - Goal: 让每个账号使用自己的 KiCad 工程和文件系统，多个账号可同时编辑各自工程；同工程多个窗口可重连。通过公网在真实服务上验证 Agent → 原生文件 → KiCad。
