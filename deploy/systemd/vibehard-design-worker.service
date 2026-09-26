@@ -9,7 +9,7 @@ DynamicUser=true
 WorkingDirectory=/opt/vibehard/current
 EnvironmentFile=/etc/vibehard/platform.env
 # Replace current with the verified release path when deploying; never change Runner credentials.
-ExecStart=/usr/local/bin/node /opt/vibehard/current/services/design-worker.cjs
+ExecStart=/opt/vibehard/runtime/node-v22.23.1 /opt/vibehard/current/services/design-worker.cjs
 Restart=on-failure
 RestartSec=5
 TimeoutStopSec=110

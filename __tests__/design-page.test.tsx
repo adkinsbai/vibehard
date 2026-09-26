@@ -20,7 +20,7 @@ it("creates once, returns a project immediately, and restores archived results a
   }); vi.stubGlobal("fetch", fetcher);
   const page = render(<DesignWorkbench />);
   await screen.findByText("暂无方案记录。提交后会立即保存需求。");
-  expect(screen.getByText("已接入内置方案知识库，BOM 将自动填写人民币参考单价。")).toBeInTheDocument();
+  expect(screen.getByText(/内置工程规则 \+ 已发布资料检索；无匹配会明确提示/)).toBeInTheDocument();
   expect(screen.queryByText(/不接入知识库|未接入知识库/)).not.toBeInTheDocument();
   fireEvent.change(screen.getByLabelText("功能需求"), { target: { value: "我的温度计需求" } });
   fireEvent.click(screen.getByRole("button", { name: "生成方案" }));

@@ -33,7 +33,7 @@ export function HomeNav() {
   const isLoggedIn = useIsLoggedIn();
 
   return (
-    <nav className="sticky top-0 z-30 flex items-center justify-between border-b border-border/70 bg-background/80 px-5 py-4 backdrop-blur-xl lg:px-12">
+    <nav aria-label="官网导航" className="sticky top-0 z-30 flex items-center justify-between gap-2 whitespace-nowrap border-b border-border/70 bg-background/80 px-3 py-4 backdrop-blur-xl sm:px-4 lg:px-12">
       <div className="flex items-center gap-2.5">
         <Image
           src={assetPath("/vibehard-icon.svg")}
@@ -50,7 +50,9 @@ export function HomeNav() {
         </span>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3">
+        <a href="#capabilities" className="hidden px-3 py-2 text-[13px] font-semibold text-muted-foreground hover:text-foreground md:inline-flex">平台功能</a>
+        <a href="#workflow" className="hidden px-3 py-2 text-[13px] font-semibold text-muted-foreground hover:text-foreground lg:inline-flex">协作流程</a>
         <ThemeToggle />
         <Link
           href="/demo"
@@ -69,16 +71,16 @@ export function HomeNav() {
           <>
             <Link
               href="/login"
-              className="rounded-lg px-3 py-2 text-[13px] font-semibold text-muted-foreground transition-colors duration-200 hover:text-foreground sm:px-4"
+              className="rounded-lg px-2 py-2 text-[13px] font-semibold text-muted-foreground transition-colors duration-200 hover:text-foreground sm:px-4"
             >
               登录
             </Link>
-            <Link
-              href="/register"
-              className="rounded-lg bg-primary px-3 py-2 text-[13px] font-medium text-primary-foreground shadow-sm shadow-primary/20 transition-all duration-200 hover:bg-primary/90 active:scale-[0.97] sm:px-4"
+            <a
+              href="#access"
+              className="rounded-lg bg-primary px-2 py-2 text-sm font-bold text-primary-foreground shadow-sm shadow-primary/20 transition-all duration-200 hover:bg-primary/90 active:scale-[0.97] sm:px-4 sm:text-base"
             >
-              注册
-            </Link>
+              即将开放
+            </a>
           </>
         )}
       </div>

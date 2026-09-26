@@ -7,6 +7,8 @@ it("integrates the module guide while preserving the independent platform URL", 
   render(<TaishanPage />);
   expect(screen.getByTitle("泰山派开发平台")).toHaveAttribute("src", "/Vibeboard/");
   expect(screen.getByRole("link", { name: "在新窗口打开" })).toHaveAttribute("href", "/Vibeboard/");
+  expect(screen.getByText(/应用生成、校验与设备部署以该系统的实际结果为准/)).toBeVisible();
+  expect(screen.getByText(/项目和知识数据暂不与 VibeHard 自动同步/)).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "泰山派开发使用说明" }));
   expect(await screen.findByRole("dialog")).toHaveTextContent("不自动同步 VibeHard 的 Agent 项目");
 });

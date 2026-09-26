@@ -107,7 +107,7 @@ if (enabled) {
     const owner = await user(); const first = await enqueueDesign(owner.id, input());
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify(result));
     expect(await processNextDesign()).toBe(true);
-    expect((await getDesign(owner.id, first.id))?.result).toEqual(result);
+    expect((await getDesign(owner.id, first.id))?.result).toMatchObject({ ...result, retrieval: { status: "no-match", references: [] } });
     const next = await enqueueDesign(owner.id, { ...input(), projectId: first.projectId });
     vi.mocked(callLlm).mockRejectedValue(new LlmRequestError("模型服务额度不足"));
     await processNextDesign();

@@ -4,6 +4,119 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-25 Task: ESP32-S3 资料包原件私有 OSS 归档
+
+- Request: 用户要求把附件大量资料先处理并存入既有 OSS。范围为原件盘点、去重、验证和私有对象上传；未请求将全部资料直接发布为可检索知识。
+- Intake: 资料包 801 个可处理路径、11,579,857,863 字节；流式 SHA256 去重后 286 个对象、8,012,192,016 字节。149 份不重复 PDF 经 `pdfinfo` 可读取、共 12,237 页；134 份压缩包只检查目录，3 份 ZIP 目录损坏，标为隔离。未解压运行示例代码，未把隐藏/密钥文件当作独立上传对象。
+- OSS: 只读核验 Store Dataset Bucket 为北京地域、私有 ACL；批次 `6cf96eea-af45-4e7d-96c0-c99afbe8c192` 的 286 个去重对象按 `knowledge/raw/v1/` 私有上传，逐一 HEAD 核对大小和 SHA256 元数据。私有映射清单 SHA256 `6d3a879a57d64c373db1883be618cbb8a0574241fd73b6b2c75cf78829734207`；首件、最大压缩包、PDF、隔离 ZIP 和清单回读哈希吻合。凭据只从用户已有本机文档读入进程内存，未写进仓库/对象/日志。
+- Boundary: 无生产 DB、服务、账号、模型或网页修改；这批资料没有 OCR、切分、审核和 RAG 索引，不会被当前方案生成引用。私有对象清单及后续步骤见 `docs/oss-knowledge-import.md`。未 commit/push。
+
+## 2026-09-25 Task: 正式发布首批 RAG 与方案 worker
+
+- Authorization: 用户明确要求生产迁移、worker 发布、正式知识正文导入和真实带来源方案验收。范围限新增 `0005`/`0006`、方案与知识路径，不改 Runner/Gateway/VibeBoard、角色或模型密钥。
+- Release: 基于线上 819 文件哈希清单构建 `20260925-board-rag-v3`，归档 SHA256 `280158926ce97bb331d22aba072ba6365c86ffad9c538ecfc43bc6a02a1e427d`；预迁移 dump SHA256 `f15f159d3b6fd51c9227b4f615bff10d385c41c5193874f81b8641a9e3f1c23a`。v2 因继承旧泰山派校验脚本自动恢复旧版，v3 使用正式脚本通过回归。
+- Import: 固定 9 文件干跑再次确认 95 条及批次哈希，管理员归属的事务导入写入正式库 95/95 已发布，审计 `manualReview:false`。未复制原始 PDF/MD、未操作 OSS。
+- Evidence: 隔离真实 DeepSeek 方案成功；隔离数据库 7 项方案 + 4 项知识测试通过，候选/公网 PCB、Demo、认证、目录权限、泰山派、模型发现回归通过。正式公网任务 `3780b4de-fe12-455d-ab15-74ee1f34e0dd` 在项目 `aa0e51b7-3c8e-465a-a34c-e9b9b1489ad6` 完成，8 条 BOM、5 条 RV1106 来源逐项与发布版本吻合，Markdown 下载包含引用。
+- Incident: 初次 worker 203/EXEC 重启循环已立即停止；其 Node 路径指向 root 私有目录。将同哈希 Node 22.23.1 复制到 `/opt/vibehard/runtime/` 并仅改 worker unit，PID 899646 稳定完成真实任务。已同步修正本地 unit 模板与部署稳定性检查；v3 不可变源码仍有旧 unit 模板，不应直接重装。没有 commit/push。
+- Limits: 一次真实生成不证明长期稳定、资料正确或硬件可用；首批为有界关键词检索，不是 8 GB OSS 原件上传或向量检索。回滚只恢复平台/停 worker，不自动回退新增表和导入数据。
+
+## 2026-09-25 Task: RV1106 / RV1126B 首批 RAG 链路准备
+
+- Request: 用户允许这批资料暂不人工审核，要求直接处理并接入方案生成检索链路。
+- Changes: 新增 allowlist 导入器与逐页 PDF 文字提取、稳定 ID/哈希/凭据扫描、干跑及受控事务写入模式；单一导入文件的检索引用上限为 2，方案与 UI 将“已审核”改成准确的“已发布”。普通网页审核权限未修改。
+- Evidence: 9 个源文件干跑为 95 条，RV1106 与 RV1126B 样例均有资料命中；全量 171 常规测试通过、11 DB 专项跳过，TypeScript、ESLint、Next 构建通过。Docker PostgreSQL 镜像仍有 I/O 错误，本次未完成数据库实写、真实 LLM 或浏览器端验收。
+- Boundary: 未运行 `--apply`、未写生产/测试 DB、未上传 OSS、未部署。用户的上线范围选择通过非阻塞问题单独确认；上线前必须完成隔离 DB/迁移/worker/备份及真实模型验收。
+
+## 2026-09-25 Task: RV1106 / RV1126B 知识资料候选初筛
+
+- Request: 只读阅读两个本地文件夹，列出可加入知识库审核候选的文件。
+- Evidence: 读取根 README/RESOURCES、docs 章节与候选文件列表，检查主要 PDF 的格式/页数；两个目录约 1.3 GB/16 GB，总计约 7451 个普通文件（含非候选产物）。报告中的 37 个本地链接全部验证存在。
+- Output: `docs/chip-resource-local-candidates.html` 按硬件、软件、烧录/量产分组，区分首批与按需，标注脱敏、型号匹配、授权和验证状态。
+- Boundary: 没有复制或上传原件、访问 OSS、写数据库或建立索引；不是全部 PDF 的逐页审校。附件目录内的 AGENTS/README 等仅作为资料，不作为本项目执行指令。
+
+## 2026-09-25 Task: 确认首阶段使用现有 Store Dataset Bucket
+
+- Request: 用户决定先复用已有 Bucket，后续可新建专用 Bucket 再迁移。
+- Changes: 将 Store Dataset Bucket 固定为首阶段目标，新增不含 Bucket 名/用户文件名的 `knowledgeRawObjectKey()` 与验证用例；文档定义资料 ID、哈希、对象 Key 稳定和迁移时复制/回读校验/切换/回滚的边界。
+- Boundary: 这只是本地设计与代码准备；未读取或使用 OSS 长期凭据，未配置 RAM/CORS，未写入 Bucket、建索引或部署。真实迁移机制和上传链路尚未实现。
+
+## 2026-09-25 Task: 8 GB 知识资料的 OSS 上传与检索准备
+
+- Request: 用户准备后续提供约 8 GB 资料，要求预备 OSS 上传和检索并询问是否需重发 OSS 信息。本轮只做本地准备，不操作现有 Bucket、长期密钥、生产数据库或服务。
+- Changes: 新增只读资料盘点 CLI、文件类型分流和有界文本切分原语；OSS 配置检查只列缺项不输出值；写明直传、隔离解析、审核、索引、成本和权限的分阶段方案。
+- Evidence: 167 项常规测试通过、11 项数据库专用测试跳过；TypeScript、修改文件 ESLint、Next.js 生产构建及 `git diff --check` 通过。对 `docs/` 做只读 CLI 试跑，18 份文本文件被分类，无上传或建索引；配置检查仅报告 4 个待配置字段。现有 `OSS-Access.md` 可用作非敏感配置核对，但没有足够证据认定短期 STS 角色已配置。
+- Boundary: 未上传、未获取或使用长期凭据、未部署，未把当前 6000 字/200 份小型资料库误称为 8 GB 检索系统。此时尚待负责人选择 Bucket；后续已选择现有 Store Dataset Bucket，仍需最小权限 RAM Role ARN/CORS 后才能实现并验收实际直传。
+
+## 2026-09-25 Task: 将 Laya 部署整理到项目根目录
+
+- Request: 用户要求在项目内新建名为 `laya` 的文件夹并将部署内容放在其中。
+- Changes: 将部署脚本/说明和原 `out/laya` 运行文件迁至 `laya/` 及 `laya/.runtime/`；更新路径、Git 忽略、LaunchAgent 配置与文档。未触碰 `out/` 中其他文件。
+- Validation: Python 编译及文档 diff 检查通过；迁移后后台 `/health` 返回多语言/MPS，中文支持/冲突/未知三态样例 3/3；10 次短请求中位数 38.0 ms。未更改平台业务或云端服务。
+
+## 2026-09-25 Task: 部署 Laya 本地推理服务
+
+- Authorization: 用户要求部署，并由 Agent 比较本机/云端选址。只读核查云端 2 核/7.4 GiB、本机 M4/16 GB 后选择本机 MPS。
+- Changes: `laya/` 独立服务/锁文件/调用与验证/LaunchAgent 安装脚本/说明，`laya/.runtime/` 忽略目录中的环境、固定模型、私有 key 和日志；安装当前用户 `tech.ldcx.laya` LaunchAgent。未改平台业务、数据库、Runner/Gateway 或云服务。
+- Evidence: 官方权重 revision/哈希已记录；真实离线 MPS 推理，支持/冲突/信息不足 3/3，401/413/422 与回环监听检查通过，后台预热 10 请求中位数 32.3 ms；调用脚本通过。
+- Limits: 合成短样例不代表硬件选型准确率，尚未接 RAG/云端，Mac 休眠或注销时不可用。未 commit/push；详细结果 `laya/.runtime/verification.json` 与 `laya/README.md`。
+
+## 2026-09-25 Task: 评估 Laya 对器件选型及 RAG 的价值
+
+- Scope: 阅读上游文档、基准、推理源码、模型卡及本地知识/方案实现；仅补评估文档及索引/任务状态。
+- Finding: 建议用于召回后的证据预筛/排序，配合参数卡与硬约束规则；不作为整机可行性裁决，不假定直接加速关键词检索。
+- Evidence: `docs/laya-evaluation.md` 保留来源、接入点、三态判断与对照实验，区分本地实现和最近生产发布范围。
+- Validation: 文档 diff 检查；未运行模型/性能/硬件测试，未修改运行时代码或操作生产、数据库、部署。
+
+## 2026-09-25 Task: 知识库正文与方案生成检索
+
+- Request/approval: 用户同意把已审核知识用于方案 RAG、页面展示来源/无匹配；明确只本地实现和测试。高风险数据库与权限范围仅用于本地代码和迁移文件，未改生产。
+- Changes: 新增平台正文审核表/API/UI 与 `0006`，复用项目已审核版本；后台方案任务有界检索、项目归属校验、服务端来源记录及页面/Markdown 展示。原板卡目录仍只是线索，不被伪装成已接入正文。
+- Evidence: 163 常规测试通过、11 DB 跳过；类型/修改文件 ESLint/Next 生产构建通过。新增纯检索、伪造引用和数据库隔离测试；数据库专项未实跑，Docker PostgreSQL 镜像读取 I/O 错误。未做真实模型/浏览器完整流程。
+- Delivery: 本地未 commit/push/迁移/部署。生产仍为 `20260922-taishan-integration`；上线需连同 `0005`、`0006`、独立 worker 经备份与隔离 PG 验证。详见 `docs/knowledge-rag.md`。
+
+## 2026-09-22 Task: 融合泰山派入口并发布云端
+
+- Authorization: 用户要求把昨日合并的泰山派开发系统融合进已有网页并上线。范围为认证页面、桌面/移动导航与帮助；不统一账号/项目数据，不迁移数据库，不修改 Runner/Gateway/VibeBoard/nginx。
+- Release: `20260922-taishan-integration`，基于完整 `20260922-homepage` 生产源码只叠加 4 个运行时文件；设计后台任务/0005 未夹带。归档 SHA256 `62ea10a404a784953e30ac55bdc2764adb5439daafe0d92f90b9a7c6f21b855e`。
+- Evidence: 151 passed/3 DB skipped，类型/针对性 lint/生产构建通过；候选/正式全套保护与公网泰山派 HTML/RSC、匿名重定向、桌面/移动入口、VibeBoard 200 和 iframe 响应头通过。浏览器工具三次连接超时，不作视觉点击结论。
+- Result: 21:45 正式平台 PID 834514；Runner/Gateway/VibeBoard/nginx PID 758750/727637/807921/501913 不变，无数据/账号/角色/模型/Key 变更。临时调试与候选单元回收、3211 关闭；未 commit/push。
+
+## 2026-09-22 Task: 放大开放提示并发布首页
+
+- Authorization: 用户要求上线且加强开放信息。首屏改高对比公告卡、20/24px 粗体主文案，导航与 CTA 加强；保留当前邀请码内测说明。
+- Release: `20260922-homepage`，当前生产 manifest 验证 803 个源文件后独立构建，仅覆盖 7 个首页运行时文件；部署/打包/公开只读验收脚本新增。无本地未上线业务夹带。
+- Evidence: 148 passed/3 DB skipped；类型/构建/首页 lint 通过；桌面/320px 公告视觉通过（20px 无溢出）。候选/正式全套保护及公网首页、知识权限、PCB/Demo 通过；生产浏览器超时，不作点击通过结论。
+- Result: 09:38 正式平台 active PID 823384，其他服务 PID/配置不变，无数据库/模型调用；预检已停止、3211 回收，旧 unit 可回滚。未 commit/push。
+
+## 2026-09-22 Task: 未登录官网功能与注册预告更新
+
+- Scope: 首页路由、首页组件、仅首页使用的 Footer、测试/文档；不改注册规则、已登录业务、私有目录、Demo、部署或数据库。
+- Changes: 左右分栏首屏与明确标注的工作流示意、四项能力摘要、六类功能卡、人工确认流程、开放注册预告/FAQ；移除旧模板数量宣传和暗示公开注册的 CTA，保留已有邀请码入口。同步首页 metadata，修复 320px 换行和 sticky 受 overflow 限制。
+- Validation: 全量 157 passed/10 旧 DB skipped；类型/ESLint/生产构建成功。桌面和 390/320px 浏览器检查、FAQ 鼠标/键盘、锚点/固定导航、注册页、Demo 往返通过，无末轮控制台 error。仅本机匿名预览，没有真实 DB、模型调用或账号写入。
+- Delivery: 本地 3212 预览留给用户查看；未 commit/push/上线，生产仍为 knowledge-library。后续首页发布需与本地未上线业务隔离。
+
+## 2026-09-21 Task: 知识库 UI 云端发布
+
+- Scope: 用户明确「上线」；从当前线上完整源码独立构建，只叠加 12 个知识库运行时文件，不发布本地后台方案迁移或泰山派入口。
+- Validation: 发布构建 145 测试通过/3 DB 跳过、类型/构建通过；候选与正式全套保护、公网知识库角色 HTML/RSC/伪造拒绝/跳转/静态数据隔离、PCB/Demo/18 资产通过。实际线上 admin/member 验证，developer 为本地覆盖。生产浏览器连接超时，未做点击验收。
+- Delivery: 22:28 核查 `20260921-knowledge-library` active、平台 PID 813457；只重启平台，其他服务 PID/配置不变，无业务或账号写入，无模型请求；预检已回收，旧 unit 可回滚，未 commit/push。目录不是原始资料上传或正式 Agent 知识。
+- Preflight notes: 首次脚本 RSC 缺少 `?_rsc` 标记引发标准 307，修正后重打包；旧临时失败 unit reset 后重跑通过，正式服务只在全套通过后切换。旧候选包保留为 `20260921-knowledge-library-preflight-v1`，未激活。
+
+## 2026-09-21 Task: 知识库统一分类与简化状态展示
+
+- Goal: 统一命名为「知识库」，按项目研发场景分六类，取消「待补充」状态标注。
+- Changes: `/app/knowledge`、旧地址重定向、分类索引/组件、资料搜索与分页详情、现有板卡页文案简化、导航/帮助/测试/文档；权限实现、数据存储、原始目录、Agent 与生产均未改变。
+- Validation: 154 常规测试通过、10 DB 旧测试跳过；类型/lint/生产构建通过；临时内存角色 HTTP HTML/RSC 与重定向通过；开发者浏览器六类导航、搜索/详情、手机390px、空分类与无错误控制台通过。
+- Result: 本地完成，未 commit/push/上线；取消标签不等于资料已上传/审核，未新增真实下载或 Agent 知识。
+
+## 2026-09-21 Task: 管理员/开发者专属板卡知识库 UI
+
+- Goal: 按用户两张截图集成板卡目录，先做 UI，后续补资料；仅 admin/developer 访问。
+- Changes: 新页面与服务端逐请求最新角色检查、规范化服务器端目录 JSON、卡片/筛选/详情/对比/看板/帮助、侧栏及手机入口、测试及交接文档；无数据库/现有认证/审核/Agent/部署改动。
+- Validation: 148 常规测试通过（新增 20 专项 + 1 通用帮助），10 DB 旧测试跳过；类型/lint/生产构建通过；公开脚本目录样本检查、临时内存账号 HTML/RSC 权限隔离、真实浏览器搜索/弹窗/看板/390px 手机布局通过。
+- Result: 本地完成，未 commit/push/上线；没有文件上传、下载、知识审核或 Agent 注入。测试仅用临时回环服务及内存账号，不连接生产。
+- Next: 用户验收 UI 后再按范围发布；收到真实资料后另做私有存储、审核和受权下载，不把当前目录误当正式知识。
+
 ## 2026-09-21 Task: 拉取 GitHub 并整合本地成果
 
 - Request/scope: 用户授权拉取远端并整合信息；保护未提交成果、merge 保留双方历史、补齐兼容并测试。本轮不 push、不上线、不改数据库/认证/Runner/硬件。
@@ -174,3 +287,23 @@
 - Validation: 已核对 Codex 0.149.1 原生请求 schema；mock 合约覆盖新建/恢复/禁用/允许/拒绝/中断/超时/脱敏；组件验证报告回放和下载；技能格式校验通过。完整测试初次因回环监听 EPERM 失败，允许本地端口后 73 项通过、2 项独立数据库用例跳过；类型、针对性 lint、Next 生产构建和服务构建通过。
 - Result: 本地完成，未提交/推送/部署；待独立云端测试项目实际分析、修改、验证和报告验收。
 - Risks: 模型遵循软规则需真实验收；没有逐文件强制 allowlist；shell/MCP 变更未必有 fileChange 事件；本功能不解决模型上游超时。
+## 2026-09-25 Task: 云端隔离 RAG 入库与真实模型验收门禁
+
+- Scope: 按用户确认先用云端隔离库测试，合格才生产迁移及发布；无生产写入。
+- Validation: 创建两个固定名称、独立账号的测试库，迁移成功；方案数据库 7 项、知识/归属数据库 4 项通过；9 个文件提取 95 条入隔离库，二次导入全跳过，审计标记未人工审核。只读确认生产方案模型元数据为 `tokenadvent.com/v1 / gpt-5.6-sol / Responses API`。
+- Gate: 真实模型请求将发送板卡笔记和手册的检索片段至外部服务商，安全审核要求对具体资料与服务商明确授权。未发模型请求，未执行生产备份/迁移/导入或 worker/网页发布；不能宣布上线。
+- Cleanup: 临时云端模型验收 bundle 已删除，SSH 隧道关闭；两个隔离库及 root-only 凭据暂留，待继续验收后按精确标记清理。
+
+## 2026-09-25 Task: 管理台从服务商发现并选择模型
+
+- Scope: 本地模型设置界面、管理员专属模型列表接口、服务商响应解析、回归测试与交接文档；不改认证/角色规则、数据库、Runner 协议或生产模型设置。
+- Changes: 服务器对已校验的 HTTPS API 根地址请求 `GET /models`，复用已保存 Key 或用表单新 Key；DNS 固定/私网拒绝、超时/响应体上限、限流和无缓存。前端搜索/选择模型，保留手动输入兜底；选择不自动保存，保存后刷新下方 Agent Profile。
+- Validation: 全量 178 项通过，11 项隔离数据库用例跳过；TypeScript、针对性 ESLint、生产构建通过。沙盒初次禁止本机回环监听导致 4 项 Gateway 超时，放行回环后通过。未使用生产 Key 或真实服务商请求。
+- Result: 本地完成，未提交/推送/上线；模型列表不等于模型对指定协议、Agent 工具调用或配额已验证。
+
+## 2026-09-25 Task: 将管理员模型发现功能发布到云端
+
+- Scope: 只切换 VibeHard 平台服务；不发布本地 RAG/方案 worker、数据库迁移、其他服务或模型配置更改。
+- Release: 从原正式 `20260922-taishan-integration` 复制并哈希校验 814 个源码文件，仅叠加 6 个运行时文件与 3 个测试文件，构建 `20260925-llm-model-discovery-v2`。首次候选包带旧泰山派验证脚本而预检失败，从未激活；v2 改用现行正式发布目录的脚本重新打包。
+- Validation: 隔离正式源码 158 项测试通过、3 DB 跳过，类型/lint/Next 构建通过；v2 候选与正式 3210 全套 PCB/Demo/认证/管理/知识/泰山派回归通过。公网 design 与 agent 配置各真实列出 2 个模型；管理员准入、普通用户拒绝、换 URL 要新 Key、按钮 bundle 都通过。公网 PCB renderer 与 18 资产/5 GIF 回归通过。未运行完整 Agent 工具流程或 RAG 方案生成。
+- Production: 仅 `vibehard.service` 切到新 release，PID 894091；部署脚本核对模型配置指纹与运行环境/其他服务 PID 未变。3211 候选已停，归档 SHA256 `3596b27e9ba65cf247ff38f85054ce9e71bf078ae8216c86d454fe5e4662197b`，旧 unit 在 release 的 root-only `backup/` 中。未 commit/push。

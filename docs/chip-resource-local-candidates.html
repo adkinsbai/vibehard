@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RV1106 / RV1126B 本地知识资料候选清单</title>
+<style>
+  body{margin:0;background:#f8fafc;color:#172033;font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  main{max-width:1120px;margin:auto;padding:28px 22px 64px}
+  header{display:flex;justify-content:space-between;gap:16px;align-items:start;border-bottom:1px solid #dbe2ea;padding-bottom:18px}
+  h1{font-size:25px;margin:0 0 5px} h2{font-size:19px;margin:32px 0 8px} h3{font-size:16px;margin:22px 0 8px}
+  p{margin:6px 0 12px} small,.muted{color:#65758b}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:18px}
+  .card{background:white;border:1px solid #dbe2ea;border-radius:10px;padding:13px 15px}
+  .card strong{display:block;font-size:17px}
+  table{width:100%;border-collapse:collapse;background:white;border:1px solid #dbe2ea}
+  th,td{padding:10px 12px;border-bottom:1px solid #e5eaf0;text-align:left;vertical-align:top}
+  th{background:#f1f5f9;font-size:13px} tr:hover td{background:#fafcff}
+  td:first-child{white-space:nowrap} code{font-size:12px;overflow-wrap:anywhere}
+  a{color:#1859bb;text-decoration:none} a:hover{text-decoration:underline}
+  .tag{font-size:12px;font-weight:600;border-radius:6px;padding:2px 6px;background:#dbeafe;color:#1d4ed8}
+  .tag.must{background:#fee2e2;color:#b91c1c}.tag.later{background:#edf0f4;color:#475569}
+  .risk{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:13px 17px}
+  li{margin:4px 0}
+  @media print{body{background:white}main{padding:0}a{color:inherit}}
+</style>
+</head>
+<body><main>
+<header><div><h1>RV1106 / RV1126B 本地知识资料候选清单</h1><p class="muted">只读初筛：适合进入审核候选，不代表已经上传、索引或获得转载许可。</p></div><small>2026-09-25<br>来源：用户提供的两个本地目录</small></header>
+
+<section><h2>芯片识别</h2>
+<div class="cards">
+  <div class="card"><strong>RV1106</strong>Rockchip SoC；本地工程为 Echo-Mate 桌面机器人。板级结论不可迁移到 Aura。</div>
+  <div class="card"><strong>RV1126B</strong>Rockchip SoC；本地工程为 Luckfox Aura。RV1126B-P、旧 RV1126、RV1109 文档不能自动视为同型号。</div>
+  <div class="card"><strong>1.3 GB / 16 GB</strong>两个目录的总体量；主要空间在 Git、SDK、模型、镜像及构建产物，不宜整目录入库。</div>
+  <div class="card"><strong>目标结构</strong>原件放私有 OSS；数据库只存资料元数据、审核状态和解析后的检索片段。</div>
+</div>
+</section>
+
+<section><h2>硬件开发资料</h2><p>优先入审核候选；PDF 先抽取文字，原理图还需识别图纸结构与关键网络，并保留页码/来源。</p>
+<table><thead><tr><th>优先级</th><th>类别</th><th>资料</th><th>来源</th><th>链接</th><th>备注</th></tr></thead><tbody>
+<tr><td><span class="tag must">必需</span></td><td>RV1106 数据手册</td><td>RV1106-datasheet-v2.0.pdf</td><td>Echo-Mate 本地附件</td><td><a href="file:///Volumes/ML/RV1106/reference/echo-mate/RV1106-datasheet-v2.0.pdf">打开本地文件</a></td><td>31 页；优先于另一个 24 页旧快照，版本结论仍需人工核对。</td></tr>
+<tr><td><span class="tag must">必需</span></td><td>核心板原理图</td><td>Core-sch.pdf</td><td>Echo-Mate 本地附件</td><td><a href="file:///Volumes/ML/RV1106/reference/echo-mate/Core-sch.pdf">打开本地文件</a></td><td>10 页；本地存在，但资源索引称原在线链接失效，需复核图纸版次。</td></tr>
+<tr><td><span class="tag must">必需</span></td><td>驱动板原理图</td><td>Drive-sch.pdf</td><td>Echo-Mate 本地附件</td><td><a href="file:///Volumes/ML/RV1106/reference/echo-mate/Drive-sch.pdf">打开本地文件</a></td><td>1 页；与核心板图分开建档。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>屏幕手册</td><td>P024C128-CTP-datasheet.pdf</td><td>Echo-Mate 本地附件</td><td><a href="file:///Volumes/ML/RV1106/reference/echo-mate/P024C128-CTP-datasheet.pdf">打开本地文件</a></td><td>12 页；含屏幕/触摸/排线规格，标注器件适用范围。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>配件清单</td><td>Echo-parts.pdf</td><td>Echo-Mate 本地附件</td><td><a href="file:///Volumes/ML/RV1106/reference/echo-mate/Echo-parts.pdf">打开本地文件</a></td><td>作为 BOM/机械附件元数据；价格与可购性不应直接当现值。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>硬件总结</td><td>docs/hardware-reference.md</td><td>RV1106 工程整理</td><td><a href="file:///Volumes/ML/RV1106/docs/hardware-reference.md">打开本地文件</a></td><td>与原厂 PDF 关联，区分已验证与推测。</td></tr>
+<tr><td><span class="tag must">必需</span></td><td>RV1126B 数据手册</td><td>Rockchip_RV1126B_Datasheet_V1.1-20250428.pdf</td><td>Luckfox 官方资料仓库快照</td><td><a href="file:///Volumes/ML/RV1126B/upstream/luckfox-aura-docs/Docs/datasheets/Rockchip_RV1126B_Datasheet_V1.1-20250428.pdf">打开本地文件</a></td><td>52 页；资料用途为 RV1126B，不覆盖所有 Aura 板级变体。</td></tr>
+<tr><td><span class="tag must">必需</span></td><td>Aura 原理图</td><td>Luckfox-Aura.pdf</td><td>Luckfox 官方资料仓库快照</td><td><a href="file:///Volumes/ML/RV1126B/upstream/luckfox-aura-docs/Hardware/Schematic/Luckfox-Aura.pdf">打开本地文件</a></td><td>1 页；需保留器件、接口和版本溯源。</td></tr>
+<tr><td><span class="tag must">必需</span></td><td>GPIO 手册</td><td>RV1126B_User_Manual_GPIO.pdf</td><td>Luckfox 官方资料仓库快照</td><td><a href="file:///Volumes/ML/RV1126B/upstream/luckfox-aura-docs/Docs/zh/bsp/RV1126B_User_Manual_GPIO.pdf">打开本地文件</a></td><td>71 页；另有 RV1126B-P 版本，暂不混入。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>实物板卡档案</td><td>docs/hardware/BOARD.md</td><td>RV1126B 实物记录</td><td><a href="file:///Volumes/ML/RV1126B/docs/hardware/BOARD.md">打开本地文件</a></td><td>包含已确认 8 GB eMMC 与待确认 RAM/SKU；应标记验证等级。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>引脚与踩坑</td><td>docs/hardware/PINMAP.md、PITFALLS.md</td><td>RV1126B 实物记录</td><td><a href="file:///Volumes/ML/RV1126B/docs/hardware/PINMAP.md">PINMAP</a> · <a href="file:///Volumes/ML/RV1126B/docs/hardware/PITFALLS.md">PITFALLS</a></td><td>仅限 Aura 这块板；引脚事实需与原理图逐项核对。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>板级硬件总结</td><td>docs/hardware-reference.md</td><td>RV1126B 工程整理</td><td><a href="file:///Volumes/ML/RV1126B/docs/hardware-reference.md">打开本地文件</a></td><td>区分官网 SKU 与当前实物。</td></tr>
+</tbody></table></section>
+
+<section><h2>软件开发资料</h2><p>Markdown 可在脱敏后切分；PDF/HTML 要先去页眉导航、核对芯片范围及版本。大型源码仓库不建议逐文件向量化。</p>
+<table><thead><tr><th>优先级</th><th>类别</th><th>资料</th><th>来源</th><th>链接</th><th>备注</th></tr></thead><tbody>
+<tr><td><span class="tag must">必需</span></td><td>RV1106 开发经验</td><td>docs/dev-experience.md</td><td>RV1106 实测记录</td><td><a href="file:///Volumes/ML/RV1106/docs/dev-experience.md">打开本地文件</a></td><td>高价值；含联网与云模型联调经历，先做凭据/IP/账号脱敏和有效性复核。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>RV1106 架构</td><td>docs/software-architecture-and-vibecoding.md</td><td>RV1106 工程整理</td><td><a href="file:///Volumes/ML/RV1106/docs/software-architecture-and-vibecoding.md">打开本地文件</a></td><td>SDK、LVGL、AIChat、RKNN 边界；有配置风险段落，先脱敏。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>摄像头/YOLO 验收</td><td>docs/camera-yolo.md</td><td>RV1106 实测记录</td><td><a href="file:///Volumes/ML/RV1106/docs/camera-yolo.md">打开本地文件</a></td><td>GC1084、ISP、RGA、RKNN；保留“已跑通但画质未验收”的限制。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>构建方法</td><td>docs/docker-development.md</td><td>RV1106 工程整理</td><td><a href="file:///Volumes/ML/RV1106/docs/docker-development.md">打开本地文件</a></td><td>可作为开发经验，不当作芯片官方手册。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>音频驱动</td><td>Rockchip_Developer_Guide_Linux_RV1106_ACodec_CN.pdf</td><td>Rockchip 本地参考包</td><td><a href="file:///Volumes/ML/RV1106/reference/echo-mate/extracted/rockchip/Rockchip参考文档/Rockchip_Developer_Guide_Linux_RV1106_ACodec_CN.pdf">打开本地文件</a></td><td>9 页；对 RV1106 音频开发直接相关。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>RV1126B SDK 入门</td><td>Rockchip_RV1126B_Quick_Start_Linux_IPC_SDK_CN.pdf</td><td>Luckfox 官方资料仓库快照</td><td><a href="file:///Volumes/ML/RV1126B/upstream/luckfox-aura-docs/Docs/zh/ipc/Rockchip_RV1126B_Quick_Start_Linux_IPC_SDK_CN.pdf">打开本地文件</a></td><td>118 页；与 SDK 版本关联。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>SDK 发布说明</td><td>Rockchip_RV1126B_Linux_IPC_SDK_Release_V1.0.0_20250620_CN.pdf</td><td>Luckfox 官方资料仓库快照</td><td><a href="file:///Volumes/ML/RV1126B/upstream/luckfox-aura-docs/Docs/zh/ipc/Rockchip_RV1126B_Linux_IPC_SDK_Release_V1.0.0_20250620_CN.pdf">打开本地文件</a></td><td>避免把旧 SDK 限制误认为现行行为。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>RV1126B 软件基线</td><td>docs/software-development.md</td><td>RV1126B 工程整理</td><td><a href="file:///Volumes/ML/RV1126B/docs/software-development.md">打开本地文件</a></td><td>Buildroot/Debian/RKNN 入口与边界。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>Aura 实测经验</td><td>apps/aura-bringup/evidence/2026-09-19/README.md、camera-validation.md</td><td>RV1126B 实测记录</td><td><a href="file:///Volumes/ML/RV1126B/apps/aura-bringup/evidence/2026-09-19/README.md">Wi-Fi 与相机</a> · <a href="file:///Volumes/ML/RV1126B/apps/aura-bringup/evidence/2026-09-19/camera-validation.md">摄像头分段</a></td><td>保留日期和未通过项，不推广为通用芯片结论。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>Aura Wiki 快照</td><td>Introduction、Pinout、SDK-Image-Compilation、Buildroot-Configuration、RKNN.html</td><td>Luckfox Wiki 本地快照</td><td><a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/Introduction.html">产品</a> · <a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/Pinout.html">Pinout</a> · <a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/SDK-Image-Compilation.html">编译</a> · <a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/Buildroot-Configuration.html">配置</a> · <a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/RKNN.html">RKNN</a></td><td>抽正文后去重，不直接索引导航/脚本。</td></tr>
+<tr><td><span class="tag later">按需</span></td><td>子系统指南</td><td>Docs/zh/{bsp,isp,media,wifibt}/ 中与当前板卡功能匹配的 PDF</td><td>Luckfox 官方资料仓库快照</td><td><a href="file:///Volumes/ML/RV1126B/upstream/luckfox-aura-docs/Docs/zh/">打开本地目录</a></td><td>先选 USB、SPI、DRM、Camera、ISP35、MPI、Wi-Fi/BT；逐份确认适用芯片。中文/英文同一文档不重复索引。</td></tr>
+<tr><td><span class="tag later">按需</span></td><td>RKNN 指南</td><td>rknn-toolkit2/doc/02_Rockchip_RKNPU_User_Guide_RKNN_SDK_V2.3.2_CN.pdf</td><td>Rockchip NPU 仓库快照</td><td><a href="file:///Volumes/ML/RV1126B/upstream/rknn-toolkit2/doc/02_Rockchip_RKNPU_User_Guide_RKNN_SDK_V2.3.2_CN.pdf">打开本地文件</a></td><td>165 页；仅在确认 RV1126B 对应运行时版本后发布。</td></tr>
+</tbody></table></section>
+
+<section><h2>烧录编程 / 量产测试资料</h2><p>仅将文字操作说明纳入候选；固件镜像和烧录工具保留为独立下载/版本资产，不进入全文索引。</p>
+<table><thead><tr><th>优先级</th><th>类别</th><th>资料</th><th>来源</th><th>链接</th><th>备注</th></tr></thead><tbody>
+<tr><td><span class="tag must">必需</span></td><td>RV1106 上板/恢复</td><td>docs/board-bringup.md</td><td>RV1106 实测整理</td><td><a href="file:///Volumes/ML/RV1106/docs/board-bringup.md">打开本地文件</a></td><td>含登录、网络与写入流程；先脱敏并突出烧录风险。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>RV1106 使用手册</td><td>docs/board-usage-guide.md</td><td>RV1106 工程整理</td><td><a href="file:///Volumes/ML/RV1106/docs/board-usage-guide.md">打开本地文件</a></td><td>USB/ADB、SSH、构建与部署；先清除设备专属信息。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>Echo SDK 说明</td><td>reference/echo-mate/SDK-README.md</td><td>Echo-Mate 上游快照</td><td><a href="file:///Volumes/ML/RV1106/reference/echo-mate/SDK-README.md">打开本地文件</a></td><td>保留上游归属、许可证和版本；烧录命令需人工复核。</td></tr>
+<tr><td><span class="tag must">必需</span></td><td>Aura 上板/恢复</td><td>docs/board-bringup.md</td><td>RV1126B 实物整理</td><td><a href="file:///Volumes/ML/RV1126B/docs/board-bringup.md">打开本地文件</a></td><td>按 8 GB eMMC 实板与官网镜像差异审校后发布。</td></tr>
+<tr><td><span class="tag">推荐</span></td><td>Aura Wiki 烧录资料</td><td>Getting-Started、Login、Downloads.html</td><td>Luckfox Wiki 本地快照</td><td><a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/Getting-Started.html">入门</a> · <a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/Login.html">登录</a> · <a href="file:///Volumes/ML/RV1126B/reference/luckfox-aura/wiki/Downloads.html">下载</a></td><td>提取正文；下载地址作为来源链接，不把镜像包索引为文本。</td></tr>
+</tbody></table></section>
+
+<section><h2>最小下载集</h2><p>本地已有文件，无须重下载。首批建议每块板只取「SoC 数据手册 + 原理图 + 板级档案/引脚表 + 上板文档 + 一份实测经验」。先做小样本解析和检索验收，再扩展子系统手册。</p></section>
+<section><h2>推荐阅读顺序</h2><ol><li>先看对应板卡档案与数据手册，确认型号、版本和当前实物。</li><li>再看原理图、Pinout/硬件总结，建立板级事实。</li><li>接着读上板与恢复、SDK 入门，区分资料说明与实机验证。</li><li>最后读开发经验及 ISP/NPU/媒体等专题，保留失败与不确定结论。</li></ol></section>
+<section><h2>缺失或风险项</h2><div class="risk"><ul>
+<li>源目录仅只读盘点，未逐页审完全部 PDF、未做全量 SHA256/许可核验；本清单是审核候选，不是可直接公开发布的名单。</li>
+<li>RV1106 的开发经验、上板说明与上游 AIChat 文档可能含账号、网络或密钥线索；必须脱敏和人工审核。Echo-Mate 硬件与代码许可不同，Rockchip/Luckfox PDF 也需分别确认可存储与展示的授权范围。</li>
+<li>排除 .git、._*、构建 out、logs、tmp、captures 原始日志、SDK 整树、二进制模型、镜像、安装工具、压缩包和第三方依赖。必要时只存来源/哈希/下载入口。</li>
+<li>不要混用 RV1126B-P GPIO 手册、旧 RV1126/RV1109 设计指南、RK3588 图纸、8723BU 图纸或 IMX415 其他模组规格。RKNN 仓库的 RV1106/RV1103 Quick Start 不属于 RV1126B 首批资料。</li>
+<li>PDF 图纸、DWG/STEP、摄像头/显示器件资料需要专门解析和板卡匹配；全文索引不可替代工程师审图。</li>
+</ul></div></section>
+<section><h2>检索证据</h2><div class="card">阅读了两个目录的 README、RESOURCES 索引和本地 docs/章节结构；列出实际存在的候选文件，并对主要 PDF 用 pdfinfo 检查页数/格式。RV1106 约 1.3 GB、RV1126B 约 16 GB，两目录总计约 7451 个普通文件（包含 .git 与构建/二进制）。未跟随 RV1106 的外部符号链接，未访问网页、未上传 OSS、未写入数据库。</div></section>
+</main></body></html>

@@ -2,9 +2,10 @@
 
 ## Current deployment
 
-As of 2026-09-20:
+As of 2026-09-25 22:02 +08:00:
 
-- Active platform release: `/opt/vibehard/releases/20260920-module-help/standalone`.
+- Active platform release: `/opt/vibehard/releases/20260925-board-rag-v3/standalone`.
+- Active design worker: `vibehard-design-worker.service`, using `/opt/vibehard/runtime/node-v22.23.1` because `/usr/local/bin/node` resolves through root-only `/root/.hermes`. The active unit was corrected after the v3 platform cutover; the checked-in template is corrected, but the immutable v3 source snapshot still has the earlier worker template and must not be reused as-is to reinstall the unit.
 - Active Gateway release: `/opt/vibehard/releases/20260918-cloud-runner`.
 - Previous platform unit, Runner bundle/environment and DB dumps are retained inside `/opt/vibehard/releases/20260918-llm-settings/backup/` (root-only).
 - Cloud Runner service bundle: `/opt/vibehard/releases/20260919-project-knowledge/services/runner.cjs`; working directory remains `/opt/vibehard/cloud-runner`. Previous versioned bundles remain available for rollback.
@@ -12,6 +13,58 @@ As of 2026-09-20:
 - `cloud-runner` is the default production node and stores workspaces in `/var/lib/vibehard-runner/workspaces`.
 - `device-runner` runs on the Mac mini for USB, serial and flashing tasks; its workspace root is `/Users/hushaohong/vibehard/.runner-workspaces`.
 - The server runs pinned Codex CLI 0.149.1 through the unprivileged `vibehard-runner` service and bubblewrap wrapper. Provider requests returned 429 during release verification but recovered on September 19: three real browser conversation turns, context retention and reload recovery passed. This does not establish sustained availability or revalidate compilation/flashing.
+
+### Shared knowledge RAG and durable design worker, 2026-09-25 22:02
+
+`20260925-board-rag-v3` was built from all 819 hash-verified files of the prior active model-discovery release plus a strict design/RAG overlay. Archive `/opt/vibehard/releases/vibehard-20260925-board-rag-v3.tar.gz` has SHA256 `280158926ce97bb331d22aba072ba6365c86ffad9c538ecfc43bc6a02a1e427d`. The complete 850-file source manifest is in `RELEASE.json`; PCB/Demo remain protected. The failed v2 candidate used the outdated source-snapshot Taishan verifier and restored the prior platform automatically; v3 packages the current release's corrected verifier scripts. No Runner/Gateway/VibeBoard/nginx or model/key changes were part of activation.
+
+Before production migration, `pg_dump -Fc` and `pg_restore --list` verified the root-only dump at `<release>/backup/platform.dump`, SHA256 `f15f159d3b6fd51c9227b4f615bff10d385c41c5193874f81b8641a9e3f1c23a`. It was copied from the first candidate's pre-migration backup into v3; it is **not** a post-import backup. Additive `0005_design_jobs` and `0006_shared_knowledge` created empty tables while the previous platform remained active. Isolated candidate checks and public regression passed; the real worker later revealed an execution-path failure that the immediate `systemctl is-active` check had missed. Its 32 initial auto-restarts stopped after copying the trusted Node 22.23.1 binary into `/opt/vibehard/runtime/` (SHA256 `93956de2e59480474a7b46571da1651180b1a050cdf32641ebec4ce6e478e068`) and changing only the worker unit's `ExecStart`. Current worker PID 899646 remained stable through the real task; future deployment checks must verify stable PID after several seconds, not just immediate active state.
+
+The authorized direct import wrote 95 published chunks from 9 RV1106/RV1126B files, batch hash `7373380e3214781ed7967b29f27ad087de875290d7a782c1b861bc11998abb84`, with one audit entry marking `manualReview:false`. Raw originals were not uploaded. Public-site task `3780b4de-fe12-455d-ab15-74ee1f34e0dd` in project `aa0e51b7-3c8e-465a-a34c-e9b9b1489ad6` completed through DeepSeek; 5/5 saved references match currently published source/version/hash rows, and Markdown download includes them. The synthetic admin-owned project/task is retained for review. This is bounded keyword retrieval and one successful generation, not 8 GB OSS ingestion, vector search or sustained provider availability.
+
+Rollback, only after both Agent turns and design jobs are idle:
+
+```bash
+/usr/local/bin/node --env-file=/etc/vibehard/platform.env /opt/vibehard/releases/20260925-board-rag-v3/scripts/deploy-board-rag.mjs rollback
+```
+
+Rollback restores the prior platform unit and disables the design worker; it deliberately retains the additive tables, imported knowledge and completed job. Database restore from the pre-migration dump is a separate, destructive operation and must not be inferred from platform rollback.
+
+### Administrator model discovery, 2026-09-25 18:19
+
+`20260925-llm-model-discovery-v2` overlays six runtime files and three test files on the complete, hash-verified `20260922-taishan-integration` source. It adds administrator-only provider `GET /models` discovery for both LLM settings, searchable selection, manual fallback, and automatic Profile refresh after an Agent model save. Discovery never saves a setting. Production model/Key/role rows and environment files were fingerprinted unchanged. No database migration, design worker/RAG release, Runner/Gateway/VibeBoard/nginx change, or complete Agent tool-task validation was included.
+
+The isolated build passed 158 tests (3 existing DB-only skipped), TypeScript, targeted lint and Next production build. Candidate and activated services passed the protected PCB renderer/Demo/media, homepage, knowledge roles, admin, auth cookies, engineering workflow UI and Taishan iframe checks. The model-list verifier used the server-stored key without printing or returning it: both design and agent settings listed 2 model IDs via the public domain; anonymous/member access and stale-key-on-new-address were rejected. Public `verify-frontend-release.mjs` passed. No production browser visual click-through was run. The first candidate `20260925-llm-model-discovery` was never activated: it bundled an outdated source-snapshot Taishan verifier; v2 used the actual prior release's corrected scripts.
+
+Only `vibehard.service` restarted (PID 894091); protected service PIDs, nginx PID and configuration hashes matched before/after. Candidate unit is inactive and 3211 closed. Versioned archive `/opt/vibehard/releases/vibehard-20260925-llm-model-discovery-v2.tar.gz` SHA256 `3596b27e9ba65cf247ff38f85054ce9e71bf078ae8216c86d454fe5e4662197b`; old platform unit is in `20260925-llm-model-discovery-v2/backup/vibehard.service`. To roll back when no Agent turns are active:
+
+```bash
+/usr/local/bin/node --env-file=/etc/vibehard/platform.env /opt/vibehard/releases/20260925-llm-model-discovery-v2/scripts/deploy-llm-model-discovery.mjs rollback
+```
+
+### Taishan/VibeBoard entry, 2026-09-22 21:45
+
+`20260922-taishan-integration` overlays exactly four runtime files on the complete `20260922-homepage` source: the Taishan page, desktop sidebar, mobile app navigation and module-help registry. Authenticated users get `/vibehard/app/taishan`, which embeds the separately deployed `/Vibeboard/`. The page states that VibeBoard has its own login and that projects, knowledge and Agent context are not synchronized. Local design background jobs and migration `0005` remain excluded.
+
+The isolated release passed 151 tests with three existing DB-only cases skipped, type checking, targeted lint and the production build. Candidate and active checks cover the protected PCB renderer/Demo assets, admin sections, auth cookies, design/workflow UI, 15 help modules, knowledge role isolation, homepage and Taishan HTML/RSC/navigation/iframe checks. Public verification passed over `https://ldcx.tech`; the VibeBoard endpoint returned 200 without iframe-denying response headers. Production browser automation timed out, so there is no visual click-through claim.
+
+Only `vibehard.service` restarted (PID 834514). Runner/Gateway/VibeBoard/nginx PIDs 758750/727637/807921/501913 and config hashes remained unchanged. There was no database write/migration, account/role/model/key change or model call. Candidate and diagnostic units were reclaimed and port 3211 closed. Archive SHA256 `62ea10a404a784953e30ac55bdc2764adb5439daafe0d92f90b9a7c6f21b855e`. Rollback after checking no active tasks: `node --env-file=/etc/vibehard/platform.env /opt/vibehard/releases/20260922-taishan-integration/scripts/deploy-taishan-integration.mjs rollback`.
+
+### Public homepage, 2026-09-22 09:38
+
+`20260922-homepage` replaces only seven homepage runtime files on the complete `20260921-knowledge-library` source. Current feature descriptions and a prominent 20px/24px registration announcement preserve invitation-only registration and all authenticated features. The independent build excludes local design background jobs/0005 and Taishan iframe. 148 tests passed, 3 DB-only tests skipped; types/build/lint passed. Candidate and active full checks passed; public homepage/assets, knowledge role HTML/RSC checks, PCB renderer and Demo assets passed. Local desktop/320px visual checks passed; production browser connection timed out.
+
+Platform PID 823384; Runner/Gateway/VibeBoard PIDs 758750/727637/807921 and nginx/config hashes unchanged. No database writes/migration, account changes or model calls. Preflight unit is not-found/inactive; port 3211 closed. Archive SHA256 `ded0c621873788ca3bf67e4f8e5c305c6bcfa46ec5d7b9528f908f41da1960fb`, complete source hashes in `RELEASE.json`. Rollback after checking no active tasks: `node --env-file=/etc/vibehard/platform.env /opt/vibehard/releases/20260922-homepage/scripts/deploy-homepage.mjs rollback`. Only restores old platform unit, not the database. No commit/push this turn.
+
+### Knowledge catalog UI, 2026-09-21 22:28
+
+`20260921-knowledge-library` adds `/vibehard/app/knowledge` with six categories and all 63 board/1076 resource-reference metadata records. Current persisted admin/developer roles are required; this is not original-file hosting, formal project knowledge publication or Agent retrieval. Only 12 runtime files overlay the complete production `20260920-module-help` source. All existing backend, authentication, schema, Runner/Gateway, dependencies and PCB/Demo remain unchanged. Local design background jobs/0005 migration and Taishan iframe are explicitly excluded.
+
+Isolated release build: 145 tests passed, 3 existing database-only cases skipped; types and production build passed. Candidate and active protection checks passed. Public HTML/RSC authorization, forged-role/deleted-user denial, old-route redirect, public bundle isolation, PCB renderer, Demo and 18 assets passed. Existing production admin/member roles were exercised read-only; developer is covered by local tests, not a newly created production account. Production browser connection timed out; no production click-through claim.
+
+Only platform restarted (PID 813457); Runner/Gateway/VibeBoard PIDs 758750/727637/807921 and nginx/config hashes remained unchanged. No database writes/migrations or model calls. Preview `vibehard-knowledge-ui-preflight.service` is not-found/inactive and port 3211 is closed. The first verification script needed the canonical RSC `?_rsc` marker; its candidate was never activated and remains under `20260921-knowledge-library-preflight-v1` for deliberate retention management.
+
+Archive `/opt/vibehard/releases/vibehard-20260921-knowledge-library.tar.gz`; SHA256 `0a72e566bc02fbbd1e4c5f81d6d77af1ba9888ee82bfe82010af3af53a44d154`. Complete source and hashes are in the release's `RELEASE.json`. Rollback after checking no active tasks: `node --env-file=/etc/vibehard/platform.env /opt/vibehard/releases/20260921-knowledge-library/scripts/deploy-knowledge-library.mjs rollback`. This restores root-only `backup/vibehard.service` and restarts only the platform, with no database restoration. Local documentation updates do not mutate the active release; no commit/push this turn.
 
 ### Module usage help, 2026-09-20 13:51
 

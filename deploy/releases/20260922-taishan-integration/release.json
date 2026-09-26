@@ -1,0 +1,38 @@
+{
+  "release": "20260922-taishan-integration",
+  "previousRelease": "20260922-homepage",
+  "source": "Complete active production source with a four-file Taishan integration overlay",
+  "archiveSha256": "62ea10a404a784953e30ac55bdc2764adb5439daafe0d92f90b9a7c6f21b855e",
+  "runtimeOverlay": [
+    "app/app/taishan/page.tsx",
+    "components/app/app-sidebar.tsx",
+    "components/app/app-nav.tsx",
+    "lib/module-help.ts"
+  ],
+  "protectedFrontend": [
+    "app/demo",
+    "public/demo",
+    "next.config.ts",
+    "app/app/pcb",
+    "components/pcb",
+    "app/app/knowledge",
+    "lib/server/data/board-catalog.json",
+    "app/page.tsx",
+    "components/home"
+  ],
+  "migration": null,
+  "services": ["vibehard.service"],
+  "proxyChange": null,
+  "includedFeatures": ["authenticated Taishan page", "desktop and mobile entry", "embedded VibeBoard", "module help"],
+  "excludedLocalChanges": ["design background jobs and 0005 migration", "VibeHard/VibeBoard account and data synchronization"],
+  "buildTests": {"passed": 151, "databaseSkipped": 3},
+  "activation": "verified",
+  "verifiedAt": "2026-09-22T21:45:23+08:00",
+  "platformPid": 834514,
+  "protectedPids": {"runner": 758750, "gateway": 727637, "vibeboard": 807921, "nginx": 501913},
+  "publicVerification": ["authenticated HTML and RSC", "anonymous redirect", "desktop and mobile entries", "VibeBoard 200 and iframe-compatible headers", "homepage", "knowledge role isolation", "PCB renderer", "Demo assets"],
+  "previewCleanup": "candidate and diagnostic units reclaimed; port 3211 closed",
+  "productionBrowser": "connection timeout; public HTTP verification passed",
+  "databaseWrites": false,
+  "modelCalls": false
+}

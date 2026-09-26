@@ -1,174 +1,63 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Cpu,
-  PlayCircle,
-  SearchCheck,
-} from "lucide-react";
+import { ArrowDown, ArrowRight, Bot, FileCheck2, GitPullRequest, PlayCircle, ShieldCheck } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative z-10 overflow-hidden px-6 pb-14 pt-20 text-center sm:pb-20 lg:pb-24 lg:pt-28">
-      <div className="relative z-10 mx-auto max-w-4xl">
-        <div className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-4 py-1.5 text-[13px] font-semibold text-primary">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-primary" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+    <section aria-labelledby="hero-title" className="relative z-10 mx-auto grid max-w-7xl gap-12 px-6 pb-14 pt-14 sm:pt-20 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14 lg:pb-20 lg:pt-24">
+      <div>
+        <a href="#access" aria-label="即将开放注册使用，查看开放说明" className="group mb-8 inline-flex w-full items-center justify-between gap-4 rounded-xl border border-primary bg-primary px-5 py-4 text-primary-foreground shadow-lg shadow-primary/20 transition-colors hover:bg-primary/90 sm:w-auto sm:min-w-80">
+          <span>
+            <span className="block text-xl font-bold tracking-tight sm:text-2xl">即将开放注册使用</span>
+            <span className="mt-1.5 block text-xs font-medium text-primary-foreground/90 sm:text-sm">当前为邀请码内测 · 敬请期待</span>
           </span>
-          面向智能硬件研发的 Agent 工具平台
-        </div>
-
-        <h1
-          className="animate-fade-up text-[40px] font-bold leading-[1.06] tracking-tight text-foreground sm:text-[52px] lg:text-[64px]"
-          style={{ animationDelay: "80ms" }}
-        >
-          VibeHard AI
-          <br />
-          <span className="bg-gradient-to-r from-primary via-[color-mix(in_oklch,var(--primary),white_25%)] to-primary bg-clip-text text-transparent">
-            嵌入式开发工作台
-          </span>
+          <ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+        </a>
+        <p className="mb-4 text-xs font-semibold tracking-[0.2em] text-muted-foreground">VIBEHARD / AI FOR HARDWARE</p>
+        <h1 id="hero-title" className="text-[32px] font-bold leading-[1.2] tracking-tight min-[360px]:text-[38px] sm:text-5xl xl:text-[60px]">
+          让硬件研发，<br /><span className="text-primary">有 AI 并肩协作。</span>
         </h1>
-
-        <p
-          className="animate-fade-up mx-auto mt-6 max-w-2xl text-[15px] font-medium leading-7 text-muted-foreground sm:text-base"
-          style={{ animationDelay: "160ms" }}
-        >
-          把提示词模板、原理图识别、硬件方案生成和芯片资料解析集中到一个工作台，
-          让智能硬件项目从需求到设计评审更快落地。
+        <p className="mt-6 max-w-xl text-base leading-8 text-muted-foreground">
+          从需求与方案，到工程分析、受控修改和知识沉淀。<br className="hidden xl:block" />
+          在一个网页工作台里，与云端 Agent 一起推进嵌入式项目。
         </p>
-
-        <div
-          className="animate-fade-up mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
-          style={{ animationDelay: "240ms" }}
-        >
-          <Link
-            href="/register"
-            className="group inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground shadow-sm shadow-primary/25 transition-all duration-200 hover:bg-primary/90 hover:shadow-md hover:shadow-primary/30 active:scale-[0.97] sm:w-auto"
-          >
-            使用邀请码注册
-            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Link href="/demo" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">
+            <PlayCircle aria-hidden="true" className="h-4 w-4" />观看流程演示
           </Link>
-          <Link
-            href="/login"
-            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-border bg-card/95 px-6 text-sm font-semibold text-foreground shadow-[0_10px_28px_rgba(15,23,42,0.08)] transition-all duration-200 hover:border-ring/45 hover:bg-muted active:scale-[0.97] dark:shadow-none sm:w-auto"
-          >
-            已有账号登录
-          </Link>
-          <Link
-            href="/demo"
-            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground active:scale-[0.97] sm:w-auto"
-          >
-            <PlayCircle className="h-4 w-4" />
-            查看全流程演示
-          </Link>
+          <a href="#capabilities" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 text-sm font-semibold transition-colors hover:bg-muted">
+            了解平台功能<ArrowDown aria-hidden="true" className="h-4 w-4" />
+          </a>
         </div>
-
-        <div
-          className="animate-fade-up mt-6 flex flex-wrap items-center justify-center gap-2"
-          style={{ animationDelay: "320ms" }}
-        >
-          {["原理图识别", "硬件方案生成", "Skills / MCP", "芯片资料解析"].map(
-            (tag) => (
-              <span
-                key={tag}
-                className="rounded-md border border-border/70 bg-card/80 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/35 hover:text-foreground"
-              >
-                {tag}
-              </span>
-            )
-          )}
-        </div>
+        <p className="mt-4 text-xs leading-6 text-muted-foreground">当前采用邀请码内测，公开注册即将开放。已有账号可直接登录。</p>
       </div>
-
-      <div
-        className="animate-fade-up pointer-events-none relative z-0 mx-auto mt-12 hidden w-[min(1120px,calc(100%-2rem))] sm:block"
-        style={{ animationDelay: "420ms" }}
-      >
-        <div className="animate-float-soft overflow-hidden rounded-2xl border border-border/70 bg-card/80 p-4 shadow-[0_28px_90px_rgba(15,23,42,0.16)] backdrop-blur-xl dark:border-white/[0.08] dark:bg-card/70 dark:shadow-[0_32px_90px_rgba(0,0,0,0.36)]">
-          <div className="mb-4 flex items-center justify-between border-b border-border/70 pb-3">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
-            </div>
-            <div className="text-xs font-medium text-muted-foreground">
-              VibeHard AI Console
+      <div aria-label="Agent 工程协作流程示意" className="relative min-w-0 rounded-2xl border border-border bg-card shadow-[0_24px_80px_rgba(15,23,42,0.12)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.3)]">
+        <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4 text-xs">
+          <span className="flex items-center gap-2 font-semibold"><Bot aria-hidden="true" className="h-4 w-4 text-primary" />Agent 项目</span>
+          <span className="rounded-md bg-muted px-2 py-1 text-muted-foreground">工作流示意 · 非实时任务</span>
+        </div>
+        <div className="space-y-5 p-5 sm:p-6">
+          <div className="ml-5 rounded-xl rounded-tr-sm bg-primary/10 p-4 text-sm leading-6">帮我分析这个嵌入式工程，先说明影响范围，确认后再修改，并给出验证报告。</div>
+          <div className="flex gap-3">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background"><Bot aria-hidden="true" className="h-4 w-4 text-primary" /></span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold">先理解工程，再推进变更</p>
+              <p className="mt-1 text-xs leading-6 text-muted-foreground">云端分析 · 人工确认 · 证据留存</p>
+              <ol className="mt-4 space-y-2.5">
+                {[
+                  { icon: GitPullRequest, title: "工程分析", text: "梳理目录、约束与修改计划" },
+                  { icon: ShieldCheck, title: "受控修改", text: "审批敏感操作，限定本次改动范围" },
+                  { icon: FileCheck2, title: "变更报告", text: "记录修改、验证结果与未验证项" },
+                ].map(({ icon: Icon, title, text }, index) => (
+                  <li key={title} className="flex items-start gap-3 rounded-lg border border-border bg-background/70 p-3">
+                    <Icon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <div><p className="text-xs font-semibold">0{index + 1} / {title}</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{text}</p></div>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
-
-          <div className="grid gap-3 md:grid-cols-[1.08fr_0.92fr_0.92fr]">
-            {/* 项目分析结果 */}
-            <div className="rounded-xl border border-border/70 bg-background/70 p-4 text-left">
-              <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-foreground">
-                <SearchCheck className="h-4 w-4 text-primary" />
-                项目分析结果
-              </div>
-              <div className="space-y-3">
-                {[
-                  { label: "原理图识别", status: "已分析", desc: "STM32 电源域 / 接口拓扑" },
-                  { label: "方案生成", status: "生成中", desc: "主控选型、传感器、电源树" },
-                  { label: "Prompt 模板", status: "可复用", desc: "驱动移植 / 量产排障" },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-lg border border-border/60 bg-card/75 p-3"
-                  >
-                    <div className="mb-1 flex items-center justify-between gap-3">
-                      <span className="text-xs font-medium text-muted-foreground">
-                        {item.label}
-                      </span>
-                      <span className="flex items-center gap-1.5 text-[11px] font-semibold text-primary">
-                        {item.status === "生成中" && (
-                          <span className="animate-pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-                        )}
-                        {item.status}
-                      </span>
-                    </div>
-                    <p className="truncate text-sm font-semibold text-foreground">
-                      {item.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 硬件约束 */}
-            <div className="rounded-xl border border-border/70 bg-background/70 p-4 text-left">
-              <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-foreground">
-                <Cpu className="h-4 w-4 text-primary" />
-                硬件约束
-              </div>
-              <div className="space-y-2">
-                {[
-                  "低功耗电池供电",
-                  "BLE + UART 调试",
-                  "量产测试点预留",
-                  "BOM 成本约束",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-2 text-sm text-muted-foreground"
-                  >
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 输出文档 */}
-            <div className="rounded-xl border border-border/70 bg-background/70 p-4 text-left">
-              <div className="mb-4 text-sm font-semibold text-foreground">输出文档</div>
-              <div className="space-y-2">
-                <div className="skeleton-shimmer h-2 rounded-full" />
-                <div className="skeleton-shimmer h-2 w-10/12 rounded-full" />
-                <div className="skeleton-shimmer h-2 w-8/12 rounded-full" />
-                <div className="mt-4 rounded-lg border border-primary/20 bg-primary/10 p-3 text-xs font-medium leading-5 text-primary">
-                  方案建议、接口规划、BOM 风险和验证清单已整理。
-                </div>
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-2 border-t border-border pt-4 text-[11px] text-muted-foreground">
+            {["项目与会话", "流式对话", "工具审批", "项目知识版本"].map(tag => <span key={tag} className="rounded-full border border-border px-2.5 py-1">{tag}</span>)}
           </div>
         </div>
       </div>

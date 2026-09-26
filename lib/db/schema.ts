@@ -85,6 +85,15 @@ export const projectKnowledge = pgTable("project_knowledge", {
   ...timestamps,
 });
 
+// Curated, platform-wide text. Catalog file paths are not indexed as content.
+export const sharedKnowledge = pgTable("shared_knowledge", {
+  id: uuid("id").primaryKey(),
+  category: text("category").notNull(),
+  document: jsonb("document").$type<KnowledgeDocument>().notNull(),
+  createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+  ...timestamps,
+}, table => [index("shared_knowledge_category_idx").on(table.category)]);
+
 export const agentThreads = pgTable("agent_threads", {
   id: uuid("id").defaultRandom().primaryKey(),
   projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),

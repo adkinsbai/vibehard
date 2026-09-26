@@ -2,7 +2,7 @@
 
 ## 范围
 
-用户要求将远端仓库拉到本地并整合信息。先把已有本地成果保存为 `a972b99`，然后 merge GitHub 的 `codex/agent-platform-foundation`，保留双方历史；不使用 reset、不改全局 pull 策略、不推送、不部署或迁移生产。
+用户先要求将远端仓库拉到本地并整合信息，随后要求把泰山派入口融合进已有网页并上线。先把已有本地成果保存为 `a972b99`，然后 merge GitHub 的 `codex/agent-platform-foundation`，保留双方历史；不使用 reset、不改全局 pull 策略。本次发布不推送 GitHub，也不迁移生产数据库。
 
 ## 来源与整合结果
 
@@ -17,12 +17,19 @@
 | --- | --- | --- |
 | 知识审核、原理图申请、帮助弹窗 | 已保存并保留 | 已有发布记录，线上仍是 `20260920-module-help` |
 | 方案后台生成与项目归档 | 已实现并保留 | 尚未上线；需要 0005 迁移及独立 design-worker |
-| 泰山派开发入口 | 已合并并补齐帮助说明 | 本轮未上线；只是 VibeBoard 的网页入口 |
+| 泰山派开发入口 | 已合并并补齐帮助说明、移动入口与账号边界 | 9/22 已上线；只是 VibeBoard 的网页入口 |
 
-默认 iframe 地址 `/Vibeboard/` 属于站点根路径，不应改成 `/vibehard/Vibeboard/`。VibeBoard 独立登录；本次没有统一账号、项目数据、知识库或 Agent 工具调用，也未实测 USB/烧录/设备部署。本地另起 VibeBoard 才能实际访问其内容；环境变量 `NEXT_PUBLIC_TAISHAN_APP_URL` 只配置目标 URL，不自动解决跨源 CSP 限制。
+默认 iframe 地址 `/Vibeboard/` 属于站点根路径，不应改成 `/vibehard/Vibeboard/`。VibeBoard 独立登录；本次没有统一账号、项目数据、知识库或 Agent 工具调用，也未实测 USB/烧录/设备部署。环境变量 `NEXT_PUBLIC_TAISHAN_APP_URL` 只配置目标 URL，不自动解决跨源 CSP 限制；当前同站点地址公网返回 200，响应头未禁止 iframe。
 
 ## 验证
 
 - 127 项常规测试通过，10 项数据库用例因未启用隔离库跳过（上一轮 10 项实跑通过，但不冒充本轮验证）。新增泰山派页面帮助、目标路径、超时、重新加载测试；帮助目录逐项测试包含新模块。
 - 合并后 Next.js 生产构建、类型检查和修改页面/侧边栏/说明/测试的 ESLint 通过。
 - 本轮不调用真实模型，不连接硬件，不改变云端平台、VibeBoard、数据库或服务配置。完整浏览器跨平台登录/设备执行留待独立验收。
+
+## 2026-09-22 发布结果
+
+- 从线上 `20260922-homepage` 完整源码构建，只覆盖 `app/app/taishan/page.tsx`、`components/app/app-sidebar.tsx`、`components/app/app-nav.tsx`、`lib/module-help.ts`；方案后台任务/0005 未夹带。
+- 151 项通过、3 项数据库旧用例跳过；类型、针对性 lint、生产构建通过。候选和正式保护回归、公网认证 HTML/RSC、桌面/移动入口、嵌入地址及 VibeBoard 200/响应头均通过。
+- 正式版本 `/opt/vibehard/releases/20260922-taishan-integration/standalone`，归档 SHA256 `62ea10a404a784953e30ac55bdc2764adb5439daafe0d92f90b9a7c6f21b855e`。只重启网页平台；Runner、Gateway、VibeBoard、nginx 未重启，配置哈希不变；无数据库、账号、角色、模型或 Key 变更。
+- 生产浏览器连接工具超时，未作视觉点击验收结论；公网 HTTP 已验证。临时候选及诊断单元已回收，3211 关闭。
