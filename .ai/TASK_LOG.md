@@ -4,6 +4,12 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-27 Task: 整合基线并实现方案阶段诊断（实施中）
+
+- Scope: 用户批准完整分阶段计划。基线经 PR #3 合并；新增六阶段持久诊断、增量 schema、管理员诊断权限及用户进度，90 秒上限和手动重试不变。
+- Evidence: 基线 257 测试通过；诊断实现首轮 273 通过/13 独立 DB 跳过，类型及生产构建通过；原 PostgreSQL 11 用例通过。新断言和专用模型数据库验收继续执行。
+- Boundary: 首轮模型验收遭遇集成测试共用队列，已停止并保留证据，不能计为 12 次通过。专用验收库与受限进程已建立。尚未发布或修改生产 schema，未改模型、凭据、账号角色和受保护服务。
+
 ## 2026-09-27 Task: 发布板卡关联 RAG worker 并验收
 
 - Scope: 新建 `20260927-rag-board-links-v1` worker-only release，仅切换方案 worker unit；旧 unit root-only 备份。平台、Runner、Gateway、VibeBoard、EDA manager、nginx、原索引、OSS、数据库结构、账号角色和模型设置均不改。

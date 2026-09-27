@@ -7,6 +7,7 @@ import { Activity, AlertTriangle, Bot, CheckCircle2, CircleX, Clock3, FolderKanb
 import { Button } from "@/components/ui/button";
 import { apiPath } from "@/lib/utils";
 import { LlmSettings } from "@/components/app/llm-settings";
+import { AdminDesignDiagnostics } from "@/components/app/admin-design-diagnostics";
 
 type Overview = {
   counts: { users: number; projects: number; threads: number; turns: number; activeTurns: number; pendingApprovals: number };
@@ -28,7 +29,7 @@ const date = (value: string | null) => value ? new Intl.DateTimeFormat("zh-CN", 
 const statusLabel: Record<string, string> = { online: "在线", busy: "工作中", offline: "离线", revoked: "已撤销" };
 
 export default function AdminPage() {
-  const [section, setSection] = useState<"overview" | "models" | "runners" | "users" | "audit">("overview");
+  const [section, setSection] = useState<"overview" | "models" | "runners" | "users" | "audit" | "diagnostics">("overview");
   const [data, setData] = useState<Overview | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -65,6 +66,7 @@ export default function AdminPage() {
     { id: "runners", label: "Runner 节点", icon: ShieldCheck, description: "执行节点、连接状态与最近心跳" },
     { id: "users", label: "用户管理", icon: Users, description: "查看用户角色与重置密码" },
     { id: "audit", label: "审计日志", icon: Clock3, description: "查看近期平台操作记录" },
+    { id: "diagnostics", label: "方案诊断", icon: Activity, description: "定位检索、模型与保存阶段耗时及脱敏错误" },
   ] as const;
   return <div className="mx-auto max-w-7xl p-5 sm:p-8">
     <div className="mb-5 flex flex-wrap items-start justify-between gap-4"><div><p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">Platform Control</p><div className="flex items-center gap-2"><h1 className="text-2xl font-semibold tracking-tight">平台管理</h1><ModuleHelp module="admin" /></div><p className="mt-2 text-sm text-muted-foreground">按功能分区管理平台，点击下方导航切换。</p></div><Button variant="outline" size="sm" onClick={refresh} disabled={loading} className="gap-2"><RefreshCw className={loading ? "h-4 w-4 animate-spin" : "h-4 w-4"} />刷新</Button></div>
@@ -77,6 +79,7 @@ export default function AdminPage() {
     </nav>
     <p className="mb-5 text-sm text-muted-foreground">{sections.find((item) => item.id === section)?.description}</p>
     {/* Keep panels mounted so switching sections does not discard unsaved settings. */}
+    {section === "diagnostics" && <div id="admin-panel-diagnostics" role="region" aria-labelledby="admin-nav-diagnostics"><AdminDesignDiagnostics /></div>}
     <div id="admin-panel-overview" role="region" aria-labelledby="admin-nav-overview" hidden={section !== "overview"}>
     <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-6">{cards.map(([label, value, Icon]) => <div key={label} className="rounded-lg border border-border/70 bg-card/50 p-4"><Icon className="mb-4 h-4 w-4 text-primary" /><p className="text-2xl font-semibold">{value}</p><p className="mt-1 text-xs text-muted-foreground">{label}</p></div>)}</div>
 <section className="rounded-lg border border-border/70 bg-card/40"><div className="border-b border-border/70 p-5"><h2 className="font-semibold">最近项目</h2></div><div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead className="text-xs text-muted-foreground"><tr><th className="px-5 py-3 font-medium">项目</th><th className="px-5 py-3 font-medium">用户</th><th className="px-5 py-3 font-medium">Runner</th><th className="px-5 py-3 font-medium">更新</th></tr></thead><tbody className="divide-y divide-border/60">{data.projects.length === 0 ? <tr><td colSpan={4} className="px-5 py-5 text-muted-foreground">暂无项目</td></tr> : data.projects.map((project) => <tr key={project.id}><td className="max-w-48 truncate px-5 py-3 font-medium">{project.name}</td><td className="max-w-48 truncate px-5 py-3 text-muted-foreground">{project.userEmail}</td><td className="px-5 py-3 font-mono text-xs text-muted-foreground">{project.runnerKey ?? "未绑定"}</td><td className="whitespace-nowrap px-5 py-3 text-xs text-muted-foreground">{date(project.updatedAt)}</td></tr>)}</tbody></table></div></section>

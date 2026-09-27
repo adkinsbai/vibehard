@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Layers, Loader2 } from "lucide-react";
 import { PageHeader } from "./page-header";
 import { DesignResult } from "./design-result";
+import { DesignDiagnostics } from "./design-diagnostics";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { apiPath } from "@/lib/utils";
@@ -124,8 +125,9 @@ export function DesignWorkbench({ projectId }: { projectId?: string }) {
       {pollError && <p role="alert" className="mt-3 text-sm text-amber-600">{pollError}</p>}
       {selected && selected.id === selectedId && <div className="mt-4 border-t pt-4">
         <p role="status" className="font-semibold">{designStatus[selected.status]} · {selected.projectName}</p>
+        <DesignDiagnostics value={selected.diagnostics} />
         <p className="mt-2 whitespace-pre-wrap break-words text-sm">已保存需求：{selected.requirement}</p>
-        {(selected.status === "queued" || selected.status === "running") && <p className="mt-2 text-sm text-muted-foreground">{selected.status === "queued" ? "等待后台处理，排队最多 10 分钟。" : "正在请求模型，单次最多 90 秒；异常执行最迟 2 分钟标记失败。"} 刷新或离开后可从项目方案记录继续查看。</p>}
+        {(selected.status === "queued" || selected.status === "running") && <p className="mt-2 text-sm text-muted-foreground">{selected.status === "queued" ? "等待后台处理，排队最多 10 分钟。" : "后台分阶段执行，总上限 90 秒；Worker 异常退出的任务最迟 2 分钟标记失败。"} 刷新或离开后可从项目方案记录继续查看。</p>}
         {selected.error && <p role="alert" className="mt-2 text-sm text-red-500">{selected.error}</p>}
         <div className="mt-3 flex flex-wrap items-center gap-4 text-sm"><Link className="text-primary underline" href={`/app/agent?project=${selected.projectId}`}>进入 Agent 项目</Link><Link className="text-primary underline" href={`/app/agent/${selected.projectId}/designs`}>项目全部方案</Link>
           {selected.status === "failed" && <Button variant="outline" disabled={sending || Boolean(activeJob)} onClick={() => void submit(selected.requirement, selected.projectId)}>在原项目重试</Button>}

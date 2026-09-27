@@ -4,6 +4,7 @@ import { requireDb } from "@/lib/db";
 import { auditLogs, designJobs, projects } from "@/lib/db/schema";
 import { DESIGN_LEASE_MS, DESIGN_QUEUE_LIMIT, DESIGN_QUEUE_MS, type DesignJob, type DesignJobInput } from "@/lib/agent/design-jobs";
 import type { DesignResult } from "@/lib/agent/llm";
+import { closePhase, expiredDiagnostics, queuedDiagnostics, type DesignDiagnostics } from "@/lib/agent/design-diagnostics";
 
 type Tx = Parameters<Parameters<ReturnType<typeof requireDb>["transaction"]>[0]>[0];
 type Row = typeof designJobs.$inferSelect;
@@ -18,14 +19,16 @@ function publicJob(row: Row, projectName: string): DesignJob {
     id: row.id, projectId: row.projectId, projectName, requirement: row.requirement,
     status: expired ? "failed" : row.status, model: row.model, knowledgeVersion: row.knowledgeVersion,
     result: row.result, error: expired ? DESIGN_EXPIRED : row.error,
+    diagnostics: expired ? expiredDiagnostics(row.diagnostics, row.status, row.deadlineAt) : row.diagnostics,
     createdAt: row.createdAt.toISOString(), startedAt: row.startedAt?.toISOString() ?? null,
     completedAt: (expired ? row.deadlineAt : row.completedAt)?.toISOString() ?? null, deadlineAt: row.deadlineAt.toISOString(),
   };
 }
 async function lockQueue(tx: Tx) {
   await tx.execute(sql`select pg_advisory_xact_lock(hashtext('vibehard:design-queue'))`);
-  await tx.update(designJobs).set({ status: "failed", error: DESIGN_EXPIRED, leaseToken: null, completedAt: sql`now()`, updatedAt: sql`now()` })
-    .where(and(inArray(designJobs.status, [...active]), sql`${designJobs.deadlineAt} <= now()`));
+  const expired = await tx.select().from(designJobs).where(and(inArray(designJobs.status, [...active]), sql`${designJobs.deadlineAt} <= now()`));
+  for (const row of expired) await tx.update(designJobs).set({ status: "failed", error: DESIGN_EXPIRED,
+    diagnostics: expiredDiagnostics(row.diagnostics, row.status, row.deadlineAt), leaseToken: null, completedAt: sql`now()`, updatedAt: sql`now()` }).where(eq(designJobs.id, row.id));
 }
 export async function enqueueDesign(userId: string, input: DesignJobInput) {
   return requireDb().transaction(async tx => {
@@ -51,6 +54,7 @@ export async function enqueueDesign(userId: string, input: DesignJobInput) {
     }
     const [job] = await tx.insert(designJobs).values({ userId, projectId: project.id, requestId: input.requestId,
       requestedProjectId: input.projectId ?? null, requirement: input.requirement,
+      diagnostics: queuedDiagnostics(new Date()),
       deadlineAt: sql`now() + ${DESIGN_QUEUE_MS} * interval '1 millisecond'` }).returning();
     await tx.update(projects).set({ updatedAt: sql`now()` }).where(eq(projects.id, project.id));
     await tx.insert(auditLogs).values({ userId, projectId: project.id, action: "design.queued", metadata: { jobId: job.id } });
@@ -82,12 +86,44 @@ export async function claimDesign() {
       deadlineAt: sql`now() + ${DESIGN_LEASE_MS} * interval '1 millisecond'` }).where(eq(designJobs.id, next.id)).returning())[0];
   });
 }
-export async function finishDesign(id: string, leaseToken: string, outcome: { result: DesignResult; model: string; knowledgeVersion: string } | { error: string }) {
+export async function saveDesignDiagnostics(id: string, leaseToken: string, diagnostics: DesignDiagnostics) {
+  const rows = await requireDb().update(designJobs).set({ diagnostics, updatedAt: sql`now()` })
+    .where(and(eq(designJobs.id, id), eq(designJobs.status, "running"), eq(designJobs.leaseToken, leaseToken), sql`${designJobs.deadlineAt} > clock_timestamp()`)).returning({ id: designJobs.id });
+  return rows.length === 1;
+}
+export async function listDesignDiagnostics() {
+  // Deliberately exclude requirement/result/user identity from the admin diagnostics API.
+  return requireDb().select({ id: designJobs.id, status: designJobs.status, diagnostics: designJobs.diagnostics,
+    createdAt: designJobs.createdAt, completedAt: designJobs.completedAt }).from(designJobs).orderBy(desc(designJobs.createdAt)).limit(50);
+}
+export async function finishDesign(id: string, leaseToken: string, outcome: ({ result: DesignResult; model: string; knowledgeVersion: string } | { error: string }) & { diagnostics?: DesignDiagnostics }, executionDeadline?: number) {
   return requireDb().transaction(async tx => {
+    const now = new Date();
+    if (outcome.diagnostics) {
+      outcome.diagnostics = structuredClone(outcome.diagnostics); closePhase(outcome.diagnostics, now);
+      const start = outcome.diagnostics.phases.find(p => p.phase !== "queue");
+      if (start) outcome.diagnostics.totalMs = now.getTime() - Date.parse(start.startedAt);
+    }
+    if (executionDeadline && !("error" in outcome)) {
+      const remaining = executionDeadline - Date.now();
+      if (remaining <= 0) throw new Error("design deadline expired before save");
+      await tx.execute(sql`select set_config('statement_timeout', ${String(Math.max(1, Math.floor(remaining)))}, true)`);
+    }
     const [job] = await tx.update(designJobs).set({ ...outcome, status: "error" in outcome ? "failed" : "completed",
       leaseToken: null, completedAt: sql`now()`, updatedAt: sql`now()` })
-      .where(and(eq(designJobs.id, id), eq(designJobs.status, "running"), eq(designJobs.leaseToken, leaseToken), sql`${designJobs.deadlineAt} > now()`)).returning();
+      .where(and(eq(designJobs.id, id), eq(designJobs.status, "running"), eq(designJobs.leaseToken, leaseToken), sql`${designJobs.deadlineAt} > clock_timestamp()`,
+        executionDeadline && !("error" in outcome) ? sql`clock_timestamp() < ${new Date(executionDeadline).toISOString()}::timestamptz` : undefined)).returning();
     if (job) await tx.update(projects).set({ updatedAt: sql`now()` }).where(eq(projects.id, job.projectId));
+    if (job && outcome.diagnostics) {
+      const ended = new Date();
+      const last = outcome.diagnostics.phases.at(-1);
+      if (last) { last.endedAt = ended.toISOString(); last.durationMs = Math.max(0, ended.getTime() - Date.parse(last.startedAt)); }
+      const start = outcome.diagnostics.phases.find(p => p.phase !== "queue");
+      if (start) outcome.diagnostics.totalMs = ended.getTime() - Date.parse(start.startedAt);
+      // Same transaction: if saving exhausts the execution budget, roll back the result.
+      if (executionDeadline && !("error" in outcome) && Date.now() >= executionDeadline) throw new Error("design deadline expired during save");
+      await tx.update(designJobs).set({ diagnostics: outcome.diagnostics }).where(eq(designJobs.id, id));
+    }
     return Boolean(job);
   });
 }

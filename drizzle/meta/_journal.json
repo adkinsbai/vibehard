@@ -50,6 +50,13 @@
       "when": 1790307077306,
       "tag": "0006_shared_knowledge",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790494791165,
+      "tag": "0007_design_diagnostics",
+      "breakpoints": true
     }
   ]
 }

@@ -22,7 +22,7 @@ it("shows one functional section at a time, with overview selected initially", a
   const user = userEvent.setup();
   render(<AdminPage />);
   const nav = await screen.findByRole("navigation", { name: "管理功能分区" });
-  expect(within(nav).getAllByRole("button")).toHaveLength(5);
+  expect(within(nav).getAllByRole("button")).toHaveLength(6);
   expect(screen.getAllByRole("region")).toHaveLength(1);
   expect(screen.getByRole("heading", { name: "最近项目" })).toBeVisible();
   expect(screen.queryByRole("heading", { name: "用户与密码重置" })).toBeNull();
