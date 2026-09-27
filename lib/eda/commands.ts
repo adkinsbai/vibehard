@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { PARTS, equivalentPinIds } from './library';
+import { insertModule, isModulePort } from './modules';
 import { componentSchema, coordinateSchema, dimensionSchema, idSchema, parseDocument, pinRefSchema, rotationSchema, textSchema, trackSchema } from './document';
 import type { EditBatch, EdaComponent, EdaDocument, EdaNet, PinRef } from './types';
 
 const commandSchema = z.discriminatedUnion('type', [
   z.strictObject({ type: z.literal('addComponent'), component: componentSchema }),
+  z.strictObject({ type: z.literal('insertModule'), moduleId: z.string().min(1).max(120), version: z.string().min(1).max(40), instanceId: idSchema, schematic: z.strictObject({ x: coordinateSchema, y: coordinateSchema }), pcb: z.strictObject({ x: coordinateSchema, y: coordinateSchema }) }),
   z.strictObject({ type: z.literal('removeComponent'), id: idSchema }),
   z.strictObject({ type: z.literal('moveComponent'), id: idSchema, view: z.enum(['schematic', 'pcb']), x: coordinateSchema, y: coordinateSchema, rotation: rotationSchema.optional() }),
   z.strictObject({ type: z.literal('setComponent'), id: idSchema, changes: z.strictObject({ ref: componentSchema.shape.ref.optional(), value: componentSchema.shape.value.optional(), locked: z.boolean().optional() }).refine((changes) => Object.keys(changes).length > 0, 'Changes cannot be empty') }),
@@ -66,6 +68,9 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
       case 'addComponent':
         next.components.push(command.component);
         break;
+      case 'insertModule':
+        insertModule(next, command);
+        break;
       case 'removeComponent': {
         const component = requiredComponent(next, command.id);
         if (component.locked) throw new Error(`Component ${component.ref} is locked`);
@@ -87,11 +92,13 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
         break;
       }
       case 'setComponent':
+        if (requiredComponent(next, command.id).locked) throw new Error(`Component ${command.id} is locked`);
         Object.assign(requiredComponent(next, command.id), command.changes);
         break;
       case 'connectPins': {
         requiredPin(next, command.a);
         requiredPin(next, command.b);
+        if (!isModulePort(next, command.a) || !isModulePort(next, command.b)) throw new Error('Only declared module ports may be connected');
         if (command.a.componentId === command.b.componentId && command.a.pinId === command.b.pinId) throw new Error('Cannot connect a pin to itself');
         const aNet = owningNet(next, command.a);
         const bNet = owningNet(next, command.b);
@@ -116,6 +123,7 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
       }
       case 'disconnectPin': {
         requiredPin(next, command.pin);
+        if (!isModulePort(next, command.pin)) throw new Error('Only declared module ports may be disconnected');
         const net = owningNet(next, command.pin);
         if (!net) throw new Error(`Pin ${command.pin.componentId}.${command.pin.pinId} is not connected`);
         invalidateTracks(next, [net.id]);
@@ -127,6 +135,7 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
       case 'renameNet': {
         const net = next.nets.find((item) => item.id === command.id);
         if (!net) throw new Error(`Unknown net ${command.id}`);
+        if (next.moduleInstances?.some(instance => instance.internalNetIds.includes(command.id))) throw new Error('Module internal nets are locked');
         net.name = command.name;
         break;
       }
@@ -135,6 +144,7 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
         break;
       case 'removeTrack':
         if (!next.tracks.some((track) => track.id === command.id)) throw new Error(`Unknown track ${command.id}`);
+        if (next.moduleInstances?.some(instance => instance.internalTrackIds.includes(command.id))) throw new Error('Module internal tracks are locked');
         next.tracks = next.tracks.filter((track) => track.id !== command.id);
         break;
       case 'setBoard':

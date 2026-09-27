@@ -5,9 +5,11 @@ export type PinRef = { componentId: string; pinId: string };
 export type EdaComponent = { id: string; ref: string; kind: PartKind; value: string; schematic: Position; pcb: Position & { side: 'top' | 'bottom' }; locked: boolean };
 export type EdaNet = { id: string; name: string; nodes: PinRef[] };
 export type EdaTrack = { id: string; netId: string; layer: 'top' | 'bottom'; width: number; points: { x: number; y: number }[] };
-export type EdaDocument = { schemaVersion: 1; id: string; name: string; revision: number; components: EdaComponent[]; nets: EdaNet[]; tracks: EdaTrack[]; board: { width: number; height: number }; appliedBatchIds: string[] };
+export type ModuleInstance = { id: string; moduleId: string; version: string; sourceSha256: string; componentIds: string[]; internalNetIds: string[]; internalTrackIds: string[] };
+export type EdaDocument = { schemaVersion: 1; id: string; name: string; revision: number; components: EdaComponent[]; nets: EdaNet[]; tracks: EdaTrack[]; board: { width: number; height: number }; appliedBatchIds: string[]; moduleInstances?: ModuleInstance[] };
 export type EditCommand =
   | { type: 'addComponent'; component: EdaComponent }
+  | { type: 'insertModule'; moduleId: string; version: string; instanceId: string; schematic: { x: number; y: number }; pcb: { x: number; y: number } }
   | { type: 'removeComponent'; id: string }
   | { type: 'moveComponent'; id: string; view: ViewMode; x: number; y: number; rotation?: number }
   | { type: 'setComponent'; id: string; changes: Partial<Pick<EdaComponent, 'ref' | 'value' | 'locked'>> }

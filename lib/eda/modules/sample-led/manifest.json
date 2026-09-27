@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "moduleId": "sample.led-indicator",
+  "version": "0.1.0",
+  "verification": "software-fixture",
+  "description": "3.3 V LED indicator integration fixture; electrical design and BOM are not approved",
+  "entrySchematic": "module.kicad_sch",
+  "files": [
+    {
+      "path": "module.kicad_sch",
+      "role": "schematic",
+      "sha256": "c7075a4beb280f3e1c007778bc228990d071247a712f461606259c71dc5183c5"
+    },
+    {
+      "path": "module.kicad_pro",
+      "role": "project",
+      "sha256": "e3566b3a06430868d71e9287dfd6c6c520a3da027aabea01951d407ee131dc2f"
+    },
+    {
+      "path": "module.kicad_pcb",
+      "role": "pcb_design_block",
+      "sha256": "9cadd64ddb831abad5cf264120aa85835773fb2fc8f3b95aed6cf69cb5e6d152"
+    },
+    {
+      "path": "sym-lib-table",
+      "role": "symbol_library",
+      "sha256": "db7894010fabfbbfbdb85c7f4e6165965c66e23b7264212b3f8c13a03dea9b0b"
+    }
+  ],
+  "ports": [
+    {
+      "id": "vcc",
+      "name": "3.3 V input",
+      "label": "VCC",
+      "direction": "input",
+      "signal": "power",
+      "required": true,
+      "voltage": { "min": 3.0, "max": 3.6 },
+      "terminal": { "reference": "R1", "pin": "1" }
+    },
+    {
+      "id": "gnd",
+      "name": "Ground",
+      "label": "GND",
+      "direction": "passive",
+      "signal": "ground",
+      "required": true,
+      "terminal": { "reference": "D1", "pin": "1" }
+    }
+  ]
+}

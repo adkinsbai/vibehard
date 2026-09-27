@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { PARTS, createComponent, equivalentPinIds } from './library';
+import { validateModuleInstances } from './modules';
 import type { EdaDocument } from './types';
 
 export const idSchema = z.string().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/, 'IDs must use ASCII letters, digits, underscore or hyphen');
@@ -28,6 +29,7 @@ const documentSchema = z.strictObject({
   tracks: z.array(trackSchema).max(5000),
   board: z.strictObject({ width: dimensionSchema, height: dimensionSchema }),
   appliedBatchIds: z.array(idSchema).max(5000),
+  moduleInstances: z.array(z.strictObject({ id: idSchema, moduleId: z.string().min(1).max(120), version: z.string().min(1).max(40), sourceSha256: z.string().regex(/^[a-f0-9]{64}$/), componentIds: z.array(idSchema).min(1).max(100), internalNetIds: z.array(idSchema).max(100), internalTrackIds: z.array(idSchema).max(100) })).max(100).optional(),
 });
 
 function unique(values: string[], label: string) {
@@ -77,6 +79,15 @@ export function parseDocument(input: unknown): EdaDocument {
   unique(doc.tracks.map((track) => track.id), 'track ID');
   unique([doc.id, ...doc.components.map((component) => component.id), ...doc.nets.map((net) => net.id), ...doc.tracks.map((track) => track.id)], 'entity ID');
   unique(doc.appliedBatchIds, 'batch ID');
+  if (doc.moduleInstances) {
+    unique(doc.moduleInstances.map(instance => instance.id), 'module instance ID');
+    for (const instance of doc.moduleInstances) {
+      if (instance.componentIds.some(id => !doc.components.some(component => component.id === id && component.locked))) throw new Error(`Missing or unlocked module component: ${instance.id}`);
+      if (instance.internalNetIds.some(id => !doc.nets.some(net => net.id === id))) throw new Error(`Missing module internal net: ${instance.id}`);
+      if (instance.internalTrackIds.some(id => !doc.tracks.some(track => track.id === id))) throw new Error(`Missing module internal track: ${instance.id}`);
+    }
+  }
+  validateModuleInstances(doc);
   const components = new Map(doc.components.map((component) => [component.id, component]));
   const netIds = new Set(doc.nets.map((net) => net.id));
   const ownedPins = new Set<string>();

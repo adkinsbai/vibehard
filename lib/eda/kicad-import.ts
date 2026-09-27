@@ -1,7 +1,8 @@
 import { parseSExpression, type SExpression } from './sexpr';
 import { PARTS, createComponent } from './library';
+import { addModuleInternalTracks, MODULES } from './modules';
 import { createEmptyDocument, parseDocument } from './document';
-import type { EdaDocument, EdaNet } from './types';
+import type { EdaComponent, EdaDocument, EdaNet } from './types';
 type Node = SExpression[];
 const nodes = (node: Node, tag: string) => node.filter((v): v is Node => Array.isArray(v) && v[0] === tag);
 const one = (node: Node, tag: string) => nodes(node, tag)[0] ?? [];
@@ -19,6 +20,7 @@ export function importNativeSchematic(source: string, nativeNetlist: string): Ed
   const root = inspectNativeSchematic(source); const netlist = parseSExpression(nativeNetlist);
   if (!Array.isArray(netlist) || netlist[0] !== 'export') throw new Error('KiCad 未返回有效网表');
   const document = createEmptyDocument();
+  const tags: { instanceId: string; moduleId: string; version: string; sourceSha256: string; localId: string }[] = [];
   document.name = String(one(one(root, 'title_block'), 'title')[1] || '导入的 KiCad 电路');
   const embedded = nodes(one(root, 'lib_symbols'), 'symbol');
   document.components = nodes(root, 'symbol').map((symbol, index) => {
@@ -38,6 +40,20 @@ export function importNativeSchematic(source: string, nativeNetlist: string): Ed
     const placement = one(symbol, 'at');
     component.schematic = { x: Number(placement[1]), y: Number(placement[2]), rotation: (360 - Number(placement[3] || 0)) % 360 };
     component.pcb = { x: 20 + (index % 8) * 30, y: 20 + Math.floor(index / 8) * 35, rotation: 0, side: 'top' };
+    const moduleProperty = prop(symbol, 'VibeHard.Module');
+    if (moduleProperty) {
+      if (moduleProperty.length > 1000) throw new Error('模块来源属性过长');
+      let tag: Record<string, unknown>;
+      try { tag = JSON.parse(moduleProperty); } catch { throw new Error('模块来源属性无效'); }
+      const { instanceId, moduleId, version, sourceSha256, localId, pcb } = tag;
+      if (tag.schemaVersion !== 1 || typeof instanceId !== 'string' || typeof moduleId !== 'string' || typeof version !== 'string' || typeof sourceSha256 !== 'string' || typeof localId !== 'string' || !pcb || typeof pcb !== 'object') throw new Error('模块来源属性无效');
+      const definition = MODULES[moduleId];
+      if (!definition || definition.version !== version || definition.sourceSha256 !== sourceSha256 || !definition.parts.some(item => item.localId === localId && item.kind === part.kind)) throw new Error('模块来源与当前目录不一致');
+      component.id = `${instanceId}-${localId}`;
+      component.locked = true;
+      component.pcb = pcb as EdaComponent['pcb'];
+      tags.push({ instanceId, moduleId, version, sourceSha256, localId });
+    }
     return component;
   });
   document.board = { width: Math.max(80, Math.min(8, document.components.length) * 30 + 20), height: Math.max(55, Math.ceil(document.components.length / 8) * 35 + 20) };
@@ -46,6 +62,21 @@ export function importNativeSchematic(source: string, nativeNetlist: string): Ed
     if (!component) throw new Error(`网表引用未知器件 ${reference}`);
     return { componentId: component.id, pinId: String(one(node, 'pin')[1]) };
   }) }));
+  const instanceIds = [...new Set(tags.map(tag => tag.instanceId))];
+  if (instanceIds.length) document.moduleInstances = instanceIds.map(instanceId => {
+    const members = tags.filter(tag => tag.instanceId === instanceId);
+    const first = members[0]; const definition = MODULES[first.moduleId];
+    if (members.length !== definition.parts.length || members.some(tag => tag.moduleId !== first.moduleId || tag.version !== first.version || tag.sourceSha256 !== first.sourceSha256)) throw new Error(`模块实例不完整：${instanceId}`);
+    for (const net of definition.nets) {
+      const actual = document.nets.find(item => item.name === `${instanceId}_${net.name}`);
+      if (!actual) throw new Error(`缺少模块内部网络：${instanceId}_${net.name}`);
+      actual.id = `${instanceId}-${net.localId}`;
+    }
+    const firstPart = definition.parts[0];
+    const firstComponent = document.components.find(item => item.id === `${instanceId}-${firstPart.localId}`)!;
+    addModuleInternalTracks(document, instanceId, definition, { x: firstComponent.pcb.x - firstPart.pcb.x, y: firstComponent.pcb.y - firstPart.pcb.y });
+    return { id: instanceId, moduleId: first.moduleId, version: first.version, sourceSha256: first.sourceSha256, componentIds: definition.parts.map(part => `${instanceId}-${part.localId}`), internalNetIds: definition.nets.map(net => `${instanceId}-${net.localId}`), internalTrackIds: definition.tracks.map(track => `${instanceId}-${track.localId}`) };
+  });
   return parseDocument(document);
 }
 

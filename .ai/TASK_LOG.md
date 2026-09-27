@@ -4,6 +4,12 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-28 Task: 无正式模块包时跑通 EDA 原生模块链路
+
+- 在独立 `codex/eda-native-module-chain` 分支新增未审核 LED 软件样板包、文件哈希和端口/网表校验、Agent 受控插入与原生 KiCad 保存读回；Freerouting 适配器只产生独立 PCB 候选，不覆盖原工程。
+- KiCad 9.0.8 验收：3 器件/3 网络，模块来源及 PCB 内部走线读回成功，手动候选 ERC/DRC 均 0；保留模块内部走线后，真实 DSN→Freerouting 2.4.1→SES 使外部未布通 2→0，原理图一致性仍 0、原板哈希不变。证据见 `docs/eda-native-module-acceptance-2026-09-28.md`。
+- EDA 定向 87 通过/2 跳过；TypeScript、定向 ESLint、Next 生产构建通过。全仓 303 通过/13 跳过/5 失败（4 个 Windows 符号链接 `EPERM`，1 个私有检索服务超时）。当前未部署、未做真实模型及公网新功能验收；云端 manager 入口和团队正式模块仍待后续交付。
+
 ## 2026-09-27 Task: 分阶段交付收尾
 
 - 第三阶段代码 `e6c0b2e`、PR #6 已合并，归档 ba7d08ae…a872 验证后预检/备份/激活 `20260927-controlled-ingestion-v1`。只更新检索 unit 和发布管理 CLI；其余六项服务/容器 PID 保持，legacy 原索引 SHA 不变。

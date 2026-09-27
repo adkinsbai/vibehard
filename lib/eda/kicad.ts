@@ -89,11 +89,14 @@ export function exportKicadSchematic(input: EdaDocument): string {
   const kinds = [...new Set(doc.components.map(component => component.kind))].sort();
   const symbols = doc.components.map(component => {
     const position = component.schematic; const part = PARTS[component.kind]; const prefix = `${doc.id}/component/${component.id}`;
+    const moduleInstance = doc.moduleInstances?.find(instance => instance.componentIds.includes(component.id));
+    const moduleProperty = moduleInstance ? `(property "VibeHard.Module" ${q(JSON.stringify({ schemaVersion: 1, instanceId: moduleInstance.id, moduleId: moduleInstance.moduleId, version: moduleInstance.version, sourceSha256: moduleInstance.sourceSha256, localId: component.id.slice(moduleInstance.id.length + 1), pcb: component.pcb }))} (at ${n(position.x)} ${n(position.y)} 0) (effects (font (size 1.27 1.27)) hide))` : '';
     return `(symbol (lib_id ${q(part.native?.libraryId ?? `VibeHard:${component.kind}`)}) (at ${n(position.x)} ${n(position.y)} ${angle(position.rotation)}) (unit 1) (in_bom yes) (on_board yes) (dnp no)
       (uuid ${uuid(`${prefix}/symbol`)})
       (property "Reference" ${q(component.ref)} (at ${n(position.x)} ${n(position.y - part.symbol.height / 2 - 3)} 0) ${effects})
       (property "Value" ${q(component.value)} (at ${n(position.x)} ${n(position.y + part.symbol.height / 2 + 3)} 0) ${effects})
       (property "Footprint" ${q(part.footprint.name)} (at ${n(position.x)} ${n(position.y)} 0) (effects (font (size 1.27 1.27)) hide))
+      ${moduleProperty}
       ${part.pins.map(pin => `(pin ${q(pin.id)} (uuid ${uuid(`${prefix}/pin/${pin.id}`)}))`).join("\n")}
       (instances (project "vibehard" (path ${q(`/${root}`)} (reference ${q(component.ref)}) (unit 1))))
     )`;

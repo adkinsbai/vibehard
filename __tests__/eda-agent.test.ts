@@ -6,6 +6,8 @@ import { runtimeLlm } from '@/lib/server/llm-settings';
 import { callLlm } from '@/lib/server/llm-client';
 import { proposeEdaEdit } from '@/lib/server/eda-agent';
 import { createStarterDocument } from '@/lib/eda/document';
+import { createEmptyDocument } from '@/lib/eda/document';
+import { applyEditBatch } from '@/lib/eda/commands';
 beforeEach(() => vi.resetAllMocks());
 describe('Agent edits are validated proposals', () => {
   it('reports unavailable model honestly without generating a fake result', async () => {
@@ -25,5 +27,18 @@ describe('Agent edits are validated proposals', () => {
     vi.mocked(runtimeLlm).mockResolvedValue({ model: 'test' } as Awaited<ReturnType<typeof runtimeLlm>>);
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify({ summary: 'broken', commands: [{ type: 'removeComponent', id: 'missing' }] }));
     await expect(proposeEdaEdit(createStarterDocument(), 'remove')).rejects.toThrow();
+  });
+  it('offers the versioned software module and accepts an insertion proposal', async () => {
+    vi.mocked(runtimeLlm).mockResolvedValue({ model: 'test' } as Awaited<ReturnType<typeof runtimeLlm>>);
+    vi.mocked(callLlm).mockResolvedValue(JSON.stringify({ summary: '添加测试用 LED 指示模块，仍需接入 3.3 V 和 GND', commands: [
+      { type: 'insertModule', moduleId: 'sample.led-indicator', version: '0.1.0', instanceId: 'status-led', schematic: { x: 50.8, y: 50.8 }, pcb: { x: 20, y: 20 } },
+    ] }));
+    const doc = createEmptyDocument();
+    const result = await proposeEdaEdit(doc, '添加一个状态 LED 指示模块');
+    const modelInput = String(vi.mocked(callLlm).mock.calls[0]?.[2] ?? '');
+    expect(modelInput).toContain('sample.led-indicator');
+    expect(modelInput).toContain('software-fixture');
+    expect(applyEditBatch(doc, result.batch).moduleInstances).toHaveLength(1);
+    expect(doc.components).toHaveLength(0);
   });
 });

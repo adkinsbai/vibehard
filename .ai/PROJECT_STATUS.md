@@ -1,5 +1,7 @@
 # 项目状态
 
+- 2026-09-28 本地 EDA 原生模块链路候选：基于 `9fc6ec5` 的 `codex/eda-native-module-chain` 新增一个**未审核的软件测试模块**，Agent 可受控插入、连接声明端口并生成/读回 KiCad 原生文件，模块 PCB 内部走线随之保留。KiCad 9.0.8 的手动参考候选 ERC/DRC 为 0；真实 Freerouting DSN/SES 往返使外部未布通 2→0，候选独立保存且原板不变。EDA 定向 87 通过/2 跳过，类型、定向 lint、生产构建通过；全仓仍有 4 个 Windows 符号链接权限失败和 1 个检索服务超时。未部署、未完成真实模型/公网验收，云端网页尚无自动布线入口，正式团队模块也未接入。详见 `docs/eda-native-module-acceptance-2026-09-28.md`。
+
 - 2026-09-27 17:18：三阶段已发布，PR #3/#4/#5/#6 已合并 GitHub 默认分支；可靠性（含 0007）最终 12/12 隔离真实方案请求通过，正式 Agent/方案/EDA 真实验收及跨用户权限通过。平台/方案 Worker/Runner 为 `20260927-unified-retrieval-v1`，检索服务与管理员受控入库 CLI 为 `20260927-controlled-ingestion-v1`；原件/正文未新增。生产检索 P95 34.5 ms、峰值 41.3 MiB；候选进程已停，备份/回滚保留。主工作区未提交文档未动。详见 docs/current-status.md 和 docs/controlled-knowledge-ingestion.md。
 
 ## 2026-09-27 方案可靠性早期实施记录（已由上方发布覆盖）

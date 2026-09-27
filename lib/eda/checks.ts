@@ -1,5 +1,6 @@
 import { parseDocument } from './document';
 import { PARTS, pinPosition } from './library';
+import { missingRequiredModulePorts } from './modules';
 import type { EdaDocument, EdaIssue } from './types';
 
 /** Fast internal graph and placement checks. These are not KiCad ERC or DRC. */
@@ -10,6 +11,7 @@ export function checkDocument(doc: EdaDocument): EdaIssue[] {
   }
   const issues: EdaIssue[] = [];
   const connected = new Set(valid.nets.flatMap((net) => net.nodes.map((node) => `${node.componentId}\u0000${node.pinId}`)));
+  for (const port of missingRequiredModulePorts(valid)) issues.push({ id: `module-port-${port.instanceId}-${port.portId}`, severity: 'warning', message: `模块 ${port.instanceId} 的必需端口 ${port.portId} 未连接到外部电路（内部检查，非 KiCad ERC）` });
   for (const component of valid.components) {
     for (const pin of PARTS[component.kind].pins) {
       if (pin.electrical !== 'no_connect' && !connected.has(`${component.id}\u0000${pin.id}`)) issues.push({ id: `unconnected-${component.id}-${pin.id}`, severity: 'warning', message: `${component.ref}.${pin.id} 尚未连接`, componentId: component.id });

@@ -7,6 +7,7 @@ import { applyEditBatch } from '@/lib/eda/commands';
 import { exportKicadPcb, exportKicadSchematic } from '@/lib/eda/kicad';
 import { importNativeSchematic } from '@/lib/eda/kicad-import';
 import type { EditBatch, EditCommand, EdaDocument } from '@/lib/eda/types';
+import { missingRequiredModulePorts, MODULES } from '@/lib/eda/modules';
 import { apiPath } from '@/lib/utils';
 import styles from './agent-panel.module.css';
 import { RetrievalEvidence } from '@/components/app/retrieval-evidence';
@@ -22,6 +23,7 @@ function describeCommand(command: EditCommand, before: EdaDocument, after: EdaDo
   const pin = (node: { componentId: string; pinId: string }) => `${reference(node.componentId)}.${node.pinId}`;
   switch (command.type) {
     case 'addComponent': return `添加 ${command.component.ref} · ${command.component.value}`;
+    case 'insertModule': return `插入电路模块 ${MODULES[command.moduleId]?.moduleId ?? command.moduleId} · ${command.version}（${command.instanceId}）`;
     case 'removeComponent': return `删除 ${reference(command.id)}`;
     case 'moveComponent': return `移动 ${reference(command.id)} 的${command.view === 'pcb' ? 'PCB' : '原理图'}位置到 (${command.x}, ${command.y}) mm`;
     case 'setComponent': return `修改 ${reference(command.id)}：${Object.entries(command.changes).map(([key, value]) => `${key}=${value}`).join('，')}`;
@@ -80,6 +82,8 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
     if (!draft || !draft.components.length || busy) return;
     setBusy(true); setError('');
     try {
+      const missingPorts = missingRequiredModulePorts(draft);
+      if (missingPorts.length) throw new Error(`先连接模块必需端口：${missingPorts.map(item => `${item.instanceId}.${item.portId}`).join('、')}`);
       await onCreate({ schematic: exportKicadSchematic(draft), pcb: exportKicadPcb(draft) }, title.trim());
       setHistory(current => [...current, { role: 'agent', text: '已创建并打开原生 KiCad 工程。后续新要求会作为新设计草稿，不会直接覆盖正在编辑的文件。' }]);
       setDraft(null);
@@ -114,12 +118,12 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
     {capability?.agent === false && <p className={styles.modelHelp}>请管理员到<a href={apiPath('/app/admin')}>模型设置</a>配置“设计模型”，完成后点刷新。</p>}
     <button disabled={!currentProjectId || busy} onClick={() => void loadSaved()}>读取当前已保存原理图</button>
     <div className={styles.thread} role="log" aria-label="Agent 对话">
-      {!history.length && <div className={styles.welcome}>可以说：“画一个带限流电阻和 LED 的电路，并标出电源接口。”当前器件库支持官方 KiCad 的 7 类器件。</div>}
+      {!history.length && <div className={styles.welcome}>可以说：“用测试用 LED 指示模块和两针电源接口画一张 3.3 V 原理图。”当前支持 7 类 KiCad 器件和 1 个软件链路测试模块；测试模块尚未经过硬件审核。</div>}
       {history.map((entry, index) => <div key={index} className={`${styles.bubble} ${entry.role === 'user' ? styles.user : styles.agent}`}><small>{entry.role === 'user' ? '你' : 'Agent'}</small><p>{entry.text}</p></div>)}
       {busy && <div className={styles.thinking}>正在处理，请稍候…</div>}
     </div>
     {proposal && <section className={styles.proposal} aria-label="待审阅修改"><strong>待审阅修改</strong><span>{proposal.model} · {proposal.batch.commands.length} 项修改</span><p>{proposal.summary}</p><ol className={styles.commandList}>{proposal.batch.commands.map((command, index) => <li key={index}>{describeCommand(command, draft ?? createEmptyDocument(), proposal.document)}</li>)}</ol><div className={styles.actions}><button onClick={() => setProposal(null)}>放弃</button><button className={styles.primary} onClick={accept}>加入设计草稿</button></div></section>}
-    {preview && <section className={styles.preview} aria-label="设计草稿"><strong>设计草稿</strong><span>{preview.components.length} 个器件 · {preview.nets.length} 个网络</span><ul>{preview.components.slice(0, 18).map(item => <li key={item.id}>{item.ref} · {item.value}</li>)}</ul>{preview.components.length > 18 && <small>另有 {preview.components.length - 18} 个器件</small>}{preview.nets.length > 0 && <small>网络：{preview.nets.slice(0, 8).map(net => net.name).join('、')}</small>}</section>}
+    {preview && <section className={styles.preview} aria-label="设计草稿"><strong>设计草稿</strong><span>{preview.components.length} 个器件 · {preview.nets.length} 个网络</span>{Boolean(preview.moduleInstances?.length) && <small>{preview.moduleInstances?.length} 个电路模块（软件测试样板，未获硬件审核）</small>}{missingRequiredModulePorts(preview).length > 0 && <small>待连接模块端口：{missingRequiredModulePorts(preview).map(item => `${item.instanceId}.${item.portId}`).join('、')}</small>}<ul>{preview.components.slice(0, 18).map(item => <li key={item.id}>{item.ref} · {item.value}</li>)}</ul>{preview.components.length > 18 && <small>另有 {preview.components.length - 18} 个器件</small>}{preview.nets.length > 0 && <small>网络：{preview.nets.slice(0, 8).map(net => net.name).join('、')}</small>}</section>}
     {draft && !proposal && <div className={styles.create}><label>新工程名称<input aria-label="Agent 新工程名称" value={title} maxLength={80} onChange={event => setTitle(event.target.value)} /></label><button className={styles.primary} disabled={busy || !draft.components.length || title.trim().length < 2} onClick={() => void create()}>创建并打开 KiCad 工程</button></div>}
     {proposal?.retrieval && <RetrievalEvidence value={proposal.retrieval} />}
     {error && <p className={styles.error} role="alert">{error}</p>}
