@@ -10,7 +10,8 @@
 
 - 基线：PR #3 已以 merge commit `6d2ba12` 整合到默认分支；从合并点建立 `codex/design-reliability`。主工作区的未提交文档未动。现网发布清单 998 个源码文件均在候选中；除允许的诊断改动及已上线 worker 的索引差异外，其余运行时代码哈希一致。
 - 可靠性：已实现增量迁移 `0007`、六阶段持久诊断、固定脱敏错误码、网络耗时、用户进度与管理员独立诊断分区；手动重试、90 秒硬期限、租约 fencing 保持。旧任务为 null，不补造诊断。模型自己返回的引用字段在结果校验前丢弃。
-- 测试：类型、生产构建、全仓 273 项测试通过（后续新增测试待再次运行）；隔离数据库原 11 项回归已通过，诊断增强断言待补跑。首轮真实模型第 1–7 次通过，随后被共用测试队列干扰，整轮作废，不作为发布门槛。专用 `vibehard_reliability_test` 已建立并重新开始完整 12 次；第一轮证据保留。集成测试库误导入的 95 条合成语料副本已备份到云端 test-state 后移除，原资料/生产库不变。
+- 测试：类型、生产构建、全仓 276 项测试通过；隔离数据库 11 项回归（含诊断、租约 fencing、下载归档）通过。早期共用队列的一轮作废，不作为发布门槛。专用 `vibehard_reliability_test` 第一整轮 7/12 通过，5 次在 HTTP 200 后等待正文达到 90 秒；检索仅几十毫秒。低推理强度/4096 token 候选 11/12 通过，1 次上游未完成，未发布。第三整轮使用 low/8192 token 有界策略，等待完整结果。原资料/生产库不变，所有失败证据保留。
+- 定位与修复：仅官方 DeepSeek `deepseek-v4-pro`/`deepseek-flash` 的方案草稿使用显式 `reasoning.effort=low`（Chat Completions 对应 `reasoning_effort`），联合推理/输出上限 8192。其他供应商、管理员连接测试、Agent 执行策略不变。新增 OUTPUT_LIMIT 与固定的 providerStatus/outputTokens 诊断，修复复用 TLS 连接反复注册监听器。官方依据：[Thinking mode](https://api-docs.deepseek.com/guides/thinking_mode/)、[Responses](https://api-docs.deepseek.com/api/create-response/)。不延长时间、不自动重试付费请求。
 - 发布：尚未迁移生产或切换服务。候选打包、预检、备份、迁移、激活与回滚脚本已准备；脚本必须验证 12/12，通过前不允许激活。
 - 统一检索候选：已加入唯一服务端入口、私有 Unix socket 进程（并发 2、384 MiB、50% CPU）、公开/项目权限过滤、部分不可用状态；方案、Agent、EDA 共用服务端引用。Runner 增加可选 bounded-retrieval-v1，旧节点显示降级；资料版本变化强制新原生上下文。全仓 282 项通过；隔离 PostgreSQL 11 项通过，含草稿/停用/跨项目/EDA 平台范围和上下文版本重置。真实当前模型工具回合及内部进程负载尚未验收，不可发布。
 - 批次导入：待实现清单版本、逐来源状态、激活/回滚和隔离处理验证。

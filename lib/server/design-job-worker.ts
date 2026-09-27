@@ -4,7 +4,7 @@ import { designMessages } from "@/lib/agent/design-prompt";
 import { designResultSchema } from "@/lib/agent/llm";
 import { HARDWARE_DESIGN_KNOWLEDGE } from "@/lib/agent/hardware-design-knowledge";
 import { claimDesign, finishDesign, saveDesignDiagnostics } from "./design-job-store";
-import { callLlm, LlmRequestError } from "./llm-client";
+import { callLlm, designRequestPolicy, LlmRequestError } from "./llm-client";
 import { runtimeLlm } from "./llm-settings";
 import { retrieveDesignKnowledge } from "./design-knowledge";
 import { retrievalEvidence } from "@/lib/agent/retrieval-payload";
@@ -37,12 +37,13 @@ export async function processNextDesign(deps = defaults, timeoutMs = DESIGN_MODE
       const config = await deps.runtimeLlm("design");
       if (!config) throw new LlmRequestError("尚未配置方案生成模型，请联系管理员", 503, "CONFIG_MISSING");
       diagnostics.model = config.model; diagnostics.modelRevision = config.revision; diagnostics.protocol = config.protocol;
+      diagnostics.requestPolicy = designRequestPolicy(config);
       await stage("retrieval");
       const retrieval = await deps.retrieveDesignKnowledge(job.userId, job.projectId, job.requirement);
       await stage("model");
       const { system, prompt } = designMessages(job.requirement, retrieval);
       diagnostics.network = {};
-      const text = await deps.callLlm(config, system, prompt, signal, Math.max(1, deadline - Date.now()), undefined, diagnostics.network);
+      const text = await deps.callLlm(config, system, prompt, signal, Math.max(1, deadline - Date.now()), undefined, diagnostics.network, { profile: "design-draft" });
       await stage("validation");
       let raw;
       try { raw = JSON.parse(text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "")); }
