@@ -6,6 +6,7 @@ import { createEmptyDocument } from '@/lib/eda/document';
 import { applyEditBatch } from '@/lib/eda/commands';
 import { exportKicadPcb, exportKicadSchematic } from '@/lib/eda/kicad';
 import { importNativeSchematic } from '@/lib/eda/kicad-import';
+import { summarizeCandidateChanges } from '@/lib/eda/candidate-review';
 import type { EditBatch, EditCommand, EdaDocument } from '@/lib/eda/types';
 import { apiPath } from '@/lib/utils';
 import styles from './agent-panel.module.css';
@@ -14,6 +15,7 @@ type Entry = { role: 'user' | 'agent'; text: string };
 type Proposal = { summary: string; model: string; batch: EditBatch; document: EdaDocument };
 type Capability = { agent: boolean };
 type Sources = { schematic: string; pcb: string };
+type SourceSnapshot = { projectId: string; sha256: string };
 
 function describeCommand(command: EditCommand, before: EdaDocument, after: EdaDocument): string {
   const reference = (id: string) => before.components.find(part => part.id === id)?.ref ?? after.components.find(part => part.id === id)?.ref ?? id;
@@ -39,6 +41,7 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
   const [title, setTitle] = useState('AI 原理图');
   const [history, setHistory] = useState<Entry[]>([]);
   const [draft, setDraft] = useState<EdaDocument | null>(null);
+  const [sourceSnapshot, setSourceSnapshot] = useState<SourceSnapshot | null>(null);
   const [proposal, setProposal] = useState<Proposal | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -78,9 +81,20 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
     if (!draft || !draft.components.length || busy) return;
     setBusy(true); setError('');
     try {
-      await onCreate({ schematic: exportKicadSchematic(draft), pcb: exportKicadPcb(draft) }, title.trim());
-      setHistory(current => [...current, { role: 'agent', text: '已创建并打开原生 KiCad 工程。后续新要求会作为新设计草稿，不会直接覆盖正在编辑的文件。' }]);
+      if (sourceSnapshot) {
+        const response = await fetch(apiPath(`/api/eda/desktop/${sourceSnapshot.projectId}`), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'snapshot' }) });
+        const snapshot = await response.json();
+        if (!response.ok) throw new Error(snapshot.error ?? `复核源工程失败 (${response.status})`);
+        if (typeof snapshot.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(snapshot.sha256)) throw new Error('无法验证源工程快照，候选工程未创建');
+        if (snapshot.sha256 !== sourceSnapshot.sha256) throw new Error('409 冲突：源工程已保存的原理图发生变化。请重新读取源工程并审阅草稿。');
+      }
+      const suffix = sourceSnapshot ? ` · 源 ${sourceSnapshot.projectId}` : '';
+      const prefix = sourceSnapshot ? '候选 · ' : '';
+      const projectName = `${prefix}${title.trim().slice(0, 80 - prefix.length - suffix.length)}${suffix}`;
+      await onCreate({ schematic: exportKicadSchematic(draft), pcb: exportKicadPcb(draft) }, projectName);
+      setHistory(current => [...current, { role: 'agent', text: sourceSnapshot ? '已创建并打开新的 KiCad 候选工程。源工程没有被覆盖。' : '已创建并打开原生 KiCad 工程。后续新要求会作为新设计草稿，不会直接覆盖正在编辑的文件。' }]);
       setDraft(null);
+      setSourceSnapshot(null);
     } catch (cause) { setError(cause instanceof Error ? cause.message : '创建原生工程失败'); }
     finally { setBusy(false); }
   };
@@ -92,21 +106,25 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
       const response = await fetch(apiPath(`/api/eda/desktop/${currentProjectId}`), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'snapshot' }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? `读取原理图失败 (${response.status})`);
+      if (typeof data.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(data.sha256)) throw new Error('源工程快照缺少有效的 SHA-256，草稿没有变化');
       const document = importNativeSchematic(data.schematic, data.netlist);
       setDraft(document); setProposal(null);
+      setSourceSnapshot({ projectId: currentProjectId, sha256: data.sha256 });
       setTitle(document.name.slice(0, 80));
       setHistory(current => [...current, { role: 'agent', text: '已读取当前工程的已保存原理图。接下来会在新草稿中修改；创建工程时会生成新 PCB，不覆盖原工程。' }]);
     } catch (cause) { setError(cause instanceof Error ? cause.message : '当前原理图不能安全读取，草稿没有变化'); }
     finally { setBusy(false); }
   };
   const reset = () => {
+    if (busy) return;
     if ((history.length || draft || proposal) && !window.confirm('清空当前 Agent 对话与尚未创建的设计草稿？已创建的 KiCad 工程不会删除。')) return;
-    setHistory([]); setDraft(null); setProposal(null); setPrompt(''); setError('');
+    setHistory([]); setDraft(null); setSourceSnapshot(null); setProposal(null); setPrompt(''); setError('');
   };
   const preview = proposal?.document ?? draft;
+  const changeSummary = proposal ? summarizeCandidateChanges(draft ?? createEmptyDocument(), proposal.document) : [];
 
   return <aside className={styles.panel} aria-label="AI 原理图 Agent">
-    <div className={styles.heading}><div><Sparkles size={18} /><strong>原理图 Agent</strong></div><button aria-label="新对话" title="新对话" onClick={reset}><RotateCcw size={15} /></button></div>
+    <div className={styles.heading}><div><Sparkles size={18} /><strong>原理图 Agent</strong></div><button aria-label="新对话" title="新对话" disabled={busy} onClick={reset}><RotateCcw size={15} /></button></div>
     <p className={styles.intro}>描述电路需求，Agent 生成可审阅的器件与连接；确认后创建并打开新的 KiCad 工程。</p>
     <div className={styles.capability}>{capability === null ? '正在检查模型…' : capability.agent ? '● 设计模型已接入' : '○ 设计模型未配置'} <button onClick={() => void refreshCapability().catch(() => setCapability({ agent: false }))}>刷新</button></div>
     {capability?.agent === false && <p className={styles.modelHelp}>请管理员到<a href={apiPath('/app/admin')}>模型设置</a>配置“设计模型”，完成后点刷新。</p>}
@@ -116,9 +134,9 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
       {history.map((entry, index) => <div key={index} className={`${styles.bubble} ${entry.role === 'user' ? styles.user : styles.agent}`}><small>{entry.role === 'user' ? '你' : 'Agent'}</small><p>{entry.text}</p></div>)}
       {busy && <div className={styles.thinking}>正在处理，请稍候…</div>}
     </div>
-    {proposal && <section className={styles.proposal} aria-label="待审阅修改"><strong>待审阅修改</strong><span>{proposal.model} · {proposal.batch.commands.length} 项修改</span><p>{proposal.summary}</p><ol className={styles.commandList}>{proposal.batch.commands.map((command, index) => <li key={index}>{describeCommand(command, draft ?? createEmptyDocument(), proposal.document)}</li>)}</ol><div className={styles.actions}><button onClick={() => setProposal(null)}>放弃</button><button className={styles.primary} onClick={accept}>加入设计草稿</button></div></section>}
+    {proposal && <section className={styles.proposal} aria-label="待审阅修改"><strong>待审阅修改</strong><span>{proposal.model} · {proposal.batch.commands.length} 项修改</span><p>{proposal.summary}</p><small>电路变化</small><ul className={styles.commandList}>{changeSummary.slice(0, 12).map((change, index) => <li key={index}>{change}</li>)}</ul>{changeSummary.length > 12 && <small>另有 {changeSummary.length - 12} 项变化</small>}<small>修改命令</small><ol className={styles.commandList}>{proposal.batch.commands.map((command, index) => <li key={index}>{describeCommand(command, draft ?? createEmptyDocument(), proposal.document)}</li>)}</ol><div className={styles.actions}><button onClick={() => setProposal(null)}>放弃</button><button className={styles.primary} onClick={accept}>加入设计草稿</button></div></section>}
     {preview && <section className={styles.preview} aria-label="设计草稿"><strong>设计草稿</strong><span>{preview.components.length} 个器件 · {preview.nets.length} 个网络</span><ul>{preview.components.slice(0, 18).map(item => <li key={item.id}>{item.ref} · {item.value}</li>)}</ul>{preview.components.length > 18 && <small>另有 {preview.components.length - 18} 个器件</small>}{preview.nets.length > 0 && <small>网络：{preview.nets.slice(0, 8).map(net => net.name).join('、')}</small>}</section>}
-    {draft && !proposal && <div className={styles.create}><label>新工程名称<input aria-label="Agent 新工程名称" value={title} maxLength={80} onChange={event => setTitle(event.target.value)} /></label><button className={styles.primary} disabled={busy || !draft.components.length || title.trim().length < 2} onClick={() => void create()}>创建并打开 KiCad 工程</button></div>}
+    {draft && !proposal && <div className={styles.create}>{sourceSnapshot && <small>源工程 {sourceSnapshot.projectId} · 将创建独立候选，创建前复核已保存原理图</small>}<label>新工程名称<input aria-label="Agent 新工程名称" value={title} maxLength={80} onChange={event => setTitle(event.target.value)} /></label><button className={styles.primary} disabled={busy || !draft.components.length || title.trim().length < 2} onClick={() => void create()}>{sourceSnapshot ? '创建并打开候选 KiCad 工程' : '创建并打开 KiCad 工程'}</button></div>}
     {error && <p className={styles.error} role="alert">{error}</p>}
     <div className={styles.composer}><label htmlFor="eda-agent-request">向 Agent 描述电路</label><textarea id="eda-agent-request" aria-label="向 Agent 描述电路" placeholder="你希望画什么原理图？请写明器件、供电、电气连接和约束。" maxLength={2000} value={prompt} onChange={event => setPrompt(event.target.value)} /><button className={styles.primary} disabled={busy || !capability?.agent || Boolean(proposal) || prompt.trim().length < 2} onClick={() => void ask()}><Send size={15} />生成修改提案</button>{proposal && <small>先审阅并处理当前提案，再继续对话。</small>}</div>
     <p className={styles.boundary}>可从空白草稿开始，或只读当前工程已保存的单页原理图。读取仅支持已验证的器件库与结构；新工程的 PCB 会重新生成。Agent 不覆盖当前文件。生成结果仍需检查 ERC、器件参数和硬件约束。</p>

@@ -4,6 +4,27 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-26 Task: 登录后公网 Agent 原理图连续验收
+
+- Goal: 使用已登录的正式网页验证真实模型能否按用户意图建图、连续改图、保存为原生工程，并检查 ERC/DRC 与源工程保护。
+- Evidence: `deepseek-v4-pro` 对 LED 初建、R1 改值、R2/D2 并联返回 6/1/5 条命令；5 器件/4 网络工程已保存并回读，KiCad 9.0.8 ERC 0。PCB DRC 报 6 项未连接/退出码 5。对原工程回读后仅改 R2，独立候选回读为 2kΩ、ERC 0，原工程回读仍为 1kΩ。
+- Boundary: 一次连续浏览器验收，不等于 `--runs 3` 的重复评估；未跑开发分支的自动拓扑/网表评估、自动布线或制造验证。详见 `docs/eda-cloud-acceptance-2026-09-26.md`。
+
+## 2026-09-26 Task: Agent 候选工程与自动布线适配器
+
+- Goal: 继续推进用户已确定的 AI 原理图修改与 PCB FreeRouting，保留真实验收证据。
+- Implementation: Agent 面板保留源工程及已保存原理图哈希，创建候选前复核源文件；审阅器展示器件、参数与引脚网络变化。评估脚本保存模型原始回复供解析失败复核。新增隔离的 FreeRouting DSN/SES 作业适配器、源快照/DRC/板结构校验及文档。
+- Validation: EDA 定向 114 通过、2 跳过；TypeScript、定向 ESLint、`git diff --check`、`NEXT_PUBLIC_BASE_PATH=/vibehard pnpm build` 通过。WSL KiCad 9.0.8 原生 DSN 导出 5,328 字节，板结构指纹保存/重载后相同。`evaluate-eda-agent.ts --runs 1` 因本地未配置设计模型退出 1，模型响应 0、ERC 0。
+- Boundary: 候选检查不是原工程的原子就地修改；FreeRouting 适配器未接入云端 worker 或 UI，未获得真实 jar 的有效 SES 回环证据。云端浏览器会话未登录，本次未完成线上三轮 Agent 验收；本次未发布生产。
+- Evidence: `docs/eda-agent-candidate.md`、`docs/eda-agent-evaluation.md`、`docs/eda-freerouting.md`。
+
+## 2026-09-26 Task: 原理图 Agent 工作流、三轮验收与模块接口
+
+- Goal: 不以“模型输出合法 JSON/ERC 0”代替用户需求验收；建立能重复检查建图与连续两轮改图的真实模型任务，并为团队后续交付的审核电路模块预留原生端口契约。
+- Implementation: 新增版本化三轮 LED 场景、确定性器件/参数/拓扑/保留评估器、真实 `proposeEdaEdit` + KiCad ERC 运行入口；提案、原始 ERC、原生图/网表与 SHA-256 写入私有目录。原生网表核对器件库身份、封装和所有受控引脚网络，偏离草稿则失败。模块包预检验证路径、哈希、审核元数据、单页层级标签和端口方向，返回 `nativeCheckRequired`。架构规格包括需求抽取、模块目录、候选版本、FreeRouting DSN/SES、立创/PDF 分级导入。
+- Validation: TDD 中模块预检五项、网表漏单引脚/身份替换用例先红后绿；最终 EDA 定向 97 通过/2 跳过，TypeScript、定向 ESLint 和带 `/vibehard` basePath 的生产构建通过。WSL KiCad 9.0.8 实际导出 LED `.net`，新解析器复核通过；该烟测图 ERC 仍有 3 项网格错误，不能算电路验收。本地真实模型入口一次运行：0 个模型请求成功、0 次原生 ERC，退出码 1；原因是本地设计模型未配置，Windows PATH 无可直接调用的 KiCad CLI，因此本轮没有新的模型能力通过结论。
+- Boundary: 结构预检不是模块获批；没有团队真实模块文件、原生多轮写回、FreeRouting、立创/PDF 自动导入，也没有发布生产。线上 9/26 单轮 LED 实测属此前证据。详见 `docs/eda-agent-evaluation.md` 和 `docs/eda-module-contract.md`。
+
 ## 2026-09-26 Task: 云端 KiCad 多账号隔离发布与真实模型验收
 
 - Goal: 让每个账号使用自己的 KiCad 工程和文件系统，多个账号可同时编辑各自工程；同工程多个窗口可重连。通过公网在真实服务上验证 Agent → 原生文件 → KiCad。

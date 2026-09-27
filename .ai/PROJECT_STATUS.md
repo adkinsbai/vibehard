@@ -1,5 +1,24 @@
 # 项目状态
 
+## 2026-09-26 公网已登录 Agent 连续验收
+
+- 正式站点 `/vibehard/eda` 的 `deepseek-v4-pro` 在一次浏览器会话中完成 LED 初建、R1 阻值修改、并联 R2/D2 支路新增：对应 6/1/5 条模型命令，最终 5 器件/4 网络。独立原生工程保存并回读成功；KiCad 9.0.8 ERC 0 项。PCB DRC 有 6 项未连接、退出码 5，不能称 PCB 已布线或 DRC 通过。
+- 从原工程已保存原理图回读后，模型只将 R2=1kΩ 改为 2kΩ，保存独立候选并回读确认，候选 ERC 0；原工程回读仍为 R2=1kΩ。完整证据和局限见 `docs/eda-cloud-acceptance-2026-09-26.md`。
+- 这是一次线上连续会话的人工验收，未运行开发分支 `--runs 3` 的重复评估、原生网表自动断言或 FreeRouting SES 回环。以下开发分支状态仍未部署，不应与正式站点混同。
+
+## 2026-09-26 Agent 候选版本与 FreeRouting 适配器（开发分支，未部署）
+
+- 从已保存的原生单页原理图读取 Agent 草稿时，保留源工程 ID 与 SHA-256；创建独立候选工程前重新快照，若已保存源文件改变则保留草稿并提示冲突。审阅区列出器件、参数与网络引脚变化。创建前复核是客户端检查，不能充当原工程就地写回或原子版本锁；受控库外与多页原生工程仍不能安全导入。
+- 新增 FreeRouting 作业适配器：显式文件清单复制到私有基线/候选目录，KiCad 9 导出 DSN，固定摘要的 Freerouting jar 产出 SES，再导入候选板；原生前后 DRC、板结构指纹与源文件哈希是采纳门槛。尚未接入云端 worker/API/界面，也没有真实 jar 的 SES 回环通过证据，不能称自动布线已可用。
+- Agent 评估脚本现在在私有忽略目录保存模型原始回复，解析失败仍留证。当时本地重跑 `--runs 1`：设计模型未配置，响应 0、有效提案 0、KiCad ERC 0，退出码 1。当时浏览器访问线上 `/vibehard/eda` 显示未登录；后续登录后的连续验收见本文首节。
+- 本地验证：EDA 定向 114 通过/2 跳过，TypeScript 检查、带 `/vibehard` basePath 的生产构建通过；FreeRouting 仅用 WSL KiCad 9.0.8 验证 DSN 导出及板指纹。发布与三轮真实模型验收待继续。
+
+## 2026-09-26 原理图 Agent 能力验收基线（开发分支，未部署）
+
+- `codex/eda-agent-workflow` 新增三轮真实模型验收入口：按用户要求生成 LED 电路、修改电阻值、保留原支路并增加第二支路。确定性评估检查器件/参数、必须/禁止引脚网络、无关电路保留；另运行原生 KiCad ERC 与导出网表核对器件身份、封装及实际引脚拓扑。提案、原始 ERC、原生图/网表和哈希写入 Git 忽略的私有目录。新增电路模块包的结构预检与端口映射接口，团队真实模块包、KiCad 原生审核及目录发布尚未完成。
+- 本机验证：EDA 定向 97 通过/2 跳过，TypeScript、定向 ESLint、带 `/vibehard` basePath 的生产构建通过；WSL KiCad 9.0.8 真实导出的 LED 网表经新解析器复核通过。Windows 进程 PATH 中没有可直接调用的 `kicad-cli`；真实模型入口运行一次因本地设计模型未配置在第一轮失败，模型成功 0、ERC 执行 0，本轮**没有新的模型画图通过证据**。线上既有单轮 LED 证据仍见 `docs/eda-cloud-acceptance-2026-09-26.md`，不能替代三轮验收。
+- 架构、测试与团队模块交付说明见 `docs/superpowers/specs/2026-09-26-eda-agent-native-workflow-design.md`、`docs/eda-agent-evaluation.md`、`docs/eda-module-contract.md`。FreeRouting、立创/PDF、原生多轮修改仍处于后续阶段；本次未发布生产。
+
 ## 2026-09-26 云端 KiCad / noVNC 已上线
 
 - 当前正式平台 release 为 `20260926-eda-grid-v1`；云端每 `(账号, 工程)` 独立 worker 与持久卷，同一工程多标签页共享自己的桌面。公网 `/vibehard/eda`、WebSocket/RFB、归属隔离、三账号并发、保存后重启恢复、真实 KiCad ERC/DRC 和 ZIP 已验收。没有多人共编工程的需求。
