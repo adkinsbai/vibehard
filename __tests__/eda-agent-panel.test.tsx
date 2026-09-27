@@ -9,7 +9,7 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 it('lets a user discuss a bounded circuit proposal and opens real native KiCad files only after acceptance', async () => {
   const component = createComponent('r0603', 1);
-  const fetcher = vi.fn().mockResolvedValueOnce(Response.json({ agent: true })).mockResolvedValueOnce(Response.json({ summary: '添加电阻 R1', model: 'test-model', references: [{ sourceSha256: 'a'.repeat(64), source: 'board.pdf', category: 'schematics', page: 2, excerpt: 'R1', reviewStatus: 'auto_approved_for_index', manualReview: false }], batch: { id: 'batch-1', baseRevision: 0, actor: 'agent', label: '添加电阻', commands: [{ type: 'addComponent', component }] } }));
+  const fetcher = vi.fn().mockResolvedValueOnce(Response.json({ agent: true })).mockResolvedValueOnce(Response.json({ summary: '添加电阻 R1', model: 'test-model', batch: { id: 'batch-1', baseRevision: 0, actor: 'agent', label: '添加电阻', commands: [{ type: 'addComponent', component }] } }));
   vi.stubGlobal('fetch', fetcher);
   const onCreate = vi.fn().mockResolvedValue(undefined);
   render(<AgentPanel onCreate={onCreate} />);
@@ -19,8 +19,6 @@ it('lets a user discuss a bounded circuit proposal and opens real native KiCad f
   const review = await screen.findByRole('region', { name: '待审阅修改' });
   expect(within(review).getByText(/添加 R1/)).toBeInTheDocument();
   expect(within(review).getByText(/新增器件 R1/)).toBeInTheDocument();
-  expect(within(review).getByText(/OSS 资料参考/)).toBeInTheDocument();
-  expect(within(review).getByText(/board.pdf.*第 2 页/)).toBeInTheDocument();
   expect(onCreate).not.toHaveBeenCalled();
   expect(fetcher.mock.calls[1][0]).toBe('/api/eda/agent');
   expect(JSON.parse(fetcher.mock.calls[1][1].body).document.components).toEqual([]);

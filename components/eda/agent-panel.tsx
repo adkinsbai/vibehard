@@ -12,8 +12,7 @@ import { apiPath } from '@/lib/utils';
 import styles from './agent-panel.module.css';
 
 type Entry = { role: 'user' | 'agent'; text: string };
-type KnowledgeReference = { sourceSha256: string; source: string; category: string; page: number; excerpt: string; reviewStatus: string; manualReview: boolean };
-type Proposal = { summary: string; model: string; batch: EditBatch; document: EdaDocument; references: KnowledgeReference[] };
+type Proposal = { summary: string; model: string; batch: EditBatch; document: EdaDocument };
 type Capability = { agent: boolean };
 type Sources = { schematic: string; pcb: string };
 type SourceSnapshot = { projectId: string; sha256: string };
@@ -69,7 +68,7 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
       if (!response.ok) throw new Error(data.error ?? `Agent 请求失败 (${response.status})`);
       const candidate = applyEditBatch(base, data.batch);
       setHistory(current => [...current, { role: 'user', text: request }, { role: 'agent', text: data.summary }]);
-      setProposal({ summary: data.summary, model: data.model, batch: data.batch, document: candidate, references: Array.isArray(data.references) ? data.references : [] });
+      setProposal({ summary: data.summary, model: data.model, batch: data.batch, document: candidate });
       setPrompt('');
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'Agent 生成失败'); }
     finally { setBusy(false); }
@@ -135,7 +134,7 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
       {history.map((entry, index) => <div key={index} className={`${styles.bubble} ${entry.role === 'user' ? styles.user : styles.agent}`}><small>{entry.role === 'user' ? '你' : 'Agent'}</small><p>{entry.text}</p></div>)}
       {busy && <div className={styles.thinking}>正在处理，请稍候…</div>}
     </div>
-    {proposal && <section className={styles.proposal} aria-label="待审阅修改"><strong>待审阅修改</strong><span>{proposal.model} · {proposal.batch.commands.length} 项修改</span><p>{proposal.summary}</p>{proposal.references.length > 0 && <div aria-label="资料库参考"><small>OSS 资料参考 · 自动索引，未经硬件审核</small><ul className={styles.commandList}>{proposal.references.map(item => <li key={`${item.sourceSha256}:${item.page}`}>{item.source} · 第 {item.page} 页 · {item.category}</li>)}</ul></div>}<small>电路变化</small><ul className={styles.commandList}>{changeSummary.slice(0, 12).map((change, index) => <li key={index}>{change}</li>)}</ul>{changeSummary.length > 12 && <small>另有 {changeSummary.length - 12} 项变化</small>}<small>修改命令</small><ol className={styles.commandList}>{proposal.batch.commands.map((command, index) => <li key={index}>{describeCommand(command, draft ?? createEmptyDocument(), proposal.document)}</li>)}</ol><div className={styles.actions}><button onClick={() => setProposal(null)}>放弃</button><button className={styles.primary} onClick={accept}>加入设计草稿</button></div></section>}
+    {proposal && <section className={styles.proposal} aria-label="待审阅修改"><strong>待审阅修改</strong><span>{proposal.model} · {proposal.batch.commands.length} 项修改</span><p>{proposal.summary}</p><small>电路变化</small><ul className={styles.commandList}>{changeSummary.slice(0, 12).map((change, index) => <li key={index}>{change}</li>)}</ul>{changeSummary.length > 12 && <small>另有 {changeSummary.length - 12} 项变化</small>}<small>修改命令</small><ol className={styles.commandList}>{proposal.batch.commands.map((command, index) => <li key={index}>{describeCommand(command, draft ?? createEmptyDocument(), proposal.document)}</li>)}</ol><div className={styles.actions}><button onClick={() => setProposal(null)}>放弃</button><button className={styles.primary} onClick={accept}>加入设计草稿</button></div></section>}
     {preview && <section className={styles.preview} aria-label="设计草稿"><strong>设计草稿</strong><span>{preview.components.length} 个器件 · {preview.nets.length} 个网络</span><ul>{preview.components.slice(0, 18).map(item => <li key={item.id}>{item.ref} · {item.value}</li>)}</ul>{preview.components.length > 18 && <small>另有 {preview.components.length - 18} 个器件</small>}{preview.nets.length > 0 && <small>网络：{preview.nets.slice(0, 8).map(net => net.name).join('、')}</small>}</section>}
     {draft && !proposal && <div className={styles.create}>{sourceSnapshot && <small>源工程 {sourceSnapshot.projectId} · 将创建独立候选，创建前复核已保存原理图</small>}<label>新工程名称<input aria-label="Agent 新工程名称" value={title} maxLength={80} onChange={event => setTitle(event.target.value)} /></label><button className={styles.primary} disabled={busy || !draft.components.length || title.trim().length < 2} onClick={() => void create()}>{sourceSnapshot ? '创建并打开候选 KiCad 工程' : '创建并打开 KiCad 工程'}</button></div>}
     {error && <p className={styles.error} role="alert">{error}</p>}
