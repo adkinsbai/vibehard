@@ -15,11 +15,11 @@ import re
 import subprocess
 import sys
 import tempfile
+import fcntl
 import zipfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
 
-import pypdfium2 as pdfium
 
 
 RAW_STATE = Path('/private/tmp/vibehard-esp32-oss-Ox80pR/batch-state.json')
@@ -37,6 +37,7 @@ SECRET_PATTERNS = [
     re.compile(r'\bsk-[a-z0-9_-]{20,}\b', re.I),
     re.compile(r'(?:api[_-]?key|access[_-]?token|password|passwd|secret)\s*[:=]\s*["\']?[^\s"\'<>]{12,}', re.I),
 ]
+INJECTION_PATTERN = re.compile(r'ignore (?:all |any |the )?(?:previous|system) instructions|忽略.{0,8}(?:系统|之前).{0,4}指令|<\|(?:system|im_start)\|>', re.I)
 
 
 def digest_bytes(data):
@@ -121,12 +122,23 @@ def source_records(state, include_text):
         if parent['validation'].startswith('quarantine'):
             continue
         relative = parent['paths'][0]
+        if not safe_zip_name(relative):
+            raise RuntimeError('Unsafe source path')
         local = SOURCE_ROOT / relative
+        if not local.resolve().is_relative_to(SOURCE_ROOT.resolve()) or local.is_symlink() or not local.is_file():
+            raise RuntimeError('Source escaped approved root or is not a regular file')
+        if local.stat().st_size != parent['bytes'] or digest_file(local) != parent['sha256']:
+            raise RuntimeError('Raw source hash mismatch')
         if parent['mode'] == 'pdf':
             yield {'parent': parent, 'relative': relative, 'local': local, 'kind': 'direct'}
+        elif parent['mode'] == 'text' and include_text and 0 < parent['bytes'] <= 250_000:
+            yield {'parent': parent, 'relative': relative, 'local': local, 'kind': 'direct_text', 'bytes': parent['bytes']}
         elif parent['mode'] == 'archive' and relative.lower().endswith('.zip'):
             try:
                 with zipfile.ZipFile(local) as archive:
+                    if len(archive.infolist()) > 10000:
+                        raise RuntimeError('Archive entry budget exceeded')
+                    expanded = 0
                     for entry in archive.infolist():
                         if entry.is_dir():
                             continue
@@ -135,9 +147,13 @@ def source_records(state, include_text):
                         if not is_pdf and not is_text:
                             continue
                         if (not safe_zip_name(entry.filename) or entry.flag_bits & 1 or
+                                (entry.external_attr >> 16) & 0o170000 == 0o120000 or
                                 entry.file_size > (MAX_NESTED_PDF_BYTES if is_pdf else 250_000) or
                                 (entry.compress_size and entry.file_size / entry.compress_size > MAX_ARCHIVE_EXPANSION)):
                             continue
+                        expanded += entry.file_size
+                        if expanded > 512 * 1024 * 1024:
+                            raise RuntimeError('Archive expansion budget exceeded')
                         yield {'parent': parent, 'relative': relative + '!' + entry.filename,
                                'local': local, 'kind': 'zip_pdf' if is_pdf else 'zip_text', 'entry': entry.filename,
                                'bytes': entry.file_size}
@@ -175,6 +191,7 @@ def ocr_pages(pdf_path, page_numbers):
 
 
 def read_pdf(source, perform_ocr):
+    import pypdfium2 as pdfium
     local = source['local']
     parent = source['parent']
     if parent['sha256'] not in VERIFIED_PARENTS:
@@ -209,6 +226,8 @@ def read_pdf(source, perform_ocr):
 
     source_sha = digest_bytes(pdf_bytes) if pdf_bytes is not None else parent['sha256']
     with pdfium.PdfDocument(pdf_input) as document:
+        if len(document) > 3000:
+            raise RuntimeError('PDF page budget exceeded')
         pages = []
         total_chars = 0
         for number in range(1, len(document) + 1):
@@ -262,9 +281,12 @@ def read_text(source):
         if local.stat().st_size != parent['bytes'] or digest_file(local) != parent['sha256']:
             raise RuntimeError('Raw archive changed since OSS upload')
         VERIFIED_PARENTS.add(parent['sha256'])
-    with zipfile.ZipFile(local) as archive:
-        with archive.open(source['entry']) as stream:
-            payload = stream.read(250_001)
+    if source['kind'] == 'direct_text':
+        payload = local.read_bytes()
+    else:
+        with zipfile.ZipFile(local) as archive:
+            with archive.open(source['entry']) as stream:
+                payload = stream.read(250_001)
     if len(payload) != source['bytes'] or len(payload) > 250_000:
         raise RuntimeError('Nested text exceeded declared size')
     try:
@@ -282,6 +304,10 @@ def review_document(source, sha256, pages, ocr_needed, ocr_attempted):
     flags = []
     if any(pattern.search(text) for pattern in SECRET_PATTERNS):
         flags.append('possible_secret')
+    if INJECTION_PATTERN.search(text):
+        flags.append('possible_prompt_injection')
+    if ocr_attempted < ocr_needed:
+        flags.append('ocr_incomplete')
     if meaningful_chars(text) < 120:
         flags.append('insufficient_text')
     if sum(1 for page in pages if meaningful_chars(page['text']) >= 30) == 0:
@@ -317,6 +343,11 @@ def process(limit, perform_ocr, include_text):
     if state.get('schema') != 'vibehard-oss-raw-batch/v1' or not state.get('manifestUploaded'):
         raise RuntimeError('Verified raw OSS batch is required')
     OUTPUT_ROOT.mkdir(mode=0o700, parents=True, exist_ok=True)
+    snapshot = OUTPUT_ROOT / 'input-manifest.json'
+    if snapshot.exists() and json.loads(snapshot.read_text()) != state:
+        raise RuntimeError('Batch input is immutable; use a new output directory')
+    if not snapshot.exists():
+        atomic_json(snapshot, state)
     count = 0
     summary = Counter()
     seen_sources = set()
@@ -328,6 +359,8 @@ def process(limit, perform_ocr, include_text):
         target = OUTPUT_ROOT / 'documents' / f'{stable_key}.json'
         if target.exists():
             document = json.loads(target.read_text())
+            if document['parentSha256'] != source['parent']['sha256'] or document['rawBatchId'] != state['batchId']:
+                raise RuntimeError('Resume provenance mismatch')
             if perform_ocr and document.get('ocrAttemptedPages', 0) < document['ocrNeededPages']:
                 pass
             else:
@@ -339,7 +372,7 @@ def process(limit, perform_ocr, include_text):
             break
         try:
             sha256, pages, ocr_needed, ocr_attempted = (
-                read_text(source) if source['kind'] == 'zip_text' else read_pdf(source, perform_ocr))
+                read_text(source) if source['kind'] in ('zip_text', 'direct_text') else read_pdf(source, perform_ocr))
             document = review_document(source, sha256, pages, ocr_needed, ocr_attempted)
             atomic_json(target, document)
             summary[document['review']['status']] += 1
@@ -355,8 +388,9 @@ def process(limit, perform_ocr, include_text):
                                   'quarantined': summary['quarantine']}), flush=True)
         except Exception as error:
             summary['failed'] += 1
-            print(json.dumps({'failed': source['relative'], 'errorType': type(error).__name__,
-                              'error': str(error)[:160]}, ensure_ascii=False), file=sys.stderr, flush=True)
+            atomic_json(OUTPUT_ROOT / 'failures' / f'{stable_key}.json', {'sourcePath': source['relative'], 'parentSha256': source['parent']['sha256'], 'errorCode': type(error).__name__, 'status': 'failed'})
+            print(json.dumps({'failed': source['relative'], 'errorType': type(error).__name__}, ensure_ascii=False), file=sys.stderr, flush=True)
+    atomic_json(OUTPUT_ROOT / 'processing-status.json', {'batchId': state['batchId'], 'summary': dict(summary), 'sourceCandidates': len(seen_sources), 'complete': not limit and not summary['failed']})
     print(json.dumps({'summary': dict(summary), 'newlyProcessed': count,
                       'sourceCandidates': len(seen_sources)}, ensure_ascii=False), flush=True)
 
@@ -366,5 +400,13 @@ if __name__ == '__main__':
     parser.add_argument('--limit', type=int, default=0)
     parser.add_argument('--ocr', action='store_true')
     parser.add_argument('--include-text', action='store_true')
+    parser.add_argument('--raw-state', type=Path, required=True)
+    parser.add_argument('--source-root', type=Path, required=True)
+    parser.add_argument('--output-root', type=Path, required=True)
+    parser.add_argument('--ocr-binary', type=Path, default=OCR_BINARY)
     options = parser.parse_args()
-    process(options.limit, options.ocr, options.include_text)
+    RAW_STATE, SOURCE_ROOT, OUTPUT_ROOT, OCR_BINARY = options.raw_state, options.source_root, options.output_root, options.ocr_binary
+    OUTPUT_ROOT.mkdir(mode=0o700, parents=True, exist_ok=True)
+    with (OUTPUT_ROOT / '.process.lock').open('w') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        process(options.limit, options.ocr, options.include_text)

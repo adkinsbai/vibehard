@@ -1,9 +1,12 @@
-import { chmodSync, existsSync } from "node:fs";
+import { chmodSync, existsSync, readFileSync } from "node:fs";
+import { z } from 'zod';
 import { createRetrievalServer, indexPolicy } from "@/lib/server/retrieval-daemon";
 import { closeIndexedKnowledge, searchIndexedKnowledge } from "@/lib/server/oss-knowledge-index";
 
 async function main() {
-  const index = process.env.VIBEHARD_OSS_INDEX_PATH; const socket = process.env.VIBEHARD_RETRIEVAL_SOCKET;
+  const control = process.env.VIBEHARD_INDEX_CONTROL;
+  const index = control ? z.object({ path: z.string().regex(/^\/opt\/vibehard\/knowledge\/[A-Za-z0-9/_-]+\/knowledge-fts\.sqlite$/) }).parse(JSON.parse(readFileSync(control, 'utf8'))).path : process.env.VIBEHARD_OSS_INDEX_PATH;
+  const socket = process.env.VIBEHARD_RETRIEVAL_SOCKET;
   if (!index || !socket || !socket.startsWith("/") || !socket.endsWith(".sock")) throw new Error("Missing private index/socket configuration");
   // Verify/warm before accepting traffic. No public listening address exists.
   await searchIndexedKnowledge("indexwarmup", index); indexPolicy(index);

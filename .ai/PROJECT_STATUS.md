@@ -1,5 +1,7 @@
 # 项目状态
 
+- 2026-09-27：按已批准计划，PR #3/#4/#5 已合并 GitHub 默认分支；可靠性（含 0007）与统一检索已分阶段上线，最终 12/12 隔离真实方案请求通过；正式 Agent/方案/EDA 真实验收及跨用户权限通过。第三阶段受控入库候选实现完成，待预检发布；不新增资料。主工作区未提交文档未动。详见 docs/current-status.md 和 docs/controlled-knowledge-ingestion.md。
+
 ## 2026-09-27 方案可靠性实施中（未发布）
 
 - PR #3 合并 EDA/RAG 基线到默认分支 `6d2ba12`；后续位于 `codex/design-reliability`，主工作区未提交文档保留。

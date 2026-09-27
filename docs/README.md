@@ -1,5 +1,7 @@
 # 文档索引
 
+- [管理员受控批量入库](controlled-knowledge-ingestion.md)：不可变清单、离线 OCR/切分、隔离评估、索引版本/停用/回滚；无用户大文件直传。
+
 - [方案可靠性与统一检索交付](reliability-knowledge-delivery-20260927.md)：已批准的阶段边界、任务诊断、隔离模型验收与发布门槛；实施中。
 
 - [OSS 原件归档与检索准备](oss-knowledge-import.md)：ESP32-S3 资料包 286 份去重原件已私有上传并校验；记录清单、隔离 ZIP 与后续解析/索引边界。

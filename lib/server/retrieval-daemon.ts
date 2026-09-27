@@ -5,10 +5,10 @@ import { z } from "zod";
 import { searchIndexedKnowledge } from "./oss-knowledge-index";
 
 export function indexPolicy(indexPath: string) {
-  const meta = z.object({ sqliteSha256: z.string().regex(/^[a-f0-9]{64}$/) }).parse(JSON.parse(readFileSync(`${indexPath}.meta.json`, "utf8")));
+  const meta = z.object({ sqliteSha256: z.string().regex(/^[a-f0-9]{64}$/), manifestSha256: z.string().optional() }).parse(JSON.parse(readFileSync(`${indexPath}.meta.json`, "utf8")));
   const file = process.env.VIBEHARD_DISABLED_SOURCES_FILE;
   const disabled = file ? z.array(z.string().regex(/^[a-f0-9]{64}$/)).max(10000).parse(JSON.parse(readFileSync(file, "utf8"))) : [];
-  return { disabled: new Set(disabled), revision: createHash("sha256").update(JSON.stringify([meta.sqliteSha256, [...disabled].sort()])).digest("hex") };
+  return { disabled: new Set(disabled), revision: createHash("sha256").update(JSON.stringify([meta.sqliteSha256, meta.manifestSha256 ?? null, [...disabled].sort()])).digest("hex") };
 }
 export function createRetrievalServer(indexPath: string, search = searchIndexedKnowledge, policy = indexPolicy) {
   let active = 0;
