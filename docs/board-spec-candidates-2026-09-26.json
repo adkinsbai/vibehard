@@ -1,0 +1,2096 @@
+{
+  "generatedAt": "2026-09-26",
+  "warning": "Automatic triage only; not approved for release",
+  "boards": [
+    {
+      "name": "ESP32-S3-A7670E-4G",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-A7670E-4G",
+      "sourceSha256": "200efcbb7468c21500d2692038bf7c8fc1cb8e1e98e818b79c7dcc29a239b144",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "4G Cat-1",
+        "GNSS 定位",
+        "SD 卡槽",
+        "电池管理"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "4G",
+          "section": "introduction",
+          "excerpt": "ESP32-S3-A7670E-4G The ESP32-S3-A7670E-4G (hereinafter referred to as the development board) is a versatile, high-performance microcontroller"
+        },
+        {
+          "label": "GNSS",
+          "section": "Hardware Description​",
+          "excerpt": "served GPIOs, allowing flexible configuration for I2C / SPI and other peripherals Onboard GNSS IPEX1 connector (㉑) Onboard microphone and speaker interfaces, supporting call functionality (㉝, ㉞)"
+        },
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "It features an onboard A7670E 4G communication module, a universal OV camera interface, a TF card slot, an RGB LED, an 18650 battery holder, a battery voltage measurement IC, and a solar charging interf"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "introduction",
+          "excerpt": "designed by Waveshare. It features an onboard A7670E 4G communication module, a universal OV camera interface, a TF card slot, an RGB LED, an 18650 battery holder, a battery voltage measurement IC, and a solar"
+        },
+        {
+          "label": "RGB LED",
+          "section": "introduction",
+          "excerpt": "board A7670E 4G communication module, a universal OV camera interface, a TF card slot, an RGB LED, an 18650 battery holder, a battery voltage measurement IC, and a solar charging interface, among o"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-SIM7670G-4G",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-SIM7670G-4G",
+      "sourceSha256": "ad99473427144ace8a9421b677a76d2321ae6ee4cfa44a61836015f8e9349db0",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "4G Cat-1",
+        "GNSS 定位",
+        "SD 卡槽",
+        "电池管理"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "4G",
+          "section": "introduction",
+          "excerpt": "ESP32-S3-SIM7670G-4G The ESP32-S3-SIM7670G-4G (hereinafter referred to as the development board) is a versatile, high-performance microcontroller"
+        },
+        {
+          "label": "GNSS",
+          "section": "Hardware Description​",
+          "excerpt": "served GPIOs, allowing flexible configuration for I2C / SPI and other peripherals Onboard GNSS IPEX1 connector (㉑) Onboard DIP switches to control power for the Camera, USB HUB, and 4G module (㉚"
+        },
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": " features an onboard SIM7670G 4G communication module, a universal OV camera interface, a TF card slot, an RGB LED, an 18650 battery holder, a battery voltage measurement IC, and a solar charging interf"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "introduction",
+          "excerpt": "signed by Waveshare. It features an onboard SIM7670G 4G communication module, a universal OV camera interface, a TF card slot, an RGB LED, an 18650 battery holder, a battery voltage measurement IC, and a solar"
+        },
+        {
+          "label": "RGB LED",
+          "section": "introduction",
+          "excerpt": "ard SIM7670G 4G communication module, a universal OV camera interface, a TF card slot, an RGB LED, an 18650 battery holder, a battery voltage measurement IC, and a solar charging interface, among o"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-AMOLED-1.91",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-AMOLED-1.91",
+      "sourceSha256": "8ef8d43e2deca3a5208f49a8818e84ad0995c3be445d82f5ac1e366a1b24e049",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "mmunicate with the touch chip, supporting 5-point touch and interrupt output Onboard IMU, TF card slot; the appearance is in the form of a development board, exposing a large number of GPIO, making it s"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-1.32",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.32",
+      "sourceSha256": "c8d77195ccf347e020a41c31ff03a4685e5b2fb3cbc2f83bdfb85eaf7ff471e1",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "扬声器",
+        "电池管理",
+        "触摸屏",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "音频编解码芯片",
+          "section": "Features​",
+          "excerpt": " development Onboard 3.7V MX1.25 lithium battery recharge/discharge header. Integrates an ES8311 low-power audio codec chip, supporting high-quality audio input and output for various applications"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": "on Hold the BOOT button and power on the device again to enter download mode. MX1.25 2PIN Lithium Battery Header For connecting a lithium battery, enabling battery-powered operation. MX1.25 2PIN Speaker Header Au"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-1.43",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.43",
+      "sourceSha256": "a14a3a1dbd663237ca4b25b9c24612b686c9a1399b4e382c443301626be241c9",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "display uses QSPI interface, touch uses I2C interface, capacitive touch Onboard RTC, IMU, TF card slot; exposes I2C and UART buses, as well as USB_N and USB_P, making it suitable for various application"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "ESP32-S3R8 16MB Flash QMI8658 IMU attitude sensor PCF85063 RTC clock chip 3.7V Lithium battery header TF card slot (bottom side) RTC battery header I2C interf"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Onboard Resources​",
+          "excerpt": "ESP32-S3R8 16MB Flash QMI8658 IMU attitude sensor PCF85063 RTC clock chip 3.7V Lithium battery header TF card slot (bottom side) "
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": "ESP32-S3R8 16MB Flash QMI8658 IMU attitude sensor PCF85063 RTC clock chip 3.7V Lithium battery header TF card slot (bottom side) RTC battery header I2C interface Charging indicator Type-C port Power in"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-1.43C",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.43C",
+      "sourceSha256": "fed544e429bb38286c3117578a96fc38afb83a91b6318506a5154df03958bace",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "ntrol chip, and integrates a 1.43inch capacitive touch high-definition AMOLED display, an audio codec chip, power management, and various other functional modules. It is designed for prototyping and functio"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "t, ensuring a high-quality external playback experience ES8311 Low-power audio codec chip ES7210 Echo Cancellation Chip Used for echo cancellation to improve audio capture accuracy Screen Interfac"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "tton for custom functions, convenient for custom function development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Exposes 1-ch I2C, 1-ch USB and 1-ch UART pads for external devices connection "
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-1.64",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.64",
+      "sourceSha256": "25e126d5125abb2fd2202a5fbd2b8676c537883969574b340595f1e3467167d3",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "SD 卡槽",
+        "六轴 IMU",
+        "电池管理",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "LED capacitive touch display (280×456) with 16.7M color support, along with a 6-axis IMU, TF card slot, and Lithium battery charging functionality, making it ideal for rapid prototyping and embedded HMI"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "ed: V1 uses LCD_CS = GPIO9, IMU_INT1 = GPIO46; V2 uses LCD_CS = GPIO46, IMU_INT1 = GPIO9. QMI8658 interrupt pin connected to ESP32 GPIO via resistor, with new IMU_INT2 = GPIO17. BOOT button circuit"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "ch display (280×456) with 16.7M color support, along with a 6-axis IMU, TF card slot, and Lithium battery charging functionality, making it ideal for rapid prototyping and embedded HMI applications. If you are l"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-1.75",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.75",
+      "sourceSha256": "f1e701d987139d91d53fe9e4a31f18324ccf6ccf4a23ff5ebb772c13689b0ce1",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "GNSS 定位",
+        "RTC 时钟",
+        "SD 卡槽",
+        "六轴 IMU",
+        "扬声器",
+        "电源管理",
+        "触摸屏",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Hardware Description​",
+          "excerpt": "ernal device connection and debugging, allowing flexible peripheral configuration Onboard TF card slot for storage expansion, fast data transfer, and flexibility, suitable for data logging and media pla"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Hardware Description​",
+          "excerpt": "ccelerometer, 3-axis gyroscope) for motion posture detection, step counting, etc. Onboard PCF85063 RTC chip powered by AXP2101 with battery connection for uninterrupted power supply Onboard PWR and "
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "mpact size, it features a 1.75inch capacitive touch AMOLED screen, power management chip, 6-axis IMU sensor (3-axis accelerometer and 3-axis gyroscope), RTC, TF slot, microphone, speaker and various o"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "c antenna Type-C Interface ESP32-S3 USB interface for program flashing and serial logging ES7210 Echo cancellation algorithm chip, for reducing echo and enhancing audio capture accuracy MX1.25 Lit"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Hardware Description​",
+          "excerpt": "R and BOOT side buttons, configurable for custom function development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard 8Pin header, providing 3 GPIOs and 1 UART for external device connecti"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-1.75C",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.75C",
+      "sourceSha256": "d684d4f188d864bd06c9908b20744c20aa6060afe63e5492bed3a9c63fc0e1b8",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "扬声器",
+        "电池管理",
+        "电源管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "gh-definition capacitive AMOLED touchscreen, a highly integrated power management chip, a six-axis sensor (accelerometer + gyroscope), RTC, a low-power audio codec chip with echo cancellation circuitry, a "
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "ed power management chip, a six-axis sensor (accelerometer + gyroscope), RTC, a low-power audio codec chip with echo cancellation circuitry, a built-in speaker, and space for a battery, providing robust sup"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "oard Antenna Supporting 2.4GHz Wi-Fi (802.11 b/g/n) and Bluetooth 5 (LE) Screen Interface ES7210 Echo Cancellation Algorithm Chip Used to eliminate echoes and improve audio capture accuracy ES8311"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "efficient power management, supporting multiple voltage outputs, integrating charging and battery management functions, while optimizing battery lifespan"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-1.8",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.8",
+      "sourceSha256": "0a92790dae3f916cf97203f6ce86fb988e9103a3ed9995f4cd7d3e478d084109",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "SD 卡槽",
+        "六轴 IMU",
+        "扬声器",
+        "电源管理",
+        "触摸屏",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Hardware Description​",
+          "excerpt": "ecting external devices and debugging, allowing flexible peripheral configuration Onboard TF card slot for storage expansion, fast data transfer, and flexibility, suitable for data logging and media pla"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Hardware Description​",
+          "excerpt": "ccelerometer, 3-axis gyroscope) for motion posture detection, step counting, etc. Onboard PCF85063 RTC chip, powered by Lithium Batt through AXP2101 chip for uninterrupted power supply, with reserve"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "ompact size, it features a 1.8inch capacitive touch AMOLED screen, power management chip, 6-axis IMU sensor (3-axis accelerometer and 3-axis gyroscope), RTC, TF slot, microphone, speaker and various o"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "roscope PCF85063 RTC real-time clock chip AXP2101 Highly integrated power management chip ES8311 Audio codec, driving microphone input and speaker output via I²S interface Speaker Onboard audio ou"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Hardware Description​",
+          "excerpt": "R and BOOT side buttons, configurable for custom function development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Exposes 7 GPIO pins, 1 I2C, 1 UART, and 1 USB solder pad for connecting extern"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-2.06",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-2.06",
+      "sourceSha256": "e35f61f1b615a32f74743f066751b6bd19af63d71aaf691dbd4b316eed930310",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "SD 卡槽",
+        "六轴 IMU",
+        "电源管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "itive touch AMOLED display, a 6-axis IMU, an RTC, an audio codec, power management, and a TF card slot. It comes with a custom case and a detachable strap, making it ideal for wearable device prototypin"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "ccelerometer, 3-axis gyroscope) for motion posture detection, step counting, etc. Onboard PCF85063 RTC chip, powered by the AXP2101 with battery backup for uninterrupted operation Onboard PWR and BO"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "e ESP32-S3R8 microcontroller, it integrates a 2.06inch capacitive touch AMOLED display, a 6-axis IMU, an RTC, an audio codec, power management, and a TF card slot. It comes with a custom case and a de"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "R and BOOT side buttons, configurable for custom function development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard TF card slot, providing expanded storage, fast data transfer, and flex"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-2.16",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-2.16",
+      "sourceSha256": "8a2978377a9dcdbf5913d1332e71cfe423c636c1b483576489817e01f7d22c8e",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "电源管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Onboard Resources​",
+          "excerpt": "IPEX 1 Antenna Connector Can be switched to an external antenna by changing the resistors TF card slot Dual-microphone Design Combined with echo cancellation circuitry for higher quality audio capture G"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "nboard 2.16inch capacitive HD AMOLED screen, a highly integrated power management chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), an RTC, a low-power audio codec chip, and echo cancell"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "ement chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), an RTC, a low-power audio codec chip, and echo cancellation circuitry, facilitating development and integration into end products. If yo"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": " and Bluetooth 5 (LE) Type-C Port ESP32-S3 USB port for programming and log output MX1.25 lithium battery header MX1.25 2PIN connector for connecting a 3.7V lithium battery, supports charging and discharging IPEX"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-AMOLED-2.41",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-2.41",
+      "sourceSha256": "67e24d8ad6f621b23ea1610fd14a4bc0eb4d33a6a6bec70615f3df7638da02b1",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "SD 卡槽",
+        "六轴 IMU",
+        "电池管理",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "rd features include a 2.41inch AMOLED capacitive touch screen (600×450), RTC, 6-axis IMU, TF card slot, and lithium battery charging capability, with UART, GPIO, I2C, and USB interfaces broken out. If y"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "d Bluetooth SoC, running at 240 MHz, stacked with 8 MB PSRAM W25Q128JVSIQ 16 MB NOR Flash PCF85063 RTC clock chip QMI8658 6-axis IMU includes a 3-axis gyroscope and a 3-axis accelerometer RM690B0 AM"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "Flash. Onboard features include a 2.41inch AMOLED capacitive touch screen (600×450), RTC, 6-axis IMU, TF card slot, and lithium battery charging capability, with UART, GPIO, I2C, and USB interfaces br"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "e a 2.41inch AMOLED capacitive touch screen (600×450), RTC, 6-axis IMU, TF card slot, and lithium battery charging capability, with UART, GPIO, I2C, and USB interfaces broken out. If you are looking for: Coding "
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LCD-0.85",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LCD-0.85",
+      "sourceSha256": "9e1b754f16a9dde8526e527eda5279cb820e519fe598f298437955cd2d100976",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "电池管理",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "rnal devices connection and debugging, enabling flexible peripheral configuration Onboard TF card slot supporting storage expansion and high-speed data transfer, facilitating functions like data logging"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "pherals such as a 0.85inch capacitive LCD screen, a lithium battery charging chip, and an audio codec chip, making it convenient for developers to quickly prototype products and develop embedded application"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "dio power amplifier chip ES8311 Audio codec chip Battery charge/discharge management chip ES7210 PLUS Button PWR Power Button Controls power on/off and supports custom functions BOOT Button used f"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "ctor and is equipped with onboard peripherals such as a 0.85inch capacitive LCD screen, a lithium battery charging chip, and an audio codec chip, making it convenient for developers to quickly prototype products"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LCD-1.9",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LCD-1.9",
+      "sourceSha256": "b45c1dafa96bee27e404c6065db8662362dd3a80b63f34d95fe8c46853054968",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "SD 卡槽",
+        "六轴 IMU",
+        "电容触摸",
+        "电池管理"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "ications such as LVGL. It includes onboard peripherals such as a QMI8658 6-axis sensor, a TF card slot, and a lithium battery charging circuit. Additionally, it provides Pico-compatible pin headers for "
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "oth operation of GUI applications such as LVGL. It includes onboard peripherals such as a QMI8658 6-axis sensor, a TF card slot, and a lithium battery charging circuit. Additionally, it provides Pi"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "L. It includes onboard peripherals such as a QMI8658 6-axis sensor, a TF card slot, and a lithium battery charging circuit. Additionally, it provides Pico-compatible pin headers for enhanced compatibility and ex"
+        },
+        {
+          "label": "RGB LED",
+          "section": "Onboard Resources​",
+          "excerpt": "cator Turns off when fully charged BOOT Button For program download or entering boot mode WS2812 (on the back, non-touch version only) RGB LED, supports colorful lighting effects QMI8658 (on the b"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LCD-2",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LCD-2",
+      "sourceSha256": "2168ce3cfe05274981ddc85d759e4a9a641ebd24841b9a7846667c2aaac46395",
+      "sourceStatus": "exact",
+      "oldHardware": [],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ype-C port for power supply, downloading, and debugging, facilitating development Onboard TF card slot for external storage of images or files 22 GPIOs brought out for flexible peripheral configuration "
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "arly Built-in ST7789T3 driver chip communicating via SPI, consuming few GPIO pins Onboard QMI8658 6-axis IMU (3-axis accelerometer and 3-axis gyroscope) Onboard 3.7V MX1.25 lithium battery charge/d"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "Features​",
+          "excerpt": "ge of images or files 22 GPIOs brought out for flexible peripheral configuration On-board camera interface, compatible with mainstream cameras such as OV2640 and OV5640, suitable for image and video capture"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "nboard QMI8658 6-axis IMU (3-axis accelerometer and 3-axis gyroscope) Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard USB Type-C port for power supply, downloading, and debugging, facilita"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LCD-2.8",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LCD-2.8",
+      "sourceSha256": "afd19783cdd0d72eae6062f041850f547aee02fa6ac519a8c6044cf691ea3a59",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "egrated full-speed USB serial port Onboard speaker, QMI8658 6-axis IMU, RTC clock sensor, TF card slot, and battery charging management module Supports flexible clock control and various power modes for"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "240MHz 16MB Flash QST Attitude Sensor QMI8658 (6-axis gyroscope + accelerometer) RTC Chip PCF85063 RTC clock PCM5101 Audio Decoder Chip Amplifier Chip Volume Adjustment Knob Battery Charging Managem"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "ART, I2C, and some I/O interfaces; integrated full-speed USB serial port Onboard speaker, QMI8658 6-axis IMU, RTC clock sensor, TF card slot, and battery charging management module Supports flexibl"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": " USB serial port Onboard speaker, QMI8658 6-axis IMU, RTC clock sensor, TF card slot, and battery charging management module Supports flexible clock control and various power modes for low-power scenario"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LCD-2.8B",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LCD-2.8B",
+      "sourceSha256": "69992bb28fc796f91bf1be816e145d1e588f1ddae5b00d7d625d13ccb9a4991d",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "aces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power mode"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "rd Ceramic Antenna TCA9554PWR GPIO expander chip, all pins used, not brought out RTC Chip PCF85063 RTC clock MP1605GTF-Z Power module, current 2A (MAX) Battery Charging Management Chip Buzzer TF Car"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "Exposes UART, I2C, and some I/O interfaces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports fl"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power modes for low-power sc"
+        },
+        {
+          "label": "蜂鸣器",
+          "section": "Onboard Resources​",
+          "excerpt": "063 RTC clock MP1605GTF-Z Power module, current 2A (MAX) Battery Charging Management Chip Buzzer TF Card Slot (on the back) BOOT Button RESET Button IPEX1 Connector Switching to use the external a"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LCD-2.8C",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LCD-2.8C",
+      "sourceSha256": "8f65b01c88639c76e7c1daec44a7a46110912e9bee4c469f3df2fa31de21cbc6",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "aces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power mode"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "matic download circuit, allowing program flashing without extra steps 16MB Flash RTC Chip PCF85063 RTC clock Battery Charging Management Chip ME6217C33M5G Low dropout LDO, current (Max) 800mA USB Ty"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "Exposes UART, I2C, and some I/O interfaces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports fl"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power modes for low-power sc"
+        },
+        {
+          "label": "蜂鸣器",
+          "section": "Onboard Resources​",
+          "excerpt": "terface is connected USB TO UART Type-C Port For programming, debugging, and power supply Buzzer Charging Indicator When a system battery is connected, it stays on while charging and turns off whe"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LCD-Driver-Board",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LCD-Driver-Board",
+      "sourceSha256": "df979de00c301160d546836860ba9f5c87398034e2fa2f1e1987c5085fbee480",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "电容触摸"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": " 240MHz, along with 512KB of SRAM (TCM) and 8MB of PSRAM. The board includes an efficient charge/discharge management chip (ETA6096) and an MX1.25 battery connector. The pin header interface is compatible "
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-DualEye-Touch-LCD-1.28",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-DualEye-Touch-LCD-1.28",
+      "sourceSha256": "ce919c1583ce35aa3032bfe15210485836f783cf7d4d9348b90309155fad9ca9",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ome I/O interfaces Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard TF card slot for expanded storage and fast data transfer, offering flexibility for data logging and media playba"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "g frequency up to 240MHz 16MB Flash Battery charging management chip Power amplifier chip ES8311 Low-power audio codec chip ES7210 Microphone MP1605GTF-Z Power module, supporting up to 3.3V 2A out"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "h Battery charging management chip Power amplifier chip ES8311 Low-power audio codec chip ES7210 Microphone MP1605GTF-Z Power module, supporting up to 3.3V 2A output Onboard ceramic antenna IPEX1 "
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "uch control with interrupt Exposes UART, I2C, and some I/O interfaces Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard TF card slot for expanded storage and fast data transfer, offering fle"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.28",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.28",
+      "sourceSha256": "5fbb7776b333772dd160842cdded8ae5cf1c7ac0e70be02ca9e4ad86722f27fe",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "电容触摸",
+        "电池管理",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [
+        "MicroPython"
+      ],
+      "candidates": [
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "tures an onboard 1.28inch capacitive touch LCD screen, a lithium battery charging chip, a 6-axis sensor (3-axis accelerometer and 3-axis gyroscope), and other peripherals. It utilizes the ESP32-S3R2, a S"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "ard designed by Waveshare. It features an onboard 1.28inch capacitive touch LCD screen, a lithium battery charging chip, a 6-axis sensor (3-axis accelerometer and 3-axis gyroscope), and other peripherals. It uti"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.46",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.46",
+      "sourceSha256": "9ddb441a0b719d69d991a8faeb0971fe9deecff6fe8066410799095c74732b8b",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "nction development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard TF card slot for expanded storage and fast data transfer, offering flexibility for data logging and media playba"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "s gyroscope) enables motion posture detection, step counting, and other functions Onboard PCF85063 RTC chip with uninterrupted power supply through an external battery, ensuring the RTC function ope"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "ports I2C touch control with interrupt Exposes UART, I2C, and some I/O interfaces Onboard QMI8658 6-axis IMU (3-axis accelerometer and 3-axis gyroscope) enables motion posture detection, step count"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "with customizable functions, allowing for custom function development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard TF card slot for expanded storage and fast data transfer, offering fle"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.47",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.47",
+      "sourceSha256": "15703eef6896c052aefb6cc4d5b6fd110ba0c8c48ee61a6d2c9e830a7ce614ac",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "lution and 262K colors Adapting most GPIOs, integrates full-speed USB serial port Onboard TF card slot for external TF card storage of images or files Supports flexible clock, multiple power modes, and "
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.54",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.54",
+      "sourceSha256": "547eb5adfeb06aa0c02d1ac62a53d226ed9979853097bd8e0dfe4b9691ce079b",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "电容触摸",
+        "电池管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "rnal devices connection and debugging, enabling flexible peripheral configuration Onboard TF card slot supporting storage expansion and high-speed data transfer, facilitating functions like data logging"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "ipherals such as a 1.54inch capacitive LCD screen, a lithium battery charging chip, and a 6-axis sensor (3-axis accelerometer and 3-axis gyroscope), facilitating rapid product prototyping and embedded ap"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Features​",
+          "excerpt": " × 240 resolution, 262K colors, capable of displaying color images clearly Onboard ES7210 audio codec chip, supporting dual-microphone audio capture and echo cancellation Onboard ES8311 audio codec chip, NS"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Features​",
+          "excerpt": "en, 240 × 240 resolution, 262K colors, capable of displaying color images clearly Onboard ES7210 audio codec chip, supporting dual-microphone audio capture and echo cancellation Onboard ES8311 aud"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "ooth BLE 5, and come with onboard peripherals such as a 1.54inch capacitive LCD screen, a lithium battery charging chip, and a 6-axis sensor (3-axis accelerometer and 3-axis gyroscope), facilitating rapid produc"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.69",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.69",
+      "sourceSha256": "6520d916a4fda60b4b4d7cd91ac393384beb89e1913b63bae0bae91ae2f70c83",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "电容触摸",
+        "电池管理",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "SP32-S3R8 Wi-Fi and Bluetooth SoC, 240 MHz, 8MB stacked PSRAM W25Q128JVSIQ 16MB NOR Flash PCF85063 RTC clock chip QMI8658 6-axis IMU (3-axis gyroscope + 3-axis accelerometer) ETA6098 high-efficiency"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": " form factor integrates a 1.69inch capacitive touch LCD (240×280), Li-battery charging, a 6-axis IMU, RTC, and other peripherals, making it convenient for rapid prototyping and embedded applications. "
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "B Flash. Its compact form factor integrates a 1.69inch capacitive touch LCD (240×280), Li-battery charging, a 6-axis IMU, RTC, and other peripherals, making it convenient for rapid prototyping and embedd"
+        },
+        {
+          "label": "蜂鸣器",
+          "section": "Onboard Resources​",
+          "excerpt": "rts charging/discharging Type-C port ESP32-S3 USB, for program uploading and log printing Buzzer audible peripheral RTC battery connector for rechargeable RTC battery, supports charging/dischargin"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.83",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.83",
+      "sourceSha256": "2baeb0c2a94a23bf560ab043922c310d08b909d96acd1f4f5d294b99b3600b45",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "电源管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "rnal devices connection and debugging, enabling flexible peripheral configuration Onboard TF card slot supporting storage expansion and high-speed data transfer, facilitating functions like data logging"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "s gyroscope) enables motion posture detection, step counting, and other functions Onboard PCF85063 RTC chip, powered by the AXP2101 with battery backup for uninterrupted operation Onboard PWR and BO"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "integrates a 1.83inch capacitive LCD screen, a highly integrated power management chip, a six-axis sensor (3-axis accelerometer and 3-axis gyroscope), an RTC, a low-power audio codec, and other peripherals"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "Hz operating frequency, stacked 8MB PSRAM AXP2101 Highly integrated power management chip ES8311 Low-power audio codec chip ES7210 ADC chip for echo cancellation circuitry MX1.25 Speaker Header No"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "B PSRAM AXP2101 Highly integrated power management chip ES8311 Low-power audio codec chip ES7210 ADC chip for echo cancellation circuitry MX1.25 Speaker Header Non-polarized 1.2mm Lithium Battery "
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "WR and BOOT side buttons, configurable for custom function development Onboard 3.7V 1.2mm lithium battery charging/discharging interface Exposes 1-ch I2C, 1-ch USB and 1-ch UART pads for external devices connect"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.85",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.85",
+      "sourceSha256": "bc3afdda40791c49e93f7cfba27254777c4c946068f944e934e8568b52971545",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "O interfaces Onboard audio decoding chip, MIC, QMI8658 six-axis sensor, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power mode"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "ttery charging management chip ME6217C33M5G Low dropout LDO, current (Max) 800mA RTC chip PCF85063 RTC clock Onboard ceramic antenna IPEX1 connector Switching to use the external antenna via resolde"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "ersion only) Exposes UART, I2C, and some I/O interfaces Onboard audio decoding chip, MIC, QMI8658 six-axis sensor, RTC clock sensor, TF card slot and battery charging management module, etc. Suppor"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "ard audio decoding chip, MIC, QMI8658 six-axis sensor, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power modes for low-power sc"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.85B",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.85B",
+      "sourceSha256": "55748976404af52ea73aa47b9f28f953b19f6f56a00df7e8b8c51a606b2f135d",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "扬声器",
+        "电容触摸",
+        "电池管理",
+        "触摸屏",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "(360×360), a dual-microphone array, audio codec, echo cancellation, battery monitoring, a six-axis IMU, a Li-battery interface, and speaker pads. It is suitable for AI voice interaction, smart hardware,"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "e ES7210 Echo Cancellation Chip For echo cancellation and improved audio capture accuracy ES8311 Audio Codec Chip BQ27220 Battery gauge chip BOOT Button Used for device startup and functional debu"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "nboard Antenna Supports 2.4GHz Wi-Fi (802.11 b/g/n) and Bluetooth 5 (LE) Screen Interface ES7210 Echo Cancellation Chip For echo cancellation and improved audio capture accuracy ES8311 Audio Codec"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": " on. Type-C Interface ESP32-S3 USB interface for program flashing and log printing MX1.25 Lithium Battery Header MX1.25 2PIN connector for connecting a 3.7V lithium battery, supports charging and discharging Onbo"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-1.85C",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.85C",
+      "sourceSha256": "4e3a2feac447c8b3d1bbe3509fc258570c4b9b5649b7473e4eebe5ead2ee6077",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "电容触摸",
+        "电池管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "some I/O interfaces Onboard resources include an audio codec chip, MIC, RTC clock sensor, TF card slot, and battery charging management module Supports flexible clock control and various power modes for"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Features​",
+          "excerpt": "interrupt support Exposes UART, I2C, and some I/O interfaces Onboard resources include an audio codec chip, MIC, RTC clock sensor, TF card slot, and battery charging management module Supports flexible cloc"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "s Onboard resources include an audio codec chip, MIC, RTC clock sensor, TF card slot, and battery charging management module Supports flexible clock control and various power modes for low-power scenario"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-2",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-2",
+      "sourceSha256": "2a793b24e276b8a137bd57cf3818bbbb2e36e9215db276142bc379fa402fc333",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "电池管理",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ype-C port for power supply, downloading, and debugging, facilitating development Onboard TF card slot for external storage of images or files 22 GPIOs brought out for flexible peripheral configuration "
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": ", it features an onboard 2inch capacitive touch LCD screen, a Li-battery charging chip, a six-axis IMU (3-axis accelerometer and 3-axis gyroscope), a camera interface, and other peripherals, making it c"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "introduction",
+          "excerpt": "a Li-battery charging chip, a six-axis IMU (3-axis accelerometer and 3-axis gyroscope), a camera interface, and other peripherals, making it convenient for development and integration into end products. If "
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "e its compact form factor, it features an onboard 2inch capacitive touch LCD screen, a Li-battery charging chip, a six-axis IMU (3-axis accelerometer and 3-axis gyroscope), a camera interface, and other "
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-2.1",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-2.1",
+      "sourceSha256": "4e77ea1dd117ce9a544b83adfaa169b613bbc7872b6bee2bc68cba44b376cc97",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "aces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power mode"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "matic download circuit, allowing program flashing without extra steps 16MB Flash RTC Chip PCF85063 RTC clock Battery Charging Management Chip ME6217C33M5G Low dropout LDO, current (Max) 800mA USB Ty"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "Exposes UART, I2C, and some I/O interfaces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports fl"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power modes for low-power sc"
+        },
+        {
+          "label": "蜂鸣器",
+          "section": "Onboard Resources​",
+          "excerpt": "terface is connected USB TO UART Type-C Port For programming, debugging, and power supply Buzzer Power Indicator Charging Indicator When a system battery is connected, it stays on while charging a"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-2.8",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-2.8",
+      "sourceSha256": "9ab0b40e759ee71419a3c8cea404a8448bb2126ac36ace3988b80451844edef6",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "六轴 IMU",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "egrated full-speed USB serial port Onboard speaker, QMI8658 6-axis IMU, RTC clock sensor, TF card slot, and battery charging management module Supports flexible clock, multiple power modes, and other pr"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "240MHz 16MB Flash QST Attitude Sensor QMI8658 (6-axis gyroscope + accelerometer) RTC chip PCF85063 RTC clock PCM5101 audio decoder chip Power amplifier chip Volume adjustment knob Battery charging m"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "ART, I2C, and some I/O interfaces; integrated full-speed USB serial port Onboard speaker, QMI8658 6-axis IMU, RTC clock sensor, TF card slot, and battery charging management module Supports flexibl"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": " USB serial port Onboard speaker, QMI8658 6-axis IMU, RTC clock sensor, TF card slot, and battery charging management module Supports flexible clock, multiple power modes, and other precise controls to e"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-2.8B",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-2.8B",
+      "sourceSha256": "35bc63ef293f5f717ceabd7d6ac68a7cdf81c1b2a1f6a058ed8e9b0a73ec1afb",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "aces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power mode"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "rd Ceramic Antenna TCA9554PWR GPIO expander chip, all pins used, not brought out RTC Chip PCF85063 RTC clock MP1605GTF-Z Power module, current 2A (MAX) Battery Charging Management Chip Buzzer TF Car"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "Exposes UART, I2C, and some I/O interfaces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports fl"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power modes for low-power sc"
+        },
+        {
+          "label": "蜂鸣器",
+          "section": "Onboard Resources​",
+          "excerpt": "063 RTC clock MP1605GTF-Z Power module, current 2A (MAX) Battery Charging Management Chip Buzzer TF Card Slot (on the back) BOOT Button RESET Button IPEX1 Connector Switching to use the external a"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-2.8C",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-2.8C",
+      "sourceSha256": "80fa3f1dd5d2a5127882a6ae6a1611dedbe90756891067a0ebc9050f050fba2e",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "aces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power mode"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "matic download circuit, allowing program flashing without extra steps 16MB Flash RTC Chip PCF85063 RTC clock Battery Charging Management Chip ME6217C33M5G Low dropout LDO, current (Max) 800mA USB Ty"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "Exposes UART, I2C, and some I/O interfaces; integrated full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports fl"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "full-speed USB serial port Onboard QMI8658 6-axis IMU, RTC clock sensor, TF card slot and battery charging management module, etc. Supports flexible clock control and various power modes for low-power sc"
+        },
+        {
+          "label": "蜂鸣器",
+          "section": "Onboard Resources​",
+          "excerpt": "terface is connected USB TO UART Type-C Port For programming, debugging, and power supply Buzzer Charging Indicator When a system battery is connected, it stays on while charging and turns off whe"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-3.49",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-3.49",
+      "sourceSha256": "668e9e19c0fd2d012db25059c1804c0973d187f1d94a46bbea50e281fbc9b5d0",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "电池管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ustom function development Onboard 3.7V MX1.25 lithium battery charging interface Onboard TF card slot for flexible storage expansion and fast data transfer, suitable for data logging and media playback"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "pable of detecting device orientation changes, step counting, and other functions Onboard PCF85063 RTC chip for convenient RTC functionality implementation Onboard PWR and BOOT side buttons, configu"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "ed with a 3.49inch capacitive HD IPS screen, a highly integrated power management chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), an RTC, a low-power audio codec chip, and echo cancell"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "ement chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), an RTC, a low-power audio codec chip, and echo cancellation circuitry, facilitating development and integration into end products. If yo"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "mory ES8311 DAC Audio Codec High-performance, low-power audio digital-to-analog converter ES7210 ADC Audio Codec High-performance, low-power audio analog-to-digital converter, supports multi-micro"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "el: V2 has a V2 label. Main differences between V1 and V2: V2 exposes the TP_INT pin. The lithium battery charging current has been optimized. The LCD_TE and LCD_RESET pins have been swapped. The LCD_BL and EXIO"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-3.5",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-3.5",
+      "sourceSha256": "e961579240d3d4fd7b59d7808d127b644b8a47b7419facc0854da25033948a93",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "电源管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ice connection and debugging, allowing flexible peripheral function configuration Onboard TF card slot, providing expanded storage, fast data transfer, and flexibility, suitable for data logging and med"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "s gyroscope) enables motion posture detection, step counting, and other functions Onboard PCF85063 RTC chip, powered by Lithium Batt through AXP2101 chip for uninterrupted power supply, with reserve"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "5inch capacitive high-definition IPS screen, a highly integrated power management chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), RTC, low-power audio codec chip and other peripherals,"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "management chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), RTC, low-power audio codec chip and other peripherals, which are convenient for development and embedding into the product. No asse"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "Features​",
+          "excerpt": "ibility, suitable for data logging and media playback, simplifying circuit design Onboard camera interface, supporting mainstream cameras such as OV5640 and OV2640 The benefits of using AXP2101 include effi"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "R and BOOT side buttons, configurable for custom function development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Brings out I2C, UART, USB, and multiple GPIOs for external device connection a"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-3.5B",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-3.5B",
+      "sourceSha256": "f897a3659f1884ef0362a8d2a45bb20516c5f9964f913f704bd255d13e3b3ec3",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "六轴 IMU",
+        "电源管理",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ice connection and debugging, allowing flexible peripheral function configuration Onboard TF card slot, providing expanded storage, fast data transfer, and flexibility, suitable for data logging and med"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "pable of detecting device orientation changes, step counting, and other functions Onboard PCF85063 RTC chip, powered by Lithium Batt through AXP2101 chip for uninterrupted power supply, with reserve"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "introduction",
+          "excerpt": "5inch capacitive high-definition IPS screen, a highly integrated power management chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), RTC, low-power audio codec chip and other peripherals,"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "management chip, a 6-axis IMU (3-axis accelerometer and 3-axis gyroscope), RTC, low-power audio codec chip and other peripherals, which are convenient for development and embedding into the product. No asse"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "Features​",
+          "excerpt": "ibility, suitable for data logging and media playback, simplifying circuit design Onboard camera interface, supporting mainstream cameras such as OV5640 and OV2640 The benefits of using AXP2101 include effi"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "R and BOOT side buttons, configurable for custom function development Onboard 3.7V MX1.25 lithium battery charge/discharge interface Brings out I2C, UART, USB, and multiple GPIOs for external device connection a"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-4.3",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3",
+      "sourceSha256": "82cfcfe110e459c533615e498fe994b2c2070a6d7f3bf7d5742d3273ac45467b",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "CAN 收发器",
+        "RS485",
+        "RTC 时钟",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "RS485 接口",
+          "section": "Product Overview​",
+          "excerpt": "plications such as LVGL. Combined with various peripheral interfaces (e.g., CAN, I2C, and RS485), it allows for rapid development of HMI applications based on the ESP32-S3. The rich functions and"
+        },
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ve touch (optional), 5-point touch, interrupt support Onboard CAN, RS485, I2C interfaces, TF card slot, and integrated full-speed USB Supports precise control features like flexible clocking and indepen"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": "sistor Selection InterfaceCH343PUSB to UART chipSP3485RS485 transceiver chipCS8501Lithium battery charging management chipStatus IndicatorsPWR power indicatorCHG lithium battery charging indicatorDONE li"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-4.3B",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3B",
+      "sourceSha256": "9fb2a38311cf4a36fbcccf6311604d870f4f27920c909389660d5f4fd99ad1b7",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "CAN 收发器",
+        "RS485",
+        "RTC 时钟",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "RS485 接口",
+          "section": "Product Overview​",
+          "excerpt": "plications such as LVGL. Combined with various peripheral interfaces (e.g., CAN, I2C, and RS485), it allows for rapid development of HMI applications based on the ESP32-S3. The rich functions and"
+        },
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ve touch, with 5-point touch, and supports interrupts Onboard CAN, RS485, I2C interfaces, TF card slot, and integrated full-speed USB Supports precise control features like flexible clocking and indepen"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": "terfaceMX1.25 interface, compatible with all 3.7V lithium batteriesStatus IndicatorsDONE: Lithium battery charging complete indicatorCHG: Lithium battery charging indicatorPWR: Power indicator(When power is conn"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-4.3C",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3C",
+      "sourceSha256": "196804ffbf021a6cfa1a69749c0c9daac8a1dda35bd330e99c87ff08ce93ff15",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "触摸屏",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Onboard Resources​",
+          "excerpt": "for safe, isolated interaction with external switch devices via the IO_EXTENSION. Onboard TF Card Slot: Uses the SD_MMC interface for accessing TF cards to store resources like images and music. Onboard"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "Onboard PCF85063 RTC Real-Time Clock Chip: Enables timekeeping during power loss and alarm functionality. Onboard 4."
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "board 4.3-inch capacitive touch LCD for smooth LVGL GUI operation. It is equipped with an ES8311 audio codec and an ES7210 quad-channel ADC, supporting voice capture and playback. It also provides"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "introduction",
+          "excerpt": "touch LCD for smooth LVGL GUI operation. It is equipped with an ES8311 audio codec and an ES7210 quad-channel ADC, supporting voice capture and playback. It also provides rich interfaces like I2C "
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-5",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-5",
+      "sourceSha256": "10a598cdb35210d0a78669a43b0b7af59ddbbb261c6a96c780e4bd53f8417726",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "CAN 收发器",
+        "RS485",
+        "RTC 时钟",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "RS485 接口",
+          "section": "introduction",
+          "excerpt": "plications such as LVGL. Combined with various peripheral interfaces (e.g., CAN, I2C, and RS485), it allows for rapid development of HMI applications based on the ESP32-S3. The rich functions and"
+        },
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ve touch, with 5-point touch, and supports interrupts Onboard CAN, RS485, I2C interfaces, TF card slot, and integrated full-speed USB Supports precise control features like flexible clocking and indepen"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": ".25 InterfaceMX1.25 interface, compatible with all 3.7V lithium batteriesStatus LEDsDONE: Lithium battery charging complete indicatorCHG: Lithium battery charging indicatorPWR: Power indicator(When power is conn"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-7",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-7",
+      "sourceSha256": "0747cee61ec48ab7aa5d3821967db84881c230d62d51d3824df0550e2b2e774b",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "CAN 收发器",
+        "RS485",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "CAN 接口",
+          "section": "Onboard Resources​",
+          "excerpt": " 15 Sensor header: Recommended to use the included HY2.0 3P to Dupont male 3P 10 cm cable CAN header: Recommended to use the included HY2.0 2P to Dupont male 2P 10 cm cable I2C header: Recommended to "
+        },
+        {
+          "label": "RS485 接口",
+          "section": "introduction",
+          "excerpt": "ce programs such as LVGL. It combines a variety of peripheral interfaces (e.g., CAN, I2C, RS485, etc.) to quickly develop applications such as HMIs for ESP32-S3. The rich functions and interfaces"
+        },
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ve touch (optional), 5-point touch, interrupt support Onboard CAN, RS485, I2C interfaces, TF card slot, and integrated full-speed USB Supports precise control features like flexible clocking and indepen"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": "ing mode RESET button Press to reset the controller I2C level selection 3.3 V or 5 V DONE Lithium battery charging completed indicator CHG Lithium battery charging indicator PWR Power supply indicator"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-7B",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-7B",
+      "sourceSha256": "e6904161a8a0a1c05fd558fd9e54eee47fc62f62685bb43365699e32ff2322ff",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "CAN 收发器",
+        "RS485",
+        "电容触摸",
+        "触摸屏"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "RS485 接口",
+          "section": "Product Overview​",
+          "excerpt": "UI programs like LVGL. Combined with various peripheral interfaces (such as CAN, I2C, and RS485), it facilitates rapid development of HMI and other applications for the ESP32-S3. With a wide rang"
+        },
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "rol (optional), 5-point touch, with interrupt support Onboard CAN, RS485, I2C interfaces, TF card slot, and integrated full-speed USB Onboard LED indicators for indicating the power and battery charging"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "d slot, and integrated full-speed USB Onboard LED indicators for indicating the power and battery charging status Supports adjusting the backlight brightness and reading the current battery voltage Suppo"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Touch-LCD-7C-BOX",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Touch-LCD-7C-BOX",
+      "sourceSha256": "41123623b58a58488692c99f1cbc78061938894f9d5bdc7cd6dcf6444157e65b",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "扬声器",
+        "电容触摸",
+        "触摸屏",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "board BQ27220 fuel gauge for real-time battery capacity monitoring Onboard I2C interface, TF card slot, PH2.0 battery connector Onboard LED indicators for power status, battery charging status, and a us"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Product Overview​",
+          "excerpt": "SP32-S3. The audio section offers both 3.5mm and MX1.25 audio connectors, with an onboard ES8389 audio codec and ES7210 audio capture chip for speaker output and microphone capture. If you are loo"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Product Overview​",
+          "excerpt": "ion offers both 3.5mm and MX1.25 audio connectors, with an onboard ES8389 audio codec and ES7210 audio capture chip for speaker output and microphone capture. If you are looking for: Coding with A"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "auge for real-time battery capacity monitoring Onboard I2C interface, TF card slot, PH2.0 battery connector Onboard LED indicators for power status, battery charging status, and a user-definable STA status L"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-LR1121-XF",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-LR1121-XF",
+      "sourceSha256": "e2a19c28d702690c0a0ca72b6568ba2f3ce36bd5b682b620d7b15ec343137e57",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "LoRa"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "LoRa",
+          "section": "introduction",
+          "excerpt": "ESP32-S3-LR1121-XF ESP32-S3-LR1121-HF (Base Version)ESP32-S3-LR1121-LF (Base Version)ESP32-S3-LR1121-HF-Kit (USB Ty"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-DualEye-LCD-1.28",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-DualEye-LCD-1.28",
+      "sourceSha256": "09c63fe21d0e1ffa34a2178cf3189865e0c385413ba69da32546b36203ce626c",
+      "sourceStatus": "exact",
+      "oldHardware": [],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "ome I/O interfaces Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard TF card slot for expanded storage and fast data transfer, offering flexibility for data logging and media playba"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "g frequency up to 240MHz 16MB Flash Battery charging management chip Power amplifier chip ES8311 Low-power audio codec chip ES7210 Microphone MP1605GTF-Z Power module, supporting up to 3.3V 2A out"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "h Battery charging management chip Power amplifier chip ES8311 Low-power audio codec chip ES7210 Microphone MP1605GTF-Z Power module, supporting up to 3.3V 2A output Onboard ceramic antenna IPEX1 "
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "uch control with interrupt Exposes UART, I2C, and some I/O interfaces Onboard 3.7V MX1.25 lithium battery charge/discharge interface Onboard TF card slot for expanded storage and fast data transfer, offering fle"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-RLCD-4.2",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-RLCD-4.2",
+      "sourceSha256": "520f7ec40c08def9c2d5cf8f6ce132b5c7524487699bb9004f6bdab10dd4b1b5",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "SD 卡槽",
+        "扬声器",
+        "电池管理",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "rcuitry, dual microphones, speaker, SHTC3 high-precision temperature and humidity sensor, TF card slot, RTC interface, and battery charge and discharge management circuit, etc. It also reserves USB, UAR"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "ble for accurate speech recognition and near-field/far-field wake-up applications Onboard PCF85063 RTC real-time clock and SHTC3 temperature and humidity sensor enable precise RTC time management an"
+        },
+        {
+          "label": "温湿度传感器",
+          "section": "introduction",
+          "excerpt": "r refresh response. It includes onboard audio codec circuitry, dual microphones, speaker, SHTC3 high-precision temperature and humidity sensor, TF card slot, RTC interface, and battery charge and"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "tacked with 16MB Flash and 8MB PSRAM ES7210 ADC chip implements echo cancellation circuit ES8311 Low-power audio codec chip BOOT Button Press and hold the BOOT button to power on again to enter do"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "nd Bluetooth SoC, up to 240MHz operating frequency, stacked with 16MB Flash and 8MB PSRAM ES7210 ADC chip implements echo cancellation circuit ES8311 Low-power audio codec chip BOOT Button Press a"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "r, SHTC3 high-precision temperature and humidity sensor, TF card slot, RTC interface, and battery charge and discharge management circuit, etc. It also reserves USB, UART, I2C, and multiple GPIO interfac"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-CAM-OVxxxx",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-CAM-OVxxxx",
+      "sourceSha256": "f0e8f614c9927ccee4936819b6899bb6747ff3df4add556d8209bcd55f70a2e8",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "扬声器",
+        "摄像头",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Onboard Resources​",
+          "excerpt": "TF card slot Dual-microphone array DVP camera interface BOOT button PWR button ETA6098 charging management chip "
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "re. It features an onboard SPI/QSPI screen interface, a DVP camera interface, a low-power audio codec chip with echo cancellation circuitry, dual microphones, and an external speaker interface, providing ro"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "r for 3.7V Lithium Batt, supports charging and discharging) NS4150B amplifier chip ES8311 ES7210 I2C header UART header LCD 18PIN interface CH32V003F4U6 I/O expander chip MP1605 power module"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "introduction",
+          "excerpt": "elopment board designed by Waveshare. It features an onboard SPI/QSPI screen interface, a DVP camera interface, a low-power audio codec chip with echo cancellation circuitry, dual microphones, and an external s"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "R and BOOT side buttons, configurable for custom function development Onboard 3.7V GH1.25 lithium battery charge/discharge interface Camera Parameter Comparison ModelMax ResolutionOutput InterfaceOutput FormatLe"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-DEV-KIT-N8R8",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-DEV-KIT-N8R8",
+      "sourceSha256": "54532e8a2e019f8c560919979c3dcb8283a9a1d2421911472d80cef290703895",
+      "sourceStatus": "mismatch",
+      "oldHardware": [],
+      "removedSoftwareLabels": [
+        "MicroPython"
+      ],
+      "candidates": []
+    },
+    {
+      "name": "ESP32-S3-GEEK",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-GEEK",
+      "sourceSha256": "574655f4b197e6f54043285ee44684f6c821afd7f335fe37a5962c6c9e8316b5",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "SD 卡槽"
+      ],
+      "removedSoftwareLabels": [
+        "MicroPython"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": " by Waveshare for geeks. It features an onboard USB-A male port, a 1.14inch LCD screen, a TF card slot, and other peripherals. It supports 2.4 GHz Wi-Fi and BLE 5, integrates 16MB Flash and 2MB PSRAM, a"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Pico",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Pico",
+      "sourceSha256": "1bf027a2b19e9185b7eb85cc536fba6bb3357f57b44b4abd77f02edb8bea3100",
+      "sourceStatus": "exact",
+      "oldHardware": [],
+      "removedSoftwareLabels": [
+        "MicroPython"
+      ],
+      "candidates": [
+        {
+          "label": "摄像头接口",
+          "section": "Features​",
+          "excerpt": "s, including Full-Speed USB OTG, SPI, I2C, UART, ADC, PWM, as well as DVP (8-bit ~ 16-bit camera interface) and LCD interface (8-bit ~ 16-bit parallel RGB, I8080, MOTO6800), enabling flexible implementation"
+        },
+        {
+          "label": "RGB LED",
+          "section": "Hardware Description​",
+          "excerpt": "GPIO37 pins are used for the Octal PSRAM. The ESP32-S3-Pico uses GPIO21 to connect to the WS2812 RGB LED. Please refer to the WS2812 datasheet via this link. When using the USB port to download fi"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Tiny",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Tiny",
+      "sourceSha256": "fc7c33049aa6e50c16ed28474527bb95170056badaa073203ae108984729e214",
+      "sourceStatus": "exact",
+      "oldHardware": [],
+      "removedSoftwareLabels": [
+        "MicroPython"
+      ],
+      "candidates": []
+    },
+    {
+      "name": "ESP32-S3-Zero",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Zero",
+      "sourceSha256": "b5a9f37f6414b609eba3772d96e7a871550159815815229211f0559d3351ba89",
+      "sourceStatus": "exact",
+      "oldHardware": [],
+      "removedSoftwareLabels": [
+        "MicroPython"
+      ],
+      "candidates": [
+        {
+          "label": "RGB LED",
+          "section": "Hardware Description​",
+          "excerpt": "37; these pins are reserved for Octal PSRAM. The ESP32-S3-Zero uses GPIO21 to connect the WS2812 RGB LED. Please refer to the documentation link for the WS2812 datasheet. The ESP32-S3-Zero does no"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-Matrix",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-Matrix",
+      "sourceSha256": "9b560cfd48c9778e2ebd021105ce0d56ca350bb07810c2a55972180164a1bcc4",
+      "sourceStatus": "exact",
+      "oldHardware": [],
+      "removedSoftwareLabels": [
+        "MicroPython"
+      ],
+      "candidates": [
+        {
+          "label": "六轴 IMU",
+          "section": "Onboard Resources​",
+          "excerpt": "ing to enter download mode RESET button ME6217C33M5G Low-dropout LDO, current (Max) 800mA QMI8658 QST 6-axis sensor (3-axis accelerometer, 3-axis gyroscope) ESP32-S3 Dual-core processor, operating "
+        },
+        {
+          "label": "RGB LED",
+          "section": "introduction",
+          "excerpt": "s. Despite its very small form factor, it brings out 17 GPIOs and includes an onboard 8×8 RGB LED matrix for displaying cool lighting effects or simple images. Hardware-wise, it is built around the"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-RGB-Matrix",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-RGB-Matrix",
+      "sourceSha256": "0566cfb48af8d8544835d112b44f1cf5e79cb5aaf8af7a5025947b7cac097c39",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "SD 卡槽",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": " with large Flash capacity, and integrates rich peripheral resources such as an RTC, IMU, TF card slot, low-power audio codec, and dual microphones. It also provides USB, UART, I2C, and GPIO interfaces "
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "slot for storing images, audio, and other file data, facilitating data read/write Onboard PCF85063 RTC real-time clock chip, with a reserved SH1.0 battery connector for continuous timekeeping when p"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "onnector supporting audio playback output, ready for direct speaker connection Integrated QMI8658 6-axis IMU (3-axis accelerometer + 3-axis gyroscope) for motion detection Integrated SHTC3 temperat"
+        },
+        {
+          "label": "温湿度传感器",
+          "section": "Features​",
+          "excerpt": "8658 6-axis IMU (3-axis accelerometer + 3-axis gyroscope) for motion detection Integrated SHTC3 temperature and humidity sensor for accurate environmental monitoring Onboard TF card slot for stor"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Features​",
+          "excerpt": "l UI programs Onboard ES7210 echo cancellation chip for improved voice processing Onboard ES8311 low-power audio codec chip supporting high-quality audio input/output Dual-microphone array support"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Features​",
+          "excerpt": "Waveshare store, capable of smoothly running LVGL and other graphical UI programs Onboard ES7210 echo cancellation chip for improved voice processing Onboard ES8311 low-power audio codec chip supp"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "litating data read/write Onboard PCF85063 RTC real-time clock chip, with a reserved SH1.0 battery connector for continuous timekeeping when power is off Reserved GPIO expansion header for peripheral expansio"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-ePaper-1.54",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-ePaper-1.54",
+      "sourceSha256": "ed81de4f0c20b491ff8c9c242e5ad880ea78ad04a85ca0134c6a555ac2b312fe",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "SD 卡槽",
+        "电池管理"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "long-lasting scenarios. It integrates an RTC chip, SHTC3 temperature and humidity sensor, TF card slot, low-power audio codec chip circuit, and Lithium battery recharge management circuit. It reserves i"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "pports voice capture and playback, facilitating AI voice interaction applications Onboard PCF85063 RTC real-time clock and SHTC3 temperature and humidity sensor enable precise RTC time management an"
+        },
+        {
+          "label": "温湿度传感器",
+          "section": "introduction",
+          "excerpt": "ity, suitable for portable devices and long-lasting scenarios. It integrates an RTC chip, SHTC3 temperature and humidity sensor, TF card slot, low-power audio codec chip circuit, and Lithium batt"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "It integrates an RTC chip, SHTC3 temperature and humidity sensor, TF card slot, low-power audio codec chip circuit, and Lithium battery recharge management circuit. It reserves interfaces including USB, UAR"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": "1.25 2PIN Speaker Header Audio signal output, for connecting external speaker MX1.25 2PIN Lithium Battery Header For connecting a lithium battery Onboard Chip Antenna Supports 2.4GHz Wi-Fi (802.11 b/g/n) and Blue"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-ePaper-1.54G",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-ePaper-1.54G",
+      "sourceSha256": "16bc19fa6294ae76bbfc936d171172cb26742859e45e597ab8f0eeef74120f48",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "SD 卡槽",
+        "电池管理"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "endurance applications. It integrates an RTC chip, SHTC3 temperature and humidity sensor, TF card slot, low-power audio codec chip circuit, and Lithium battery recharge management circuit. It reserves i"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "lithium battery Onboard Antenna Supports 2.4GHz Wi-Fi (802.11 b/g/n) and Bluetooth 5 (LE) PCF85063 (back side) RTC clock chip, supports time-keeping function 2 × 6PIN 2.54mm Pitch Female Header Can "
+        },
+        {
+          "label": "温湿度传感器",
+          "section": "introduction",
+          "excerpt": "it ideal for portable devices and long-endurance applications. It integrates an RTC chip, SHTC3 temperature and humidity sensor, TF card slot, low-power audio codec chip circuit, and Lithium batt"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "It integrates an RTC chip, SHTC3 temperature and humidity sensor, TF card slot, low-power audio codec chip circuit, and Lithium battery recharge management circuit. It reserves interfaces including USB, UAR"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Onboard Resources​",
+          "excerpt": "1.25 2PIN Speaker Header Audio signal output, for connecting external speaker MX1.25 2PIN Lithium Battery Header For connecting a lithium battery Onboard Antenna Supports 2.4GHz Wi-Fi (802.11 b/g/n) and Bluetooth"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-ePaper-13.3E6",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-ePaper-13.3E6",
+      "sourceSha256": "800f8ed4a85c1a7f9124cc38623123afa7d2f923740b44969bcbda854ecbb4ee",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "SD 卡槽",
+        "电池管理",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "PSRAM, and 32 MB Flash. It supports Wi-Fi and BLE dual-mode communication, and includes a TF card slot, a low-power audio codec circuit, an efficient charge/discharge management chip (ETA6098), and an M"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Onboard Resources​",
+          "excerpt": "20DSJR DC/DC boost converter EA3036CQBR Power management IC USB HUB Chip USB-to-UART Chip ES8311 DAC Audio Codec High-performance, low-power audio digital-to-analog converter ES7210 ADC Audio Code"
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Onboard Resources​",
+          "excerpt": "Chip ES8311 DAC Audio Codec High-performance, low-power audio digital-to-analog converter ES7210 ADC Audio Codec High-performance, low-power audio analog-to-digital converter, supports multi-micro"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "introduction",
+          "excerpt": "communication, and includes a TF card slot, a low-power audio codec circuit, an efficient charge/discharge management chip (ETA6098), and an MX1.25 lithium battery connector. Onboard CH343 serial and CH334"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-ePaper-3.97",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-ePaper-3.97",
+      "sourceSha256": "840dde35460d6451a8cb487af3c31048bf36782502cbd34d76eca55c87f3f8be",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "RTC 时钟",
+        "SD 卡槽",
+        "音频编解码"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "introduction",
+          "excerpt": "narios. It integrates an RTC real-time clock, an SHTC3 temperature and humidity sensor, a TF card slot, a low-power audio codec chip, and a power management chip. It provides a flexible and reliable dev"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "s gyroscope) enables motion posture detection, step counting, and other functions Onboard PCF85063 RTC real-time clock and SHTC3 temperature and humidity sensor enable precise RTC time management an"
+        },
+        {
+          "label": "六轴 IMU",
+          "section": "Features​",
+          "excerpt": "pports voice capture and playback, facilitating AI voice interaction applications Onboard QMI8658 6-axis IMU (3-axis accelerometer and 3-axis gyroscope) enables motion posture detection, step count"
+        },
+        {
+          "label": "温湿度传感器",
+          "section": "introduction",
+          "excerpt": "r portable devices and long-endurance scenarios. It integrates an RTC real-time clock, an SHTC3 temperature and humidity sensor, a TF card slot, a low-power audio codec chip, and a power manageme"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "introduction",
+          "excerpt": "TC real-time clock, an SHTC3 temperature and humidity sensor, a TF card slot, a low-power audio codec chip, and a power management chip. It provides a flexible and reliable development platform for applicat"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "solution, supports outputting multiple configurable voltages, and integrates charging and battery management functions, helping to extend battery life Utilizes a Type-C interface, improving user convenience a"
+        }
+      ]
+    },
+    {
+      "name": "ESP32-S3-AUDIO-Board",
+      "sourceUrl": "https://docs.waveshare.com/ESP32-S3-AUDIO-Board",
+      "sourceSha256": "fe5561d148f0ba1659dc30b905a736939abb7f15a5aade29e35b7d59099548a6",
+      "sourceStatus": "exact",
+      "oldHardware": [
+        "扬声器",
+        "音频编解码",
+        "麦克风"
+      ],
+      "removedSoftwareLabels": [
+        "小智 AI"
+      ],
+      "candidates": [
+        {
+          "label": "TF 卡槽",
+          "section": "Features​",
+          "excerpt": "nctions: Onboard audio codec chip, MIC, and speaker interface Storage expansion: Supports TF card slot for storing audio files, etc. Power management: Built-in battery charging management module, suppor"
+        },
+        {
+          "label": "RTC 芯片",
+          "section": "Features​",
+          "excerpt": "ble for precise voice recognition and near/far-field wake-up Clock management: Integrated PCF85063 RTC chip, supports RTC time retention when powered off, can be used for alarms, scheduled tasks, or"
+        },
+        {
+          "label": "音频编解码芯片",
+          "section": "Features​",
+          "excerpt": "I/Os brought out (pin-compatible with the screen interface) Multimedia functions: Onboard audio codec chip, MIC, and speaker interface Storage expansion: Supports TF card slot for storing audio files, etc. "
+        },
+        {
+          "label": "音频 ADC",
+          "section": "Specifications​",
+          "excerpt": "ParameterValueInterfaceUSB Type-CMain ControllerESP32-S3Onboard DevicesES8311 ES7210 Mic RTC clock chip Camera interface TF Battery charge/discharge management module"
+        },
+        {
+          "label": "摄像头接口",
+          "section": "Features​",
+          "excerpt": "om function development Expansion interfaces: SPI LCD screen interface (FPC / pin header) DVP camera interface (24PIN header) USB, I2C, and some I/Os brought out (pin-compatible with the screen interface) Multi"
+        },
+        {
+          "label": "电池接口或充电",
+          "section": "Features​",
+          "excerpt": "expansion: Supports TF card slot for storing audio files, etc. Power management: Built-in battery charging management module, supports multiple power modes and low-power applications"
+        },
+        {
+          "label": "RGB LED",
+          "section": "Features​",
+          "excerpt": "powered off, can be used for alarms, scheduled tasks, or wake-up Lighting effects: 7 ring RGB LEDs, programmable for various dynamic lighting effects Human-machine interaction: Reserved multiple but"
+        }
+      ]
+    }
+  ]
+}

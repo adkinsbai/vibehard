@@ -21,6 +21,17 @@ const request = (route, init = {}) => fetch(base + route, { ...init, signal: Abo
 const anon = await request("/app/knowledge"); assert.equal(anon.status, 307); assert.equal(new URL(anon.headers.get("location"), base).pathname, "/vibehard/login");
 const boards = JSON.parse(readFileSync(new URL("../source/lib/server/data/board-catalog.json", import.meta.url), "utf8"));
 assert.equal(boards.length, 63); assert.equal(boards.flatMap(board => board.resources).length, 1076);
+const evidence = JSON.parse(readFileSync(new URL("../source/lib/server/data/board-catalog-evidence.json", import.meta.url), "utf8"));
+assert.equal(evidence.schema, "vibehard-board-evidence/v1");
+assert.equal(evidence.counts.visibleBoards, 61);
+assert.equal(evidence.counts.visibleReferences, 767);
+const visible = boards.filter(board => board.resources.some(resource => evidence.resources[resource.path]));
+assert.equal(visible.length, 61);
+const specs = JSON.parse(readFileSync(new URL("../source/lib/server/data/board-spec-evidence.json", import.meta.url), "utf8"));
+assert.equal(specs.schema, "vibehard-board-spec-evidence/v1");
+assert.equal(specs.boards.length, 61);
+assert.equal(specs.boards.reduce((sum, board) => sum + board.excludedResources.length, 0), 5);
+assert.ok(specs.boards.every(board => board.sourceUrl.startsWith("https://docs.waveshare.com/")));
 const bundlePaths = new Set();
 for (const user of users.filter(user => ["admin", "developer", "member"].includes(user.role))) {
   for (const rsc of [false, true]) {
@@ -28,9 +39,12 @@ for (const user of users.filter(user => ["admin", "developer", "member"].include
     const response = await request(`/app/knowledge${rsc ? "?_rsc" : ""}`, { headers: { ...headers(user), ...(rsc ? { RSC: "1" } : {}) } });
     assert.equal(response.status, 200); assert.match(response.headers.get("cache-control") ?? "", /private|no-store/);
     const body = await response.text();
-    if (user.role === "member") { assert.ok(body.includes("仅管理员和开发者")); assert.ok(!body.includes(boards[0].name)); }
+    if (user.role === "member") { assert.ok(body.includes("仅管理员和开发者")); assert.ok(!body.includes(visible[0].name)); }
     else {
-      for (const board of boards) assert.ok(body.includes(board.name), `Missing board: ${board.name}`);
+      for (const board of visible) assert.ok(body.includes(board.name), `Missing board: ${board.name}`);
+      assert.ok(!body.includes("ESP32-S3-Touch-LCD-3.5B1"), "Unproven board leaked into the page");
+      assert.ok(body.includes("762") && body.includes("656"), "Verified counts are missing");
+      assert.ok(body.includes("官方型号页"), "Official model citations are missing");
       if (!rsc) {
         for (const label of ["开发板选型库", "芯片手册", "原理图库", "PCB 库", "驱动与示例", "开发经验"]) assert.ok(body.includes(label), label);
         assert.ok(!body.includes("待补充"));
@@ -41,13 +55,13 @@ for (const user of users.filter(user => ["admin", "developer", "member"].include
 }
 for (const role of ["admin", "developer"]) {
   const forged = await request("/app/knowledge", { headers: headers({ ...member, role }) });
-  assert.equal(forged.status, 200); const body = await forged.text(); assert.ok(body.includes("仅管理员和开发者")); assert.ok(!body.includes(boards[0].name));
+  assert.equal(forged.status, 200); const body = await forged.text(); assert.ok(body.includes("仅管理员和开发者")); assert.ok(!body.includes(visible[0].name));
 }
 const absent = await request("/app/knowledge", { headers: headers({ id: "00000000-0000-4000-8000-000000000001", email: "render@example.invalid", name: "No user", role: "admin" }) });
 assert.equal(absent.status, 307);
 const legacy = await request("/app/board-library", { headers: headers(admin) }); assert.equal(legacy.status, 307); assert.equal(new URL(legacy.headers.get("location"), base).pathname, "/vibehard/app/knowledge");
 for (const path of bundlePaths) {
   const response = await fetch(new URL(path, base), { signal: AbortSignal.timeout(20000) }); assert.equal(response.status, 200);
-  const code = await response.text(); assert.ok(!code.includes(boards[0].name), "Catalog leaked into publicly downloadable JS");
+  const code = await response.text(); assert.ok(!code.includes(visible[0].name), "Catalog leaked into publicly downloadable JS");
 }
-console.log(JSON.stringify({ base, boards: boards.length, resourceReferences: 1076, anonymousRedirect: true, persistedRolesChecked: users.map(user => user.role), forgedRoleDenied: true, deletedUserDenied: true, legacyRedirect: true, noCatalogInPublicBundles: true, noDatabaseWrites: true }));
+console.log(JSON.stringify({ base, boards: visible.length, resourceReferences: 762, indexedOrPartialReferences: 656, excludedVariantReferences: 5, anonymousRedirect: true, persistedRolesChecked: users.map(user => user.role), forgedRoleDenied: true, deletedUserDenied: true, legacyRedirect: true, noCatalogInPublicBundles: true, noDatabaseWrites: true }));

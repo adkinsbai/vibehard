@@ -1,5 +1,19 @@
-export type BoardResource = { section: string; name: string; path: string };
-export type CatalogBoard = { name: string; category: string; size: string; features: string[]; resources: BoardResource[] };
+export type ResourceEvidence = {
+  status: "indexed" | "partly-indexed" | "raw-only";
+  sha256: string;
+  bytes: number;
+  indexedDocuments: number;
+  processedDocuments: number;
+};
+export type BoardResource = { section: string; name: string; path: string; evidence?: ResourceEvidence };
+export type CatalogBoard = { name: string; category: string; size: string; features: string[]; resources: BoardResource[];
+  specSourceUrl?: string; supplementalSpecSourceUrl?: string | null; specNote?: string | null };
+
+export function resourceEvidenceLabel(status: ResourceEvidence["status"]) {
+  if (status === "indexed") return "正文已入检索索引";
+  if (status === "partly-indexed") return "压缩包内部分文档已入索引";
+  return "原件已核验，未入检索索引";
+}
 
 export function canReadBoardCatalog(role?: string | null) {
   return role === "admin" || role === "developer";

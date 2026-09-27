@@ -32,7 +32,10 @@ describe("server-side catalog authorization", () => {
     state.session = { id: "one", role: "member" }; state.user = { id: "one", role };
     const result = await readBoardCatalog();
     expect(result.status).toBe("allowed");
-    if (result.status === "allowed") expect(result.boards).toHaveLength(63);
+    if (result.status === "allowed") {
+      expect(result.boards).toHaveLength(61);
+      expect(result.boards.flatMap(board => board.resources)).toHaveLength(762);
+    }
     expect(renderToStaticMarkup(await BoardLibraryPage())).toContain("ESP32-S3-A7670E-4G");
   });
   it("rejects deleted accounts and fails closed if the database is unavailable", async () => {

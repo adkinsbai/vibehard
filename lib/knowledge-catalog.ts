@@ -1,7 +1,7 @@
 import type { BoardResource, CatalogBoard } from "@/lib/board-catalog";
 
 export const knowledgeCategories = [
-  { id: "boards", title: "开发板选型库", description: "板卡参数、外设特性与型号对比" },
+  { id: "boards", title: "开发板选型库", description: "有原件证据的型号、官方资料核对特性与检索状态" },
   { id: "manuals", title: "芯片手册", description: "数据手册、参考手册与器件规格" },
   { id: "schematics", title: "原理图库", description: "电路原理图、接口与硬件连接" },
   { id: "pcb", title: "PCB 库", description: "PCB 工程、布局布线与生产资料" },
