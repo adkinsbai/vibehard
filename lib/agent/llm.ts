@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { retrievalEvidenceSchema } from "./retrieval-payload";
 
 export const llmPurpose = z.enum(["design", "agent"]);
 export type LlmPurpose = z.infer<typeof llmPurpose>;
@@ -32,15 +33,6 @@ export const designResultSchema = z.object({
   interfaces: z.array(line).min(1).max(40),
   risks: z.array(z.object({ level: z.enum(["高", "中", "低"]), desc: line })).min(1).max(30),
   // Added by the server after parsing model output; never trust model-provided citations.
-  retrieval: z.object({
-    status: z.enum(["matched", "no-match"]),
-    method: z.enum(["keyword-chunks-v1", "keyword-chunks-fts5-v1"]),
-    references: z.array(z.object({
-      scope: z.enum(["platform", "project"]), id: z.uuid(), projectId: z.uuid().optional(),
-      reviewStatus: z.literal("auto-indexed").optional(),
-      title: z.string(), source: z.string(), version: z.number().int().positive(),
-      sha256: z.string(), excerpt: z.string(),
-    })).max(5),
-  }).optional(),
+  retrieval: retrievalEvidenceSchema.optional(),
 });
 export type DesignResult = z.infer<typeof designResultSchema>;

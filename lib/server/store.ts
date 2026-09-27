@@ -23,6 +23,8 @@ import { publicLlm } from "./llm-settings";
 import { getProjectKnowledge } from "./knowledge-store";
 import { publishedSnapshot } from "./knowledge-state";
 import { prepareKnowledge } from "./knowledge-dispatch";
+import { retrieveAuthorizedKnowledge } from "./knowledge-retrieval-service";
+import { prepareRetrieval } from "./retrieval-dispatch";
 import { knowledgeManifest } from "@/lib/agent/knowledge";
 
 type UserRecord = typeof users.$inferSelect;
@@ -194,8 +196,17 @@ export async function createTurn(userId: string, threadId: string, input: string
       .where(and(eq(agentTurns.threadId, threadId), eq(agentEvents.type, "task.started"))).orderBy(desc(agentEvents.sequence)).limit(1))[0]?.payload.knowledge;
     const runner = (await tx.select().from(runnerNodes).where(eq(runnerNodes.runnerKey, owned.project.runnerKey ?? process.env.DEFAULT_RUNNER_KEY ?? "local-runner")).limit(1))[0];
     startMessage.knowledge = prepareKnowledge(publishedSnapshot(documents), thread.codexThreadId, previous, runner);
-    startMessage.codexThreadId = startMessage.knowledge.contextReset ? undefined : thread.codexThreadId ?? undefined;
+    const previousRetrieval = (await tx.select({ payload: agentEvents.payload }).from(agentEvents).innerJoin(agentTurns, eq(agentTurns.id, agentEvents.turnId))
+      .where(and(eq(agentTurns.threadId, threadId), eq(agentEvents.type, "knowledge.retrieved"))).orderBy(desc(agentEvents.sequence)).limit(1))[0]?.payload.retrieval;
+    const retrieved = await retrieveAuthorizedKnowledge({ userId, projectId: owned.project.id, query: input, purpose: "agent" }, tx);
+    const dispatch = prepareRetrieval(retrieved, thread.codexThreadId, previousRetrieval, runner);
+    startMessage.retrieval = dispatch.payload;
+    startMessage.codexThreadId = startMessage.knowledge.contextReset || dispatch.contextReset ? undefined : thread.codexThreadId ?? undefined;
     await tx.insert(agentTurns).values(record);
+    const turnIds = (await tx.select({ id: agentTurns.id }).from(agentTurns).where(eq(agentTurns.threadId, threadId))).map(t => t.id);
+    const sequence = (await tx.select({ value: max(agentEvents.sequence) }).from(agentEvents).where(inArray(agentEvents.turnId, turnIds)))[0]?.value ?? -1;
+    await tx.insert(agentEvents).values({ turnId: record.id, eventId: randomUUID(), type: "knowledge.retrieved", sequence: sequence + 1,
+      payload: { retrieval: dispatch.evidence, contextReset: dispatch.contextReset, origin: "platform" } });
     await tx.insert(runnerCommands).values({ taskId: record.id, runnerKey: owned.project.runnerKey ?? process.env.DEFAULT_RUNNER_KEY ?? "local-runner", type: startMessage.type, payload: startMessage as unknown as Record<string, unknown> });
     await tx.insert(auditLogs).values({ userId, projectId: owned.project.id, action: "turn.queued", metadata: { turnId: record.id, model } });
   });
@@ -360,6 +371,8 @@ export async function markRunnerCommand(id: string, status: "sent" | "failed", r
 export async function ingestRunnerEvent(message: RunnerEvent) {
   if (!db) return;
   const event = message.event;
+  // Only createTurn records evidence. A Runner/model cannot forge the source event.
+  if ((event.type as string) === "knowledge.retrieved") return;
   await db.transaction(async (tx) => {
     const currentTurn = (await tx.select({ threadId: agentTurns.threadId, projectId: agentThreads.projectId, runnerKey: projects.runnerKey })
       .from(agentTurns)

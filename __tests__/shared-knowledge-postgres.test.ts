@@ -1,7 +1,10 @@
 // @vitest-environment node
 import { randomUUID } from "node:crypto";
 import { eq, inArray } from "drizzle-orm";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+vi.mock('@/lib/server/retrieval-client', () => ({ queryPrivateIndex: vi.fn().mockResolvedValue({ sources: [], revision: 'a'.repeat(64) }) }));
+import { queryPrivateIndex } from '@/lib/server/retrieval-client';
+import { retrieveAuthorizedKnowledge } from '@/lib/server/knowledge-retrieval-service';
 import { requireDb } from "@/lib/db";
 import { sharedKnowledge, users } from "@/lib/db/schema";
 import { createProject, createUser } from "@/lib/server/store";
@@ -38,6 +41,11 @@ if (enabled) {
     const reviewed = await mutateSharedKnowledge(reviewer, "manuals", { action: "publish", documentId: entry.id, expectedRevision: entry.document.revision, confirmed: true });
     const sharedResult = await retrieveDesignKnowledge(owner, project.id, "SHT40 温湿度");
     expect(sharedResult.references).toMatchObject([{ id: entry.id, scope: "platform", version: 1 }]);
+    expect((await retrieveAuthorizedKnowledge({ userId: owner, query: 'SHT40 温湿度', purpose: 'eda' })).references).toMatchObject([{ id: entry.id }]);
+    await expect(retrieveAuthorizedKnowledge({ userId: owner, projectId: otherProject.id, query: 'SHT40', purpose: 'eda' })).rejects.toThrow('无权访问');
+    vi.mocked(queryPrivateIndex).mockRejectedValueOnce(new Error('unavailable'));
+    const partial = await retrieveDesignKnowledge(owner, project.id, 'SHT40 温湿度');
+    expect(partial).toMatchObject({ status: 'partial', warnings: ['INDEX_UNAVAILABLE'], references: [{ id: entry.id }] });
     const privateMarker = `private${randomUUID().replaceAll("-", "")}`;
     const privateDraft = { title: "私有 SPI 总线", source: "private.md", kind: "manual" as const, content: `私有 SPI 总线使用独立片选。${privateMarker}` };
     const privateDocuments = (await updateProjectKnowledge(outsider, otherProject.id, { action: "create", draft: privateDraft }))!;
@@ -48,5 +56,6 @@ if (enabled) {
     const disabled = await mutateSharedKnowledge(reviewer, "manuals", { action: "disable", documentId: entry.id, expectedRevision: reviewed.document.revision });
     expect(disabled.document.publishedVersion).toBeNull();
     expect((await retrieveDesignKnowledge(owner, project.id, "SHT40 温湿度")).status).toBe("no-match");
+    expect((await retrieveDesignKnowledge(owner, project.id, 'SHT40 温湿度')).revision).not.toBe(sharedResult.revision);
   });
 });

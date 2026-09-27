@@ -7,6 +7,7 @@ import { claimDesign, finishDesign, saveDesignDiagnostics } from "./design-job-s
 import { callLlm, designRequestPolicy, LlmRequestError } from "./llm-client";
 import { runtimeLlm } from "./llm-settings";
 import { retrieveDesignKnowledge } from "./design-knowledge";
+import { retrievalEvidence } from "@/lib/agent/retrieval-payload";
 
 // The hard deadline includes configuration lookup and DNS, not only the TLS request.
 export async function boundedDesign<T>(work: (signal: AbortSignal) => Promise<T>, timeoutMs = DESIGN_MODEL_MS) {
@@ -50,7 +51,7 @@ export async function processNextDesign(deps = defaults, timeoutMs = DESIGN_MODE
       const parsed = designResultSchema.omit({ retrieval: true }).safeParse(raw);
       if (!parsed.success) throw new LlmRequestError("模型返回的方案字段不完整，请手动重试", 502, "FORMAT");
       await stage("saving");
-      const saved = await deps.finishDesign(job.id, job.leaseToken!, { result: { ...parsed.data, retrieval: { status: retrieval.status, method: retrieval.method, references: retrieval.references } }, model: config.model, knowledgeVersion: HARDWARE_DESIGN_KNOWLEDGE.version, diagnostics: structuredClone(diagnostics) }, deadline);
+      const saved = await deps.finishDesign(job.id, job.leaseToken!, { result: { ...parsed.data, retrieval: retrievalEvidence(retrieval) }, model: config.model, knowledgeVersion: HARDWARE_DESIGN_KNOWLEDGE.version, diagnostics: structuredClone(diagnostics) }, deadline);
       if (!saved) throw new LlmRequestError("任务保存期限或租约已失效，请手动重试", 409, Date.now() >= deadline ? "TIMEOUT" : "LEASE_EXPIRED");
     }, timeoutMs);
   } catch (error) {

@@ -44,9 +44,10 @@ describeWithDatabase("PostgreSQL state transitions", () => {
 
     const allEvents = await listEvents(user.id, thread.id, -1);
     expect(allEvents).not.toBeNull();
-    expect(allEvents).toHaveLength(2);
+    expect(allEvents).toHaveLength(3);
+    expect(allEvents![0]).toMatchObject({ type: 'knowledge.retrieved', payload: { origin: 'platform' } });
     const resumed = await listEvents(user.id, thread.id, allEvents![0].sequence);
-    expect(resumed?.map((event) => event.eventId)).toEqual([allEvents![1].eventId]);
+    expect(resumed?.map((event) => event.eventId)).toEqual(allEvents!.slice(1).map(event => event.eventId));
 
     const decisions = await Promise.all([
       decideApproval(user.id, approvalId, "approve"),

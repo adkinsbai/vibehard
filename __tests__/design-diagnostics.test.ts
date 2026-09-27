@@ -10,7 +10,7 @@ function fixture() {
     claimDesign: vi.fn().mockResolvedValue({ id: "job", userId: "owner", projectId: "project", leaseToken: "lease", requirement: "private requirement", createdAt: new Date(), diagnostics: queuedDiagnostics(new Date(Date.now() - 1000)) }),
     finishDesign: vi.fn().mockResolvedValue(true), saveDesignDiagnostics: vi.fn().mockResolvedValue(true),
     runtimeLlm: vi.fn().mockResolvedValue({ baseUrl: "https://example.invalid", model: "test", revision: "revision-1", protocol: "responses", apiKey: "secret-not-for-logs" }),
-    retrieveDesignKnowledge: vi.fn().mockResolvedValue({ status: "no-match", method: "keyword-v1", references: [], context: "" }),
+    retrieveDesignKnowledge: vi.fn().mockResolvedValue({ status: "no-match", method: "keyword-chunks-v1", references: [], context: "" }),
     callLlm: vi.fn().mockResolvedValue(JSON.stringify(result)),
   };
 }

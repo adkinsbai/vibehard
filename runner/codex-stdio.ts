@@ -4,7 +4,7 @@ import { createInterface } from "node:readline";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { ProjectWorkflow } from "./project-workflow";
-import { KNOWLEDGE_BOUNDARY, knowledgeInput } from "./project-knowledge";
+import { KNOWLEDGE_BOUNDARY, knowledgeInput, retrievalInput } from "./project-knowledge";
 import { knowledgeManifest, type KnowledgeSnapshot } from "@/lib/agent/knowledge";
 import type { AgentEvent, TaskStart } from "@/lib/agent/protocol";
 import type { RuntimeLlm } from "@/lib/agent/llm";
@@ -232,11 +232,11 @@ export class CodexSession {
   }
 
   async start(task: TaskStart, provider?: RuntimeLlm) {
-    const referenceInput = knowledgeInput(task.knowledge);
+    const referenceInput = [...knowledgeInput(task.knowledge), ...retrievalInput(task.retrieval)];
     this.knowledge = task.knowledge;
     this.workflow = process.env.RUNNER_ENGINEERING_WORKFLOW === "true" ? new ProjectWorkflow() : undefined;
     // Explicitly clear an older workflow override when the rollout flag is disabled on resume.
-    const developerInstructions = [this.workflow?.instructions, task.knowledge ? KNOWLEDGE_BOUNDARY : undefined].filter(Boolean).join("\n\n");
+    const developerInstructions = [this.workflow?.instructions, task.knowledge || task.retrieval ? KNOWLEDGE_BOUNDARY : undefined].filter(Boolean).join("\n\n");
     const parsedArgs = process.env.CODEX_APP_SERVER_ARGS ? JSON.parse(process.env.CODEX_APP_SERVER_ARGS) as unknown : ["app-server", "--listen", "stdio://"];
     if (!Array.isArray(parsedArgs) || !parsedArgs.every((item) => typeof item === "string")) throw new Error("CODEX_APP_SERVER_ARGS must be a JSON string array");
     const command = codexCommand(process.env.CODEX_BIN ?? "codex", parsedArgs, this.workspaceRoot, task.workspaceKey);
@@ -269,7 +269,7 @@ export class CodexSession {
         capabilities: { experimentalApi: true },
       });
       this.send({ method: "initialized", params: {} });
-      if (task.codexThreadId && !task.knowledge?.contextReset) {
+      if (task.codexThreadId && !task.knowledge?.contextReset && !task.retrieval?.contextReset) {
         this.threadId = task.codexThreadId;
         await this.request("thread/resume", { threadId: this.threadId, model: task.model, modelProvider: task.modelProvider, config, developerInstructions, cwd: task.workspaceKey, runtimeWorkspaceRoots: [task.workspaceKey], sandbox: "read-only", approvalPolicy: "on-request" });
       } else {
