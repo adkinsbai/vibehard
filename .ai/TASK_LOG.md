@@ -4,6 +4,13 @@
 
 真实任务条目从本行下方开始。
 
+## 2026-09-27 Task: EDA OSS 数据盘点与 Agent 只读资料引用
+
+- Goal: 核对升级后的资料数据与可调用接口，让 Agent 在画原理图时从当前资料快照获取带来源的参考内容。
+- Implementation: 新增固定 SHA-256 的 OSS 处理清单/片段读取、索引状态过滤、正文检索、登录限流 GET API、Agent 上下文引用与页面来源展示，以及只读盘点脚本；默认关闭，未扩大可放置器件范围，未改 PostgreSQL 或 OSS 对象。
+- Validation: 真实 OSS Node SDK 三种查询（ESP32-S3、SIM7670X、缺失 STM32F4 原理图）；402 允许索引、37 隔离；EDA 124 通过/2 跳过、TypeScript、定向 ESLint、`NEXT_PUBLIC_BASE_PATH=/vibehard pnpm build` 通过。
+- Boundary: 未读取生产 PostgreSQL、未发布生产、未跑云端真实模型基于 OSS 的提案；PDF 不是原生器件或 PCB 模块。接入说明与数据盘点见 `docs/eda-knowledge-oss.md`。
+
 ## 2026-09-26 Task: 登录后公网 Agent 原理图连续验收
 
 - Goal: 使用已登录的正式网页验证真实模型能否按用户意图建图、连续改图、保存为原生工程，并检查 ERC/DRC 与源工程保护。
