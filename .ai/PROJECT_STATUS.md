@@ -1,5 +1,11 @@
 # 项目状态
 
+## 2026-09-27 方案可靠性实施中（未发布）
+
+- PR #3 合并 EDA/RAG 基线到默认分支 `6d2ba12`；后续位于 `codex/design-reliability`，主工作区未提交文档保留。
+- 任务六阶段诊断、脱敏错误码、模型版本与网络耗时、用户进度及管理员诊断分区已实现，迁移 `0007` 仅在隔离库执行。真实模型验收使用专用 `vibehard_reliability_test`，与回归库严格分开。
+- 完整 12 次验收尚未通过前禁止发布。统一检索及批量入库仍待后续独立阶段。详情见 `docs/reliability-knowledge-delivery-20260927.md`。
+
 ## 2026-09-27 ESP32-S3 RAG 板卡关联 worker 已上线
 
 - 正式方案 worker `20260927-rag-board-links-v1` 已切换，平台/Runner/Gateway/VibeBoard/EDA manager 均未重启，原私有索引/OSS/数据库结构和模型配置未改。云端同等资源限制下 122 次检索 P95 219.9 ms、RSS 91.4 MiB、894 条引用校验通过；非专用组无权读取索引。生产匿名/跨用户/所有者权限通过。

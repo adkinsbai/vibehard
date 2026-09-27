@@ -16,7 +16,7 @@ import { retrieveDesignKnowledge } from "@/lib/server/design-knowledge";
 import { listProviderModels } from "@/lib/server/llm-models";
 vi.mock("@/lib/server/llm-models", () => ({ listProviderModels: vi.fn() }));
 vi.mock("@/lib/server/design-knowledge", () => ({ retrieveDesignKnowledge: vi.fn().mockResolvedValue({ status: "no-match", method: "keyword-chunks-v1", references: [], context: "" }) }));
-vi.mock("@/lib/server/design-job-store", () => ({ claimDesign: vi.fn(), finishDesign: vi.fn(), enqueueDesign: vi.fn(), listDesigns: vi.fn(), DesignJobError: class extends Error {} }));
+vi.mock("@/lib/server/design-job-store", () => ({ claimDesign: vi.fn(), finishDesign: vi.fn().mockResolvedValue(true), saveDesignDiagnostics: vi.fn().mockResolvedValue(true), enqueueDesign: vi.fn(), listDesigns: vi.fn(), DesignJobError: class extends Error {} }));
 
 vi.mock("@/lib/server/llm-client", async (original) => ({ ...await original<typeof import("@/lib/server/llm-client")>(), callLlm: vi.fn(), providerAddress: vi.fn().mockResolvedValue({ address: "8.8.8.8", family: 4 }) }));
 beforeEach(() => { globalThis.__vibehardLlmSettings?.clear(); vi.mocked(callLlm).mockReset(); vi.mocked(listProviderModels).mockReset(); vi.mocked(retrieveDesignKnowledge).mockResolvedValue({ status: "no-match", method: "keyword-chunks-v1", references: [], context: "" }); });
@@ -76,37 +76,38 @@ describe("LLM routes", () => {
     await saveLlm(input, record.id);
     const result = { architecture: ["用户专属方案"], bom: [{ item: "主控", model: "ESP32-C3-MINI-1", qty: 1, estCost: "¥12–18/件（小批量估算）" }], interfaces: ["USB"], risks: [{ level: "中", desc: "验证供电并在采购前询价" }] };
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify(result));
-    vi.mocked(claimDesign).mockResolvedValue({ id: "job", leaseToken: "lease", requirement: "独立的机器人方案" } as Awaited<ReturnType<typeof claimDesign>>);
+    vi.mocked(claimDesign).mockResolvedValue({ id: "job", createdAt: new Date(), leaseToken: "lease", requirement: "独立的机器人方案" } as Awaited<ReturnType<typeof claimDesign>>);
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({ ...result, retrieval: { status: "no-match", method: "keyword-chunks-v1", references: [] } }) }));
-    expect(callLlm).toHaveBeenCalledWith(expect.objectContaining({ model: "design-model" }), expect.any(String), "独立的机器人方案", expect.any(AbortSignal), 90_000);
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({ ...result, retrieval: { status: "no-match", method: "keyword-chunks-v1", references: [] } }) }), expect.any(Number));
+    expect(callLlm).toHaveBeenCalledWith(expect.objectContaining({ model: "design-model" }), expect.any(String), "独立的机器人方案", expect.any(AbortSignal), expect.any(Number), undefined, expect.any(Object));
+    expect(vi.mocked(callLlm).mock.calls[0][4]).toBeLessThanOrEqual(90_000);
     expect(vi.mocked(callLlm).mock.calls[0][1]).toContain("内置方案知识库（基础工程规则）");
     expect(vi.mocked(callLlm).mock.calls[0][1]).toContain("人民币参考单价范围");
     vi.mocked(callLlm).mockRejectedValue(new LlmRequestError("模型服务额度不足"));
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", { error: "模型服务额度不足" });
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: "模型服务额度不足" }));
     vi.mocked(callLlm).mockResolvedValue("not json");
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", { error: expect.stringContaining("格式不正确") });
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: expect.stringContaining("格式不正确") }));
   });
   it("rejects a generated BOM that omits its reference price", async () => {
     const { record } = await user();
     await saveLlm(input, record.id);
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify({ architecture: ["方案"], bom: [{ item: "主控", model: "待选", qty: 1, estCost: "未核价" }], interfaces: ["USB"], risks: [{ level: "中", desc: "验证" }] }));
-    vi.mocked(claimDesign).mockResolvedValue({ id: "job", leaseToken: "lease", requirement: "带主控的方案" } as Awaited<ReturnType<typeof claimDesign>>);
+    vi.mocked(claimDesign).mockResolvedValue({ id: "job", createdAt: new Date(), leaseToken: "lease", requirement: "带主控的方案" } as Awaited<ReturnType<typeof claimDesign>>);
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", { error: expect.stringContaining("字段不完整") });
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: expect.stringContaining("字段不完整") }));
   });
   it("sends reviewed context, but never accepts model-forged citations", async () => {
     const { record } = await user(); await saveLlm(input, record.id);
     const trusted = { scope: "platform" as const, id: crypto.randomUUID(), title: "已审核温度资料", source: "manual.md", version: 1, sha256: "a".repeat(64), excerpt: "SHT40 使用 I2C" };
     vi.mocked(retrieveDesignKnowledge).mockResolvedValue({ status: "matched", method: "keyword-chunks-v1", references: [trusted], context: "[资料 1] 已审核温度资料\nSHT40 使用 I2C" });
-    vi.mocked(claimDesign).mockResolvedValue({ id: "job", leaseToken: "lease", userId: record.id, projectId: crypto.randomUUID(), requirement: "温度节点" } as Awaited<ReturnType<typeof claimDesign>>);
+    vi.mocked(claimDesign).mockResolvedValue({ id: "job", createdAt: new Date(), leaseToken: "lease", userId: record.id, projectId: crypto.randomUUID(), requirement: "温度节点" } as Awaited<ReturnType<typeof claimDesign>>);
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify({ architecture: ["I2C"], bom: [{ item: "传感器", model: "SHT40", qty: 1, estCost: "¥10（估算）" }], interfaces: ["I2C"], risks: [{ level: "低", desc: "核对地址" }], retrieval: { status: "matched", method: "keyword-chunks-v1", references: [{ ...trusted, title: "伪造资料" }] } }));
     await processNextDesign();
     expect(vi.mocked(callLlm).mock.calls[0][2]).toContain("[资料 1] 已审核温度资料");
     expect(vi.mocked(callLlm).mock.calls[0][1]).not.toContain("SHT40 使用 I2C");
-    expect(finishDesign).toHaveBeenCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({ retrieval: { status: "matched", method: "keyword-chunks-v1", references: [trusted] } }) }));
+    expect(finishDesign).toHaveBeenCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({ retrieval: { status: "matched", method: "keyword-chunks-v1", references: [trusted] } }) }), expect.any(Number));
   });
   it("does not release provider credentials to browsers or device nodes", async () => {
     const { cookie } = await user(true);

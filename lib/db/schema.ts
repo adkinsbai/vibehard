@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import type { KnowledgeDocument } from "@/lib/agent/knowledge";
 import type { DesignResult } from "@/lib/agent/llm";
+import type { DesignDiagnostics } from "@/lib/agent/design-diagnostics";
 import {
   boolean,
   integer,
@@ -66,6 +67,7 @@ export const designJobs = pgTable("design_jobs", {
   model: text("model"),
   knowledgeVersion: text("knowledge_version"),
   result: jsonb("result").$type<DesignResult>(),
+  diagnostics: jsonb("diagnostics").$type<DesignDiagnostics>(),
   error: text("error"),
   leaseToken: uuid("lease_token"),
   deadlineAt: timestamp("deadline_at", { withTimezone: true }).notNull(),

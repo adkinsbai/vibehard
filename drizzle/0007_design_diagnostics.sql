@@ -1,0 +1,1 @@
+ALTER TABLE "design_jobs" ADD COLUMN "diagnostics" jsonb;

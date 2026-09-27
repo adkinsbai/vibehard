@@ -1,5 +1,7 @@
 # 文档索引
 
+- [方案可靠性与统一检索交付](reliability-knowledge-delivery-20260927.md)：已批准的阶段边界、任务诊断、隔离模型验收与发布门槛；实施中。
+
 - [OSS 原件归档与检索准备](oss-knowledge-import.md)：ESP32-S3 资料包 286 份去重原件已私有上传并校验；记录清单、隔离 ZIP 与后续解析/索引边界。
 - [RV1106 / RV1126B 本地资料候选](chip-resource-local-candidates.html)：两块板的手册、原理图与开发经验文件路径初筛，尚未入库。
 - [RV1106 / RV1126B 首批 RAG 验收](board-knowledge-rag-proof.md)：9 个明确源文件、95 条正式已发布检索正文与真实方案来源验收；原件未上传 OSS。

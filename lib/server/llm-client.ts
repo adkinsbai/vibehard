@@ -2,9 +2,10 @@ import { lookup } from "node:dns/promises";
 import { request } from "node:https";
 import { isIP } from "node:net";
 import type { RuntimeLlm } from "@/lib/agent/llm";
+import type { DesignDiagnostics, DesignErrorCode } from "@/lib/agent/design-diagnostics";
 
 export class LlmRequestError extends Error {
-  constructor(message: string, public readonly status = 502) { super(message); }
+  constructor(message: string, public readonly status = 502, public readonly code: DesignErrorCode = "PROTOCOL") { super(message); }
 }
 export function isPublicAddress(address: string) {
   if (isIP(address) === 4) {
@@ -20,14 +21,14 @@ export async function providerAddress(baseUrl: string) {
   const hostname = url.hostname.replace(/^\[|\]$/g, "");
   let addresses;
   try { addresses = await lookup(hostname, { all: true }); }
-  catch { throw new LlmRequestError("模型服务域名解析失败，请检查 Base URL", 502); }
+  catch { throw new LlmRequestError("模型服务域名解析失败，请检查 Base URL", 502, "DNS"); }
   if (!addresses.length || addresses.some((entry) => !isPublicAddress(entry.address))) throw new LlmRequestError("模型地址不能指向本机或私有网络", 400);
   return addresses[0];
 }
 export function upstreamError(status: number, body = "") {
-  if (status === 401 || status === 403) return new LlmRequestError("模型服务拒绝认证：请检查 API Key 和模型访问权限", 502);
-  if (status === 402 || (status === 429 && /quota|balance|credit|billing|insufficient|余额|额度/i.test(body))) return new LlmRequestError("模型服务额度不足，请充值或在管理页更换 API Key", 502);
-  if (status === 429) return new LlmRequestError("模型服务限流或额度不足，请稍后重试或更换 API Key（HTTP 429）", 503);
+  if (status === 401 || status === 403) return new LlmRequestError("模型服务拒绝认证：请检查 API Key 和模型访问权限", 502, "AUTH");
+  if (status === 402 || (status === 429 && /quota|balance|credit|billing|insufficient|余额|额度/i.test(body))) return new LlmRequestError("模型服务额度不足，请充值或在管理页更换 API Key", 502, "QUOTA");
+  if (status === 429) return new LlmRequestError("模型服务限流或额度不足，请稍后重试或更换 API Key（HTTP 429）", 503, "RATE_LIMIT");
   if (status === 404) return new LlmRequestError("模型或接口不存在，请检查模型名称、Base URL 与协议（HTTP 404）", 502);
   return new LlmRequestError(`模型服务请求失败（HTTP ${status}），请检查协议和模型配置`, 502);
 }
@@ -46,8 +47,12 @@ export function llmRequestBody(config: RuntimeLlm, system: string, prompt: strin
 }
 
 // DNS is validated and pinned to the TLS request; redirects are never followed.
-export async function callLlm(config: RuntimeLlm, system: string, prompt: string, signal?: AbortSignal, timeoutMs = 90_000, attachment?: LlmAttachment) {
+export async function callLlm(config: RuntimeLlm, system: string, prompt: string, signal?: AbortSignal, timeoutMs = 90_000, attachment?: LlmAttachment, network?: NonNullable<DesignDiagnostics["network"]>) {
+  const began = performance.now();
+  signal?.throwIfAborted();
   const address = await providerAddress(config.baseUrl);
+  if (network) network.dnsMs = Math.round(performance.now() - began);
+  signal?.throwIfAborted();
   const url = new URL(config.baseUrl + (config.protocol === "responses" ? "/responses" : "/chat/completions"));
   const body = JSON.stringify(llmRequestBody(config, system, prompt, attachment));
   const timeout = AbortSignal.timeout(timeoutMs);
@@ -61,12 +66,18 @@ export async function callLlm(config: RuntimeLlm, system: string, prompt: string
         else callback(null, address.address, address.family);
       },
     }, (res) => {
+      const headersAt = performance.now();
+      if (network) { network.headersMs = Math.round(headersAt - began); network.status = res.statusCode; }
       const chunks: Buffer[] = []; let size = 0;
       res.on("data", (chunk: Buffer) => { size += chunk.length; if (size > 2_000_000) req.destroy(new Error("response too large")); else chunks.push(chunk); });
-      res.on("end", () => resolve({ status: res.statusCode ?? 502, body: Buffer.concat(chunks).toString("utf8") }));
+      res.on("end", () => {
+        if (network) { network.bodyMs = Math.round(performance.now() - headersAt); network.responseBytes = size; }
+        resolve({ status: res.statusCode ?? 502, body: Buffer.concat(chunks).toString("utf8") });
+      });
       res.on("error", reject);
     });
-    req.on("error", () => reject(new LlmRequestError(timeout.aborted ? "模型响应超时，请重试或更换服务商" : signal?.aborted ? "请求已取消" : "无法连接模型服务，请检查服务商网络与配置", timeout.aborted ? 504 : 502)));
+    req.on("socket", socket => socket.once("secureConnect", () => { if (network) network.tlsMs = Math.round(performance.now() - began); }));
+    req.on("error", () => reject(new LlmRequestError(timeout.aborted ? "模型响应超时，请重试或更换服务商" : signal?.aborted ? "请求已取消" : "无法连接模型服务，请检查服务商网络与配置", timeout.aborted ? 504 : 502, timeout.aborted || signal?.aborted ? "TIMEOUT" : "CONNECT")));
     req.end(body);
   });
   if (response.status < 200 || response.status >= 300) throw upstreamError(response.status, response.body);

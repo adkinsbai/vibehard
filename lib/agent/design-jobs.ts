@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { DesignResult } from "./llm";
+import type { DesignDiagnostics } from "./design-diagnostics";
 
 export const designJobInput = z.object({
   requestId: z.uuid(),
@@ -16,6 +17,7 @@ export type DesignJob = {
   status: "queued" | "running" | "completed" | "failed";
   model: string | null; knowledgeVersion: string | null;
   result: DesignResult | null; error: string | null;
+  diagnostics?: DesignDiagnostics | null;
   createdAt: string; startedAt: string | null; completedAt: string | null; deadlineAt: string;
 };
 export type DesignJobSummary = Omit<DesignJob, "result">;
