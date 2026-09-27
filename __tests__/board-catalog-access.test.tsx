@@ -2,9 +2,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 
-const state = vi.hoisted(() => ({ session: null as null | { id: string; role: string }, user: null as null | { id: string; role: string }, failure: false }));
+const state = vi.hoisted(() => ({ session: null as null | { id: string; role: string }, user: null as null | { id: string; role: string }, failure: false, credentialValid: true }));
 vi.mock("next/headers", () => ({ cookies: async () => ({ get: () => ({ value: "signed-test-session" }) }) }));
-vi.mock("@/lib/server/security", () => ({ AUTH_COOKIE: "vibehard_session", readSessionToken: () => state.session }));
+vi.mock("@/lib/server/security", () => ({ AUTH_COOKIE: "vibehard_session", readSessionToken: () => state.session, sessionMatchesAccount: () => state.credentialValid }));
 vi.mock("@/lib/server/store", () => ({ findUserById: async () => { if (state.failure) throw Error("db down"); return state.user; } }));
 vi.mock("next/navigation", () => ({ redirect: (path: string) => { throw Error(`redirect:${path}`); } }));
 vi.mock("@/components/app/knowledge-library", () => ({ KnowledgeLibrary: ({ boards }: { boards: { name: string }[] }) => <div>{boards.map(board => board.name).join(",")}</div> }));
@@ -12,8 +12,13 @@ import { readBoardCatalog } from "@/lib/server/board-catalog";
 import BoardLibraryPage from "@/app/app/knowledge/page";
 import LegacyLibraryPage from "@/app/app/board-library/page";
 
-beforeEach(() => { state.session = null; state.user = null; state.failure = false; });
+beforeEach(() => { state.session = null; state.user = null; state.failure = false; state.credentialValid = true; });
 describe("server-side catalog authorization", () => {
+  it("rejects a revoked credential before rendering private catalog data", async () => {
+    state.session={id:'one',role:'admin'}; state.user={id:'one',role:'admin'}; state.credentialValid=false;
+    expect(await readBoardCatalog()).toEqual({status:'anonymous'});
+    await expect(BoardLibraryPage()).rejects.toThrow('redirect:/login');
+  });
   it("redirects legacy bookmarks to the protected knowledge page", () => {
     expect(() => LegacyLibraryPage()).toThrow("redirect:/app/knowledge");
   });

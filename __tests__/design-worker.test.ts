@@ -1,8 +1,24 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
-import { boundedDesign } from "@/lib/server/design-job-worker";
+import { boundedDesign, processNextDesign } from "@/lib/server/design-job-worker";
+import { queuedDiagnostics } from "@/lib/agent/design-diagnostics";
 import { designJobInput, designMarkdown } from "@/lib/agent/design-jobs";
 afterEach(() => vi.useRealTimers());
+it("bounds blocked phase persistence and failure settlement, requiring worker recycling rather than orphan queries", async () => {
+  vi.useFakeTimers();
+  const deps = {
+    claimDesign: vi.fn().mockResolvedValue({ id: crypto.randomUUID(), leaseToken: crypto.randomUUID(), createdAt: new Date(), diagnostics: queuedDiagnostics(new Date()) }),
+    saveDesignDiagnostics: vi.fn().mockImplementation(() => new Promise(() => {})),
+    finishDesign: vi.fn().mockImplementation(() => new Promise(() => {})),
+    runtimeLlm: vi.fn(), retrieveDesignKnowledge: vi.fn(), callLlm: vi.fn(),
+  };
+  let outcome = "pending";
+  const work = processNextDesign(deps, 100).then(() => { outcome = "returned"; }, error => { outcome = error.name; });
+  await vi.advanceTimersByTimeAsync(101);
+  expect(outcome).toBe("DesignStorageUnavailableError");
+  await work;
+  expect(deps.callLlm).not.toHaveBeenCalled();
+});
 it("enforces a hard deadline even when DNS/config/provider never resolves", async () => {
   vi.useFakeTimers(); let signal: AbortSignal | undefined;
   const promise = boundedDesign(s => { signal = s; return new Promise(() => {}); }, 100);

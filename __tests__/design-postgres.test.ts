@@ -1,13 +1,17 @@
 // @vitest-environment node
 import { randomUUID } from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
+import { promisify } from "node:util";
+import postgres from "postgres";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import { requireDb } from "@/lib/db";
 import { designJobs, projects, users } from "@/lib/db/schema";
-import { createUser } from "@/lib/server/store";
-import { createSessionToken } from "@/lib/server/security";
+import { createUser, resetUserPassword } from "@/lib/server/store";
+import { AUTH_COOKIE, createSessionToken, hashPassword } from "@/lib/server/security";
+import { POST as login } from "@/app/api/auth/login/route";
+import { requestUser } from "@/lib/server/http";
 import { claimDesign, enqueueDesign, finishDesign, getDesign, listDesigns, listDesignDiagnostics, saveDesignDiagnostics } from "@/lib/server/design-job-store";
 import { GET as detail } from "@/app/api/design/[id]/route";
 import { GET as download } from "@/app/api/design/[id]/download/route";
@@ -34,6 +38,69 @@ if (enabled) {
   const input = () => ({ requestId: randomUUID(), requirement: "带温度传感器的 USB 节点" });
   const result = { architecture: ["持久化架构"], bom: [{ item: "主控", model: "MCU", qty: 1, estCost: "¥5（估算）" }], interfaces: ["UART"], risks: [{ level: "低" as const, desc: "核验" }] };
   const req = (record: Awaited<ReturnType<typeof user>>, body?: unknown) => new NextRequest("https://example.invalid/api/design", { method: body ? "POST" : "GET", headers: { Cookie: `vibehard_session=${createSessionToken(record)}`, "Content-Type": "application/json" }, ...(body ? { body: JSON.stringify(body) } : {}) });
+
+  it("bounds real row-lock failure persistence and destroys the child worker's pending database connections", async () => {
+    const owner = await user(); const queued = await enqueueDesign(owner.id, input());
+    expect((await claimDesign())?.id).toBe(queued.id);
+    const marker = `worker-lock-${randomUUID()}`;
+    const url = new URL(process.env.DATABASE_URL!); url.searchParams.set('application_name', marker);
+    const locker = postgres(process.env.DATABASE_URL!, { max: 1 });
+    let unlock!: () => void; let locked!: () => void;
+    const released = new Promise<void>(resolve => { unlock = resolve; });
+    const ready = new Promise<void>(resolve => { locked = resolve; });
+    const holding = locker.begin(async tx => { await tx`select id from design_jobs where id = ${queued.id} for update`; locked(); await released; });
+    try {
+      await Promise.race([ready, holding]);
+      const child = await promisify(execFile)(process.execPath, ['--import', 'tsx', '__tests__/fixtures/design-worker-storage-probe.ts', queued.id],
+        { env: { ...process.env, DATABASE_URL: url.toString() }, timeout: 10000, maxBuffer: 64000 });
+      const report = JSON.parse(child.stdout.trim());
+      expect(report).toMatchObject({ errorName: 'DesignStorageUnavailableError' });
+      expect(report.elapsedMs).toBeLessThan(1500); expect(report.closedAfterMs).toBeLessThan(3000);
+      const sessions = await requireDb().execute(sql`select pid from pg_stat_activity where application_name = ${marker}`);
+      expect(sessions).toHaveLength(0);
+    } finally { unlock(); await holding; await locker.end(); }
+    // Recycling does not retry/overwrite this job. Lease expiry permits manual retry.
+    await requireDb().update(designJobs).set({ deadlineAt: new Date(Date.now() - 1000) }).where(eq(designJobs.id, queued.id));
+    const next = await enqueueDesign(owner.id, { ...input(), projectId: queued.projectId });
+    expect((await claimDesign())?.id).toBe(next.id);
+    // Failure persistence can succeed while the timed-out config query remains
+    // stuck on another connection. This must also recycle, not accumulate SQL.
+    const child = await promisify(execFile)(process.execPath, ['--import', 'tsx', '__tests__/fixtures/design-worker-storage-probe.ts', next.id, 'config'],
+      { env: { ...process.env, DATABASE_URL: url.toString() }, timeout: 10000, maxBuffer: 64000 });
+    expect(JSON.parse(child.stdout.trim()).closedAfterMs).toBeLessThan(5500);
+    expect(await getDesign(owner.id, next.id)).toMatchObject({ status: 'failed', diagnostics: { currentPhase: 'config', errorCode: 'TIMEOUT' } });
+    expect(await requireDb().execute(sql`select pid from pg_stat_activity where application_name = ${marker}`)).toHaveLength(0);
+  });
+
+  it("exits the actual worker entrypoint on a blocked claim without leaving database connections", async () => {
+    const marker = `worker-claim-${randomUUID()}`;
+    const url = new URL(process.env.DATABASE_URL!); url.searchParams.set('application_name', marker);
+    const locker = postgres(process.env.DATABASE_URL!, { max: 1 });
+    let unlock!: () => void; let locked!: () => void;
+    const released = new Promise<void>(resolve => { unlock = resolve; });
+    const ready = new Promise<void>(resolve => { locked = resolve; });
+    const holding = locker.begin(async tx => { await tx`select pg_advisory_xact_lock(hashtext('vibehard:design-queue'))`; locked(); await released; });
+    try {
+      await Promise.race([ready, holding]); const start = Date.now();
+      await expect(promisify(execFile)(process.execPath, ['--import', 'tsx', 'scripts/design-worker.ts'],
+        { env: { ...process.env, DATABASE_URL: url.toString() }, timeout: 10000, maxBuffer: 64000 })).rejects.toMatchObject({ code: 1 });
+      expect(Date.now() - start).toBeLessThan(9000);
+      expect(await requireDb().execute(sql`select pid from pg_stat_activity where application_name = ${marker}`)).toHaveLength(0);
+    } finally { unlock(); await holding; await locker.end(); }
+  });
+
+  it("revokes a real PostgreSQL account's old cookie after reset and accepts a new login", async () => {
+    const owner = await user(); const before = req(owner);
+    expect((await requestUser(before))?.id).toBe(owner.id);
+    await resetUserPassword(owner.id, await hashPassword('new-test-password'));
+    expect(await requestUser(before)).toBeNull();
+    const response = await login(new NextRequest('https://example.invalid/api/auth/login', { method: 'POST',
+      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: owner.email, password: 'new-test-password' }) }));
+    expect(response.status).toBe(200);
+    const cookie = response.headers.getSetCookie().find(value => value.startsWith(`${AUTH_COOKIE}=`) && !value.includes('Max-Age=0'))!.split(';')[0];
+    expect((await requestUser(new NextRequest('https://example.invalid/api/projects', { headers: { cookie } })))?.id).toBe(owner.id);
+    expect(await response.json()).not.toHaveProperty('user.passwordHash');
+  });
 
   it("atomically creates one project for concurrent retries, and enforces idempotency and per-user limits", async () => {
     const owner = await user(); const request = input();

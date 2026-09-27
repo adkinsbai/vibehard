@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { AUTH_COOKIE, readSessionToken } from "@/lib/server/security";
+import { AUTH_COOKIE, readSessionToken, sessionMatchesAccount } from "@/lib/server/security";
 import { findUserById } from "@/lib/server/store";
 import { canReadBoardCatalog, type CatalogBoard } from "@/lib/board-catalog";
 import { verifiedBoardCatalog } from "@/lib/server/verified-board-catalog";
@@ -13,7 +13,7 @@ export async function readBoardCatalog(): Promise<
   if (!session) return { status: "anonymous" };
   try {
     const user = await findUserById(session.id);
-    if (!user) return { status: "anonymous" };
+    if (!user || !sessionMatchesAccount(session, user)) return { status: "anonymous" };
     if (!canReadBoardCatalog(user.role)) return { status: "forbidden" };
     const [{ default: boards }, { default: evidence }, { default: specifications }] = await Promise.all([
       import("./data/board-catalog.json"), import("./data/board-catalog-evidence.json"), import("./data/board-spec-evidence.json")]);

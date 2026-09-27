@@ -77,7 +77,7 @@ async function fixture() {
   const id = crypto.randomUUID();
   const user = await createUser({ email: `${id}@example.com`, passwordHash: "test", inviteCode: "test" });
   const project = await createProject(user.id, { name: "Knowledge project", workspaceKey: id });
-  const cookie = `${AUTH_COOKIE}=${createSessionToken({ id: user.id, email: user.email, name: user.name, role: user.role })}`;
+  const cookie = `${AUTH_COOKIE}=${createSessionToken(user)}`;
   return { user, project, cookie, context: { params: Promise.resolve({ id: project.id }) } };
 }
 const request = (cookie: string, body?: unknown) => new NextRequest("http://localhost/api/projects/test/knowledge", {
