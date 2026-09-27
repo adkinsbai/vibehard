@@ -2,6 +2,7 @@ import { mkdir, readFile } from "node:fs/promises";
 import { build } from "esbuild";
 
 const entries = {
+  "knowledge-batch-control": "scripts/knowledge-batch-control.ts",
   "accept-agent-retrieval": "scripts/accept-agent-retrieval.ts",
   "knowledge-retrieval": "scripts/knowledge-retrieval-worker.ts",
   "design-worker": "scripts/design-worker.ts",

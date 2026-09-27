@@ -3,6 +3,8 @@ import { createReadStream, readFileSync, statSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import type { RetrievalSource } from "@/lib/agent/knowledge-retrieval";
 import boardAssociations from "@/lib/server/data/oss-rag-board-associations.json";
+import { readBatchManifest, type BatchManifest } from './knowledge-batch-policy';
+import { searchControlledIndex } from './controlled-index';
 
 // This is an internal, read-only service used by the single-concurrency design
 // worker after project ownership has been checked. No browser route or OSS key
@@ -17,10 +19,10 @@ const INDEX_BATCH = "6cf96eea-af45-4e7d-96c0-c99afbe8c192";
 const APPROVED_MANIFEST_SHA = "3cc6440aa480c470183f49ed61b296d6168e64080241c5672a9538727011c7a1";
 
 type IndexRow = { id: string; source_sha: string; source_path: string; category: string; page: number; part: number; text: string };
-type IndexMetadata = { batchId: string; manifestSha256: string; sqliteSha256: string; indexedChunks: number };
+type IndexMetadata = { schema?: string; batchId: string; manifestSha256: string; sqliteSha256: string; indexedChunks: number };
 type BoardAssociation = { sourceSha256: string; citationPath: string; category: string };
 type BoardAssociations = { indexSha256: string; manifestSha256: string; boards: Record<string, BoardAssociation[]> };
-let cached: { path: string; database: DatabaseSync; indexSha256: string } | undefined;
+let cached: { path: string; database: DatabaseSync; indexSha256: string; manifest?: BatchManifest } | undefined;
 let opening: { path: string; promise: Promise<DatabaseSync> } | undefined;
 const boardNames = Object.keys(boardAssociations.boards).sort((a, b) => b.length - a.length);
 const approvedAssociatedShas = new Set(Object.values(boardAssociations.boards).flat().map(entry => entry.sourceSha256));
@@ -65,7 +67,8 @@ async function openIndex(path: string) {
   cached?.database.close();
   cached = undefined;
   const meta = JSON.parse(readFileSync(`${path}.meta.json`, "utf8")) as IndexMetadata;
-  if (meta.batchId !== INDEX_BATCH || meta.manifestSha256 !== APPROVED_MANIFEST_SHA ||
+  const manifest = meta.schema === 'vibehard-controlled-index/v2' ? readBatchManifest(path, meta.manifestSha256) : undefined;
+  if ((manifest ? manifest.batchId !== meta.batchId || manifest.sqliteSha256 !== meta.sqliteSha256 || manifest.indexedChunks !== meta.indexedChunks : meta.batchId !== INDEX_BATCH || meta.manifestSha256 !== APPROVED_MANIFEST_SHA) ||
       !/^[a-f0-9]{64}$/.test(meta.sqliteSha256) || !Number.isInteger(meta.indexedChunks) ||
       meta.indexedChunks < 1 || meta.indexedChunks > 100000) {
     throw new Error("Knowledge index metadata is not an approved batch");
@@ -83,7 +86,7 @@ async function openIndex(path: string) {
     if (database.prepare("SELECT count(*) AS n FROM chunks").get()?.n !== meta.indexedChunks) {
       throw new Error("Knowledge index row count mismatch");
     }
-    cached = { path, database, indexSha256: digest };
+    cached = { path, database, indexSha256: digest, manifest };
     return database;
   } catch (error) { database.close(); throw error; }
 }
@@ -149,6 +152,17 @@ function boardRows(database: DatabaseSync, board: string, queryTerms: string[], 
 export async function searchIndexedKnowledge(requirement: string, indexPath = process.env.VIBEHARD_OSS_INDEX_PATH,
     associations: BoardAssociations = boardAssociations): Promise<RetrievalSource[]> {
   if (!indexPath) return [];
+  // Open only the operator-selected immutable path. Versioned v2 policy is
+  // checked before interpreting source/board associations; legacy remains exact.
+  if (!opening || opening.path !== indexPath) {
+    const promise = openIndex(indexPath).finally(() => { if (opening?.promise === promise) opening = undefined; });
+    opening = { path: indexPath, promise };
+  }
+  const opened = await opening.promise;
+  if (cached?.manifest) {
+    const queryTerms = terms(requirement);
+    return queryTerms.length ? searchControlledIndex(opened, cached.manifest, requirement, queryTerms) : [];
+  }
   // An explicit different board must never pick up ESP32-S3 corpus fragments.
   if (/\brv1106\b|\brv1126b\b/i.test(requirement) && !/\besp32[- ]?s3\b/i.test(requirement)) return [];
   const board = requestedBoard(requirement);
