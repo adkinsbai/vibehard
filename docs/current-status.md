@@ -2,6 +2,13 @@
 
 最新更新：2026-09-27，北京时间。以下核查结果分别标注时间，不代表持续监控。
 
+## 2026-09-27 16:35 方案可靠性第一阶段已上线
+
+- 平台与方案 Worker 均已切换至 `20260927-design-reliability-v1`；GitHub PR #3 合并 EDA 基线、PR #4 合并第一阶段可靠性。增量迁移 `0007_design_diagnostics` 已应用；旧任务无诊断仍可读。六阶段耗时、模型版本、脱敏错误及管理员诊断页已生效，保持 90 秒硬期限与手动重试。
+- 专用隔离库中初次 12 请求仅 7 次成功，诊断定位为模型正文阶段超时；低推理强度/4096 token 候选 11 次成功、一次上游未完成；最终 low/8192 token 候选 12/12 通过并逐引用核对哈希/页/片段。该策略只用于官方 DeepSeek 指定模型的方案草稿，不修改模型设置/API Key/Agent 策略。此小样本通过不是长期 SLA。
+- 候选、正式回环和公网 PCB/Demo/鉴权检查通过。Runner/Gateway/VibeBoard/EDA manager/nginx PID 和敏感配置哈希未变，Runner 新鲜心跳与连接已核对。备份、归档 SHA 与回滚脚本在该 release；新增诊断列在回滚时保留。
+- 第二阶段统一检索仍为候选：本地 283 项通过、隔离 PostgreSQL 11 项通过；真实当前模型完整只读工具回合 5.7 秒通过。受限 Unix socket 检索 60 次双并发 P95 4.3 ms、cgroup 内存峰值约 40 MiB（限额 384 MiB/50% CPU）；未授权 nobody 无法连接。须完成第二阶段候选及正式切换验证后才可称三入口统一上线。
+
 ## 2026-09-27 板卡关联 RAG 方案 worker 已上线
 
 - 正式 worker 为 `/opt/vibehard/releases/20260927-rag-board-links-v1/services/design-worker.cjs`，平台仍是 `20260926-board-spec-v2`。只切换 `vibehard-design-worker.service`，它保留动态用户、专用索引组、384 MB 内存和 50% CPU 限制；Runner/Gateway/VibeBoard/EDA manager/平台 PID 未变。原 SQLite SHA256 `cb18cf9cc8b92d0a8f125376f8e7b06aee0f2776b478dbc69b3114f19f2a4eb9`、OSS 原件和数据库结构未变。旧 worker unit 备份于新 release 的 `backup/`，归档 SHA256 `5420c17004b1165bf4eaf387672c1abb217c0758b1540faede167562a62c30dd`。
