@@ -27,6 +27,7 @@ SOURCE_ROOT = Path('/Users/hushaohong/Desktop/ESP32-S3资料包')
 OUTPUT_ROOT = Path('/private/tmp/vibehard-esp32-processed')
 OCR_BINARY = Path('/private/tmp/vibehard-ocr-pdf-page')
 VERIFIED_PARENTS = set()
+DISCOVERY_STATUS = {}
 MAX_NESTED_PDF_BYTES = 80 * 1024 * 1024
 MAX_ARCHIVE_EXPANSION = 100
 MAX_TEXT_CHARS = 20_000_000
@@ -119,9 +120,12 @@ def eligible_text_name(name, size):
 
 def source_records(state, include_text):
     for parent in state['objects']:
-        if parent['validation'].startswith('quarantine'):
-            continue
         relative = parent['paths'][0]
+        discovery = {'sourcePath': relative, 'parentSha256': parent['sha256'], 'status': 'no_eligible_documents'}
+        DISCOVERY_STATUS[relative] = discovery
+        if parent['validation'].startswith('quarantine'):
+            discovery['status'] = 'quarantine'
+            continue
         if not safe_zip_name(relative):
             raise RuntimeError('Unsafe source path')
         local = SOURCE_ROOT / relative
@@ -130,8 +134,10 @@ def source_records(state, include_text):
         if local.stat().st_size != parent['bytes'] or digest_file(local) != parent['sha256']:
             raise RuntimeError('Raw source hash mismatch')
         if parent['mode'] == 'pdf':
+            discovery['status'] = 'discovered'
             yield {'parent': parent, 'relative': relative, 'local': local, 'kind': 'direct'}
         elif parent['mode'] == 'text' and include_text and 0 < parent['bytes'] <= 250_000:
+            discovery['status'] = 'discovered'
             yield {'parent': parent, 'relative': relative, 'local': local, 'kind': 'direct_text', 'bytes': parent['bytes']}
         elif parent['mode'] == 'archive' and relative.lower().endswith('.zip'):
             try:
@@ -154,18 +160,22 @@ def source_records(state, include_text):
                         expanded += entry.file_size
                         if expanded > 512 * 1024 * 1024:
                             raise RuntimeError('Archive expansion budget exceeded')
+                        discovery['status'] = 'discovered'
                         yield {'parent': parent, 'relative': relative + '!' + entry.filename,
                                'local': local, 'kind': 'zip_pdf' if is_pdf else 'zip_text', 'entry': entry.filename,
                                'bytes': entry.file_size}
             except (OSError, zipfile.BadZipFile):
+                discovery.update(status='failed', errorCode='ARCHIVE_UNREADABLE')
                 continue
         elif parent['mode'] == 'archive' and relative.lower().endswith(('.rar', '.7z')):
             listing = subprocess.run(['bsdtar', '-tf', str(local)], capture_output=True,
                                      text=True, timeout=90, check=False)
             if listing.returncode:
+                discovery.update(status='failed', errorCode='ARCHIVE_UNREADABLE')
                 continue
             for entry_name in listing.stdout.splitlines():
                 if entry_name.lower().endswith('.pdf') and safe_zip_name(entry_name):
+                    discovery['status'] = 'discovered'
                     yield {'parent': parent, 'relative': relative + '!' + entry_name,
                            'local': local, 'kind': 'other_pdf', 'entry': entry_name}
 
@@ -339,6 +349,7 @@ def review_document(source, sha256, pages, ocr_needed, ocr_attempted):
 
 
 def process(limit, perform_ocr, include_text):
+    DISCOVERY_STATUS.clear()
     state = json.loads(RAW_STATE.read_text())
     if state.get('schema') != 'vibehard-oss-raw-batch/v1' or not state.get('manifestUploaded'):
         raise RuntimeError('Verified raw OSS batch is required')
@@ -348,6 +359,8 @@ def process(limit, perform_ocr, include_text):
         raise RuntimeError('Batch input is immutable; use a new output directory')
     if not snapshot.exists():
         atomic_json(snapshot, state)
+    # A crash/discovery exception must never leave a previous success marker.
+    atomic_json(OUTPUT_ROOT / 'processing-status.json', {'batchId': state['batchId'], 'complete': False, 'state': 'processing'})
     count = 0
     summary = Counter()
     seen_sources = set()
@@ -390,7 +403,9 @@ def process(limit, perform_ocr, include_text):
             summary['failed'] += 1
             atomic_json(OUTPUT_ROOT / 'failures' / f'{stable_key}.json', {'sourcePath': source['relative'], 'parentSha256': source['parent']['sha256'], 'errorCode': type(error).__name__, 'status': 'failed'})
             print(json.dumps({'failed': source['relative'], 'errorType': type(error).__name__}, ensure_ascii=False), file=sys.stderr, flush=True)
-    atomic_json(OUTPUT_ROOT / 'processing-status.json', {'batchId': state['batchId'], 'summary': dict(summary), 'sourceCandidates': len(seen_sources), 'complete': not limit and not summary['failed']})
+    discovery_failed = sum(item['status'] == 'failed' for item in DISCOVERY_STATUS.values())
+    atomic_json(OUTPUT_ROOT / 'discovery-status.json', list(DISCOVERY_STATUS.values()))
+    atomic_json(OUTPUT_ROOT / 'processing-status.json', {'batchId': state['batchId'], 'summary': dict(summary), 'sourceCandidates': len(seen_sources), 'discoveryFailed': discovery_failed, 'complete': not limit and not summary['failed'] and not discovery_failed})
     print(json.dumps({'summary': dict(summary), 'newlyProcessed': count,
                       'sourceCandidates': len(seen_sources)}, ensure_ascii=False), flush=True)
 

@@ -9,7 +9,7 @@
 - 输入为既有 `vibehard-oss-raw-batch/v1` 私有上传状态（`batchId/manifestUploaded/objects`）；对象包含相对 `paths`、`sha256/bytes/key/mode/validation`。只能使用真实上传并校验的状态，不能手工把 `manifestUploaded` 改成 true。OSS 下载的原件先落离线目录并核对 SHA，不将生产服务器用作 8 GB 中转站。
 - 首版支持 PDF（可按需调用本机 Vision OCR）、ZIP 内 PDF/板级说明，以及直接 Markdown/文本。既有 RAR/7z PDF 提取兼容保留。对不支持的文件保留原件，不冒充正文已入库。OCR 助手为 `scripts/ocr-pdf-page.swift`，PDF 提取依赖 `pypdfium2`。
 - 拒绝路径逃逸、软链接、不匹配的原件哈希；限制 ZIP 目录/展开量、单文档页数/文字数。单进程锁防止重复批次并发；断点续跑不得更换输入清单。
-- `input-manifest.json` 固定输入；`documents/*.json` 保存逐来源审核/页/片段/原件哈希；`failures/*.json` 仅保存错误码；`processing-status.json` 表示本次完成情况。失败记录保留历史，最终以成功来源和当前批次状态为准。
+- `input-manifest.json` 固定输入；`discovery-status.json` 记录原件的发现/无可选正文/隔离/压缩包失败；`documents/*.json` 保存逐来源审核/页/片段/原件哈希；`failures/*.json` 仅保存错误码；`processing-status.json` 表示本次完成情况（开始处理先置为未完成，避免中断残留成功标识）。失败记录保留历史，最终以成功来源和当前批次状态为准。
 - 低质量、疑似密钥、明显提示词注入、未完成 OCR 进入隔离，不能生成可发布片段。规则筛查不是完整安全扫描，也不验证器件参数、电路正确性或 OCR 阅读顺序。展示始终为“未人工复核”。
 
 ## 离线处理

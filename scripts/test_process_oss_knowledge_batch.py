@@ -46,8 +46,22 @@ class KnowledgeBatchRulesTests(unittest.TestCase):
                 with self.assertRaises(ValueError): builder.build(batch.OUTPUT_ROOT,policy,output)
                 (batch.SOURCE_ROOT / 'README.md').write_bytes(b'changed')
                 with self.assertRaises(RuntimeError): batch.process(0, False, True)
+                self.assertFalse(json.loads((batch.OUTPUT_ROOT / 'processing-status.json').read_text())['complete'])
                 state['objects'][0]['paths'] = ['../escape.pdf']; batch.RAW_STATE.write_text(json.dumps(state))
                 with self.assertRaises(RuntimeError): batch.process(0, False, True)
+        finally:
+            batch.RAW_STATE, batch.SOURCE_ROOT, batch.OUTPUT_ROOT = old
+
+    def test_unreadable_archive_is_not_silently_declared_complete(self):
+        old = batch.RAW_STATE, batch.SOURCE_ROOT, batch.OUTPUT_ROOT
+        try:
+            with tempfile.TemporaryDirectory(prefix='vibehard-bad-archive-') as temporary:
+                root = Path(temporary); batch.SOURCE_ROOT = root; batch.RAW_STATE = root / 'raw.json'; batch.OUTPUT_ROOT = root / 'processed'
+                payload = b'not a zip'; (root / 'broken.zip').write_bytes(payload)
+                batch.RAW_STATE.write_text(json.dumps({'schema':'vibehard-oss-raw-batch/v1','batchId':'test','manifestUploaded':True,'objects':[{'sha256':hashlib.sha256(payload).hexdigest(),'bytes':len(payload),'paths':['broken.zip'],'mode':'archive','validation':'ok'}]}))
+                batch.process(0, False, True)
+                self.assertFalse(json.loads((batch.OUTPUT_ROOT / 'processing-status.json').read_text())['complete'])
+                self.assertEqual(json.loads((batch.OUTPUT_ROOT / 'discovery-status.json').read_text())[0]['errorCode'],'ARCHIVE_UNREADABLE')
         finally:
             batch.RAW_STATE, batch.SOURCE_ROOT, batch.OUTPUT_ROOT = old
     def test_zip_paths_and_text_selection(self):
