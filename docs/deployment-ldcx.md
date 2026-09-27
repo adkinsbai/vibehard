@@ -1,5 +1,29 @@
 # ldcx.tech deployment
 
+## 2026-09-27 staged reliability / unified retrieval / controlled ingestion
+
+Current verified units:
+
+| Scope | Release | Evidence |
+| --- | --- | --- |
+| Platform, design worker, cloud Runner | `20260927-unified-retrieval-v1` | PR #5; public Agent tool round, 21.717 s design with verifiable citations, EDA proposal; access denial and protected PCB/Demo checks |
+| Internal retrieval and batch CLI | `20260927-controlled-ingestion-v1` | PR #6; 60 concurrent-pair queries P95 34.5 ms, MemoryPeak 43,335,680 bytes; 384 MiB/50% limits; admin/member/socket checks |
+| Gateway / VibeBoard / nginx | unchanged | PIDs preserved during each scoped activation |
+
+Stage one (`20260927-design-reliability-v1`, PR #4, commit `1e8f471`) applied additive migration `0007_design_diagnostics`. After evidence-driven model policy fixes, the dedicated isolation DB passed all 12 real design requests below 90 seconds; no automatic paid retries. Earlier failed runs are retained, not counted as passes. Diagnostic columns remain when reverting code. Old records remain readable without fabricated diagnostics.
+
+Immutable archives SHA256:
+
+- reliability: `a89f5049a350034aabf9a0030aa58df94f9dd6f931a226100a59012e3d825ae8`
+- unified retrieval: `9d16d0fb86cb5bb2033d83b1fa41111dfce61cb5f636b9eac006d51928ea039d`
+- controlled ingestion: `ba7d08ae35341362c5481f9d883d8276ca05762c5cfcb648c0cdcd744002a872`
+
+Each release contains a root-only `backup/` with the previous units and verified PostgreSQL dump; `RELEASE.json` fingerprints source/bundles. The production frontend's complete source overlay remains the unified release; stage three is **not** a replacement frontend package. Preserve that distinction for future frontend packaging.
+
+The index remains `/opt/vibehard/knowledge/20260926-esp32-s3-v1/knowledge-fts.sqlite`, original hash `cb18cf9cc8b92d0a8f125376f8e7b06aee0f2776b478dbc69b3114f19f2a4eb9`; no raw OSS originals or new knowledge were imported. `control/current.json` points to this legacy baseline, `disabled.json` is initially empty. The worker is the only indexed retrieval entry over `/run/vibehard-knowledge/search.sock`; callers use the common server authorization service. See controlled-knowledge-ingestion.md for subsequent admin batches.
+
+Rollback in reverse release order, with no in-flight tasks and the existing protected platform environment loaded by systemd: run each release's `source/scripts/deploy-controlled-ingestion.mjs rollback`, then `deploy-unified-retrieval.mjs rollback`, then (if needed) the first-stage reliability deployment script. Do not restore the DB dump over newer data or drop the additive diagnostic column. Stage three rollback only restores the old retrieval unit and leaves its inert registry/evidence intact. Batch content rollback is separate (`knowledge-batch-control.cjs rollback <admin-id> previous`). Candidate units and the local test SSH tunnel have been stopped; failed/successful synthetic task evidence is retained. No credential rotation or account role change occurred.
+
 ## 2026-09-27 board-associated RAG worker-only release
 
 Active platform remains `/opt/vibehard/releases/20260926-board-spec-v2/standalone`; only `vibehard-design-worker.service` moved to `/opt/vibehard/releases/20260927-rag-board-links-v1/services/design-worker.cjs`. The previous worker unit is backed up at `<new-release>/backup/vibehard-design-worker.service` (root-only). New unit differs only in `WorkingDirectory` and `ExecStart` release paths. It still uses `DynamicUser=true`, `SupplementaryGroups=vibehard-knowledge`, `MemoryMax=384M`, `CPUQuota=50%`, and the same read-only index. Platform, Runner, Gateway, VibeBoard, EDA manager and nginx were not restarted. No database migration, OSS write, credential/role/model setting change or frontend build occurred.

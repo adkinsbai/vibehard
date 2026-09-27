@@ -1,8 +1,8 @@
 # 项目状态
 
-- 2026-09-27：按已批准计划，PR #3/#4/#5 已合并 GitHub 默认分支；可靠性（含 0007）与统一检索已分阶段上线，最终 12/12 隔离真实方案请求通过；正式 Agent/方案/EDA 真实验收及跨用户权限通过。第三阶段受控入库候选实现完成，待预检发布；不新增资料。主工作区未提交文档未动。详见 docs/current-status.md 和 docs/controlled-knowledge-ingestion.md。
+- 2026-09-27 17:18：三阶段已发布，PR #3/#4/#5/#6 已合并 GitHub 默认分支；可靠性（含 0007）最终 12/12 隔离真实方案请求通过，正式 Agent/方案/EDA 真实验收及跨用户权限通过。平台/方案 Worker/Runner 为 `20260927-unified-retrieval-v1`，检索服务与管理员受控入库 CLI 为 `20260927-controlled-ingestion-v1`；原件/正文未新增。生产检索 P95 34.5 ms、峰值 41.3 MiB；候选进程已停，备份/回滚保留。主工作区未提交文档未动。详见 docs/current-status.md 和 docs/controlled-knowledge-ingestion.md。
 
-## 2026-09-27 方案可靠性实施中（未发布）
+## 2026-09-27 方案可靠性早期实施记录（已由上方发布覆盖）
 
 - PR #3 合并 EDA/RAG 基线到默认分支 `6d2ba12`；后续位于 `codex/design-reliability`，主工作区未提交文档保留。
 - 任务六阶段诊断、脱敏错误码、模型版本与网络耗时、用户进度及管理员诊断分区已实现，迁移 `0007` 仅在隔离库执行。真实模型验收使用专用 `vibehard_reliability_test`，与回归库严格分开。
