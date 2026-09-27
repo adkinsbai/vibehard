@@ -12,7 +12,9 @@
 
 - [官网首页更新](homepage-refresh.md)：9/22 已上线的功能介绍、大字开放注册提示、公开页验收与回滚。
 
-- [知识库 UI](board-catalog-ui.md)：六类研发资料目录、管理员/开发者访问与后续接入边界。
+- [知识库 UI](board-catalog-ui.md)：六类研发资料目录、管理员/开发者访问、官方板卡规格核对和真实原件/索引关联。
+- [RAG 索引关联完善](oss-rag-index-refinement-task.md)：板卡型号、去重文档别名、错误变体排除及本地检索验收；9/27 worker 发布与生产验收见 [部署记录](deployment-ldcx.md)。
+- [ESP32-S3 板卡规格核对报告](board-spec-verification-2026-09-26.html)：61 款官方型号来源、展示特性、变体提示及排除文件；不代替实物验证。
 - [知识库 UI 发布记录](knowledge-ui-release.md)：9/21 已上线的独立版本、验收、排除项及回滚。
 
 - [泰山派入口整合与发布](remote-integration-20260921.md)：GitHub PR 合并来源、VibeBoard 嵌入、独立账号/数据边界及 9/22 云端验收。
@@ -33,6 +35,6 @@
 - [原理图识别与知识库备选](schematic-knowledge-candidates.md)：真实附件识别、申请按钮、目标项目、重复提交保护及审核入口（9/20 已发布；模型可用性见当前状态）。
 - [嵌入式 Skills 接入方案](embedded-skills-integration-plan.md)：参考小智技能库的云端选技能、现场设备执行和项目文档交接设计（尚未实现）。
 - [团队云端交付规范](team-cloud-delivery.md)：同伴和 Agent 的交付包格式、目标目录、审核流程与负载限制。
-- [当前发布与回滚](deployment-ldcx.md)：`20260926-eda-grid-v1` 的服务状态和回滚步骤；历史发布清单见部署文档。
+- [当前发布与回滚](deployment-ldcx.md)：`20260926-board-spec-v2` 的服务状态和回滚步骤；历史发布清单见部署文档。
 
 维护约定：运行情况写入 `current-status.md` 并注明核查时间；发布变更记录在 `deployment-ldcx.md`；不在文档中保存密钥或会话令牌。
