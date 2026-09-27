@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { afterEach, expect, it, vi } from "vitest";
 import { processNextDesign } from "@/lib/server/design-job-worker";
-import { LlmRequestError, upstreamError } from "@/lib/server/llm-client";
+import { LlmRequestError, upstreamError, llmRequestBody } from "@/lib/server/llm-client";
 import { expiredDiagnostics, queuedDiagnostics } from "@/lib/agent/design-diagnostics";
 
 const result = { architecture: ["MCU"], bom: [{ item: "主控", model: "MCU", qty: 1, estCost: "¥5 估算" }], interfaces: ["UART"], risks: [{ level: "低", desc: "核验" }] };
@@ -9,7 +9,7 @@ function fixture() {
   return {
     claimDesign: vi.fn().mockResolvedValue({ id: "job", userId: "owner", projectId: "project", leaseToken: "lease", requirement: "private requirement", createdAt: new Date(), diagnostics: queuedDiagnostics(new Date(Date.now() - 1000)) }),
     finishDesign: vi.fn().mockResolvedValue(true), saveDesignDiagnostics: vi.fn().mockResolvedValue(true),
-    runtimeLlm: vi.fn().mockResolvedValue({ model: "test", revision: "revision-1", protocol: "responses", apiKey: "secret-not-for-logs" }),
+    runtimeLlm: vi.fn().mockResolvedValue({ baseUrl: "https://example.invalid", model: "test", revision: "revision-1", protocol: "responses", apiKey: "secret-not-for-logs" }),
     retrieveDesignKnowledge: vi.fn().mockResolvedValue({ status: "no-match", method: "keyword-v1", references: [], context: "" }),
     callLlm: vi.fn().mockResolvedValue(JSON.stringify(result)),
   };
@@ -61,4 +61,11 @@ it("distinguishes provider quota/rate limit and legacy/expired diagnostics", () 
   expect(upstreamError(429).code).toBe("RATE_LIMIT"); expect(upstreamError(429, "insufficient quota").code).toBe("QUOTA");
   expect(expiredDiagnostics(null, "running", new Date())).toBeNull();
   expect(expiredDiagnostics(queuedDiagnostics(new Date()), "queued", new Date())?.errorCode).toBe("QUEUE_EXPIRED");
+});
+it("bounds only DeepSeek design drafts, leaving other purposes/providers unchanged", () => {
+  const config = { baseUrl: "https://api.deepseek.com", model: "deepseek-v4-pro", protocol: "responses" as const, apiKey: "secret", revision: "v1" };
+  expect(llmRequestBody(config, "JSON", "draft", undefined, { profile: "design-draft" })).toMatchObject({ reasoning: { effort: "low" }, max_output_tokens: 8192 });
+  expect(llmRequestBody(config, "JSON", "ping")).not.toHaveProperty("reasoning");
+  expect(llmRequestBody({ ...config, baseUrl: "https://api.deepseek.com.example.invalid" }, "JSON", "draft", undefined, { profile: "design-draft" })).not.toHaveProperty("reasoning");
+  expect(llmRequestBody({ ...config, protocol: "chat-completions" }, "JSON", "draft", undefined, { profile: "design-draft" })).toMatchObject({ reasoning_effort: "low", max_tokens: 8192 });
 });

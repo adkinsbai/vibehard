@@ -24,13 +24,13 @@ assert.equal(manifest.stage, 'reliability');
 for (const [file, sha] of Object.entries(manifest.sourceSha256)) assert.equal(hash(`${release}/source/${file}`), sha, file);
 for (const [file, sha] of Object.entries(manifest.artifacts)) assert.equal(hash(`${release}/services/${file}`), sha, file);
 function acceptance() {
-  assert.equal(property('vibehard-design-acceptance-20260927-v2', 'ExecMainStatus'), '0', 'Model acceptance failed');
-  assert.notEqual(property('vibehard-design-acceptance-20260927-v2', 'ActiveState'), 'active', 'Model acceptance still running');
-  const rows = run('journalctl', ['-u', 'vibehard-design-acceptance-20260927-v2', '--no-pager', '-o', 'cat']).split('\n').filter(x => x.startsWith('{')).map(x => JSON.parse(x));
+  assert.equal(property('vibehard-design-acceptance-20260927-v4', 'ExecMainStatus'), '0', 'Model acceptance failed');
+  assert.notEqual(property('vibehard-design-acceptance-20260927-v4', 'ActiveState'), 'active', 'Model acceptance still running');
+  const rows = run('journalctl', ['-u', 'vibehard-design-acceptance-20260927-v4', '--no-pager', '-o', 'cat']).split('\n').filter(x => x.startsWith('{')).map(x => JSON.parse(x));
   const summary = rows.find(x => x.acceptance === 'design-reliability-v1');
   assert.ok(summary?.passed && summary.total === 12 && summary.failures === 0, '12/12 real model gate not passed');
   const cases = rows.filter(x => x.case); assert.equal(cases.length, 12);
-  for (const kind of ['no-match', 'reviewed', 'auto-indexed']) assert.equal(cases.filter(x => x.case === kind && x.passed && x.elapsedMs < 90000).length, 4);
+  for (const kind of ['no-match', 'reviewed', 'auto-indexed']) assert.equal(cases.filter(x => x.case === kind && x.passed && x.elapsedMs < 90000 && x.diagnostics?.requestPolicy === 'deepseek-draft-low-v2').length, 4);
   return rows;
 }
 async function ready(port) { for (let n = 0; n < 30; n++) { try { if ((await fetch(`http://127.0.0.1:${port}/vibehard/login`, { signal: AbortSignal.timeout(1500) })).ok) return; } catch {} await new Promise(r => setTimeout(r, 1000)); } throw new Error('Candidate not ready'); }

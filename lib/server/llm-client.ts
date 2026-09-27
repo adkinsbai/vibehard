@@ -34,27 +34,35 @@ export function upstreamError(status: number, body = "") {
 }
 
 export type LlmAttachment = { filename: string; mimeType: "image/png" | "image/jpeg" | "application/pdf"; base64: string };
-export function llmRequestBody(config: RuntimeLlm, system: string, prompt: string, attachment?: LlmAttachment) {
+export type LlmRequestOptions = { profile: "design-draft" };
+export function designRequestPolicy(config: RuntimeLlm) {
+  // Official API supports low effort + a combined reasoning/output token cap.
+  // Scope narrowly: never send vendor extensions to an arbitrary compatible provider.
+  return new URL(config.baseUrl).hostname === "api.deepseek.com" && ["deepseek-v4-pro", "deepseek-flash"].includes(config.model)
+    ? "deepseek-draft-low-v2" : "provider-default-v1";
+}
+export function llmRequestBody(config: RuntimeLlm, system: string, prompt: string, attachment?: LlmAttachment, options?: LlmRequestOptions) {
   const url = attachment ? `data:${attachment.mimeType};base64,${attachment.base64}` : "";
-  if (config.protocol === "responses") return { model: config.model, instructions: system, input: attachment ? [{ role: "user", content: [
+  const bounded = options?.profile === "design-draft" && designRequestPolicy(config) === "deepseek-draft-low-v2";
+  if (config.protocol === "responses") return { ...(bounded ? { reasoning: { effort: "low" }, max_output_tokens: 8192 } : {}), model: config.model, instructions: system, input: attachment ? [{ role: "user", content: [
     { type: "input_text", text: prompt },
     attachment.mimeType === "application/pdf" ? { type: "input_file", filename: attachment.filename, file_data: url } : { type: "input_image", image_url: url, detail: "high" },
   ] }] : prompt, stream: false, store: false };
-  return { model: config.model, messages: [{ role: "system", content: system }, { role: "user", content: attachment ? [
+  return { ...(bounded ? { reasoning_effort: "low", max_tokens: 8192 } : {}), model: config.model, messages: [{ role: "system", content: system }, { role: "user", content: attachment ? [
     { type: "text", text: prompt },
     attachment.mimeType === "application/pdf" ? { type: "file", file: { filename: attachment.filename, file_data: url } } : { type: "image_url", image_url: { url, detail: "high" } },
   ] : prompt }], stream: false };
 }
 
 // DNS is validated and pinned to the TLS request; redirects are never followed.
-export async function callLlm(config: RuntimeLlm, system: string, prompt: string, signal?: AbortSignal, timeoutMs = 90_000, attachment?: LlmAttachment, network?: NonNullable<DesignDiagnostics["network"]>) {
+export async function callLlm(config: RuntimeLlm, system: string, prompt: string, signal?: AbortSignal, timeoutMs = 90_000, attachment?: LlmAttachment, network?: NonNullable<DesignDiagnostics["network"]>, options?: LlmRequestOptions) {
   const began = performance.now();
   signal?.throwIfAborted();
   const address = await providerAddress(config.baseUrl);
   if (network) network.dnsMs = Math.round(performance.now() - began);
   signal?.throwIfAborted();
   const url = new URL(config.baseUrl + (config.protocol === "responses" ? "/responses" : "/chat/completions"));
-  const body = JSON.stringify(llmRequestBody(config, system, prompt, attachment));
+  const body = JSON.stringify(llmRequestBody(config, system, prompt, attachment, options));
   const timeout = AbortSignal.timeout(timeoutMs);
   const combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
   const response = await new Promise<{ status: number; body: string }>((resolve, reject) => {
@@ -76,13 +84,18 @@ export async function callLlm(config: RuntimeLlm, system: string, prompt: string
       });
       res.on("error", reject);
     });
-    req.on("socket", socket => socket.once("secureConnect", () => { if (network) network.tlsMs = Math.round(performance.now() - began); }));
+    req.on("socket", socket => { if (!req.reusedSocket) socket.once("secureConnect", () => { if (network) network.tlsMs = Math.round(performance.now() - began); }); });
     req.on("error", () => reject(new LlmRequestError(timeout.aborted ? "模型响应超时，请重试或更换服务商" : signal?.aborted ? "请求已取消" : "无法连接模型服务，请检查服务商网络与配置", timeout.aborted ? 504 : 502, timeout.aborted || signal?.aborted ? "TIMEOUT" : "CONNECT")));
     req.end(body);
   });
   if (response.status < 200 || response.status >= 300) throw upstreamError(response.status, response.body);
   let data;
   try { data = JSON.parse(response.body); } catch { throw new LlmRequestError("模型服务返回了非 JSON 响应，请检查 API 根地址与协议"); }
+  if (network) {
+    if (["completed", "incomplete", "failed"].includes(data.status)) network.providerStatus = data.status;
+    if (Number.isSafeInteger(data.usage?.output_tokens) && data.usage.output_tokens >= 0) network.outputTokens = data.usage.output_tokens;
+  }
+  if (data.incomplete_details?.reason === "max_output_tokens" || data.choices?.[0]?.finish_reason === "length") throw new LlmRequestError("模型回答达到输出上限，内容未完整保存，请缩小需求后手动重试", 502, "OUTPUT_LIMIT");
   if (data.error || data.status === "failed" || data.status === "incomplete") throw new LlmRequestError("模型未完成回答，请检查额度或重试");
   const text = config.protocol === "responses"
     ? (typeof data.output_text === "string" ? data.output_text : (Array.isArray(data.output) ? data.output : []).flatMap((item: { content?: { type?: string; text?: string }[] }) => item.content ?? []).filter((item: { type?: string }) => item.type === "output_text").map((item: { text?: string }) => item.text ?? "").join(""))
