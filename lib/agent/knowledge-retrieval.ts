@@ -19,7 +19,9 @@ export type KnowledgeReference = {
   reviewStatus?: "auto-indexed";
 };
 export type RetrievalResult = {
-  status: "matched" | "no-match";
+  status: "matched" | "no-match" | "partial";
+  warnings?: ("INDEX_UNAVAILABLE" | "LEGACY_RUNNER")[];
+  revision?: string;
   method: "keyword-chunks-v1" | "keyword-chunks-fts5-v1";
   references: KnowledgeReference[];
   context: string;
@@ -47,12 +49,14 @@ function chunks(content: string) {
   return output;
 }
 
-export function retrieveKnowledge(requirement: string, sources: RetrievalSource[]): RetrievalResult {
+export function retrieveKnowledge(requirement: string, sources: RetrievalSource[], projectSnapshotIncluded = false): RetrievalResult {
   const query = tokens(requirement);
   if (!query.length) return { status: "no-match", method: "keyword-chunks-v1", references: [], context: "" };
+  const requestedEsp = /\besp32[- ]?s3\b/i.test(requirement) && !/\brv1106\b|\brv1126b\b/i.test(requirement);
   const requestedBoard = /\brv1106\b/i.test(requirement) && !/\brv1126b\b/i.test(requirement) ? "RV1106"
     : /\brv1126b\b/i.test(requirement) && !/\brv1106\b/i.test(requirement) ? "RV1126B" : null;
-  const candidates = sources.filter(source => !requestedBoard || source.scope !== "platform" ||
+  const candidates = sources.filter(source => !(requestedEsp && source.scope === "platform" && /^(?:RV1106|RV1126B)\//.test(source.version.source)))
+    .filter(source => !requestedBoard || source.scope !== "platform" ||
     !/^(?:RV1106|RV1126B)\//.test(source.version.source) || source.version.source.startsWith(`${requestedBoard}/`))
     .flatMap(source => chunks(source.version.content).map((content, index) => {
     const title = source.version.title.toLocaleLowerCase();
@@ -76,7 +80,11 @@ export function retrieveKnowledge(requirement: string, sources: RetrievalSource[
     const label = candidate.source.reviewStatus === "auto-indexed" ? "平台自动入库，未人工复核" : candidate.source.scope === "platform" ? "平台已发布" : "本项目已发布";
     const block = `[资料 ${selected.length + 1}] ${candidate.source.version.title}（${label}，v${candidate.source.version.version}）\n来源：${candidate.source.version.source.split(" (file SHA256", 1)[0]}\n文件 SHA256：${candidate.source.version.sha256}\n${candidate.content}`;
     if (seen.has(key) || (importedFile && (importedFileCounts.get(importedFile) ?? 0) >= 2) || used + block.length + (selected.length ? 2 : 0) > MAX_CONTEXT) continue;
-    selected.push(candidate); contextBlocks.push(block); seen.add(key); used += block.length + (selected.length > 1 ? 2 : 0);
+    selected.push(candidate);
+    // Agent already receives the complete reviewed project snapshot. Keep its
+    // citations, but do not send the same body twice in the bounded RAG context.
+    if (!(projectSnapshotIncluded && candidate.source.scope === "project")) contextBlocks.push(block);
+    seen.add(key); used += block.length + (selected.length > 1 ? 2 : 0);
     if (importedFile) importedFileCounts.set(importedFile, (importedFileCounts.get(importedFile) ?? 0) + 1);
     if (selected.length >= MAX_REFERENCES) break;
   }

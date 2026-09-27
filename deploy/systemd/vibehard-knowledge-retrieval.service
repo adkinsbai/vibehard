@@ -1,0 +1,29 @@
+[Unit]
+Description=VibeHard internal bounded knowledge retrieval
+After=local-fs.target
+
+[Service]
+Type=simple
+DynamicUser=true
+Group=vibehard-retrieval
+SupplementaryGroups=vibehard-knowledge
+RuntimeDirectory=vibehard-knowledge
+RuntimeDirectoryMode=0750
+WorkingDirectory=/opt/vibehard/current
+Environment=VIBEHARD_RETRIEVAL_SOCKET=/run/vibehard-knowledge/search.sock
+EnvironmentFile=/etc/vibehard/knowledge-index.env
+ExecStart=/opt/vibehard/runtime/node-v22.23.1 /opt/vibehard/current/services/knowledge-retrieval.cjs
+MemoryMax=384M
+CPUQuota=50%
+TasksMax=16
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_UNIX
+IPAddressDeny=any
+
+[Install]
+WantedBy=multi-user.target

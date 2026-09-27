@@ -398,3 +398,7 @@
 - Release: 从原正式 `20260922-taishan-integration` 复制并哈希校验 814 个源码文件，仅叠加 6 个运行时文件与 3 个测试文件，构建 `20260925-llm-model-discovery-v2`。首次候选包带旧泰山派验证脚本而预检失败，从未激活；v2 改用现行正式发布目录的脚本重新打包。
 - Validation: 隔离正式源码 158 项测试通过、3 DB 跳过，类型/lint/Next 构建通过；v2 候选与正式 3210 全套 PCB/Demo/认证/管理/知识/泰山派回归通过。公网 design 与 agent 配置各真实列出 2 个模型；管理员准入、普通用户拒绝、换 URL 要新 Key、按钮 bundle 都通过。公网 PCB renderer 与 18 资产/5 GIF 回归通过。未运行完整 Agent 工具流程或 RAG 方案生成。
 - Production: 仅 `vibehard.service` 切到新 release，PID 894091；部署脚本核对模型配置指纹与运行环境/其他服务 PID 未变。3211 候选已停，归档 SHA256 `3596b27e9ba65cf247ff38f85054ce9e71bf078ae8216c86d454fe5e4662197b`，旧 unit 在 release 的 root-only `backup/` 中。未 commit/push。
+# 2026-09-27 统一检索候选
+
+- 在独立 `codex/unified-knowledge` 工作树实现方案/Agent/EDA 服务端权限与引用入口、私有 socket Worker、旧 Runner 降级和语料版本上下文重置。
+- 全仓 282 测试、类型检查及隔离 PostgreSQL 11 项通过；云端真实工具回合/负载/发布待验证。仅第一阶段可靠性通过门槛后才按序发布，不修改主工作区未提交文档。

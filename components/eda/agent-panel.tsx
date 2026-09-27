@@ -9,9 +9,11 @@ import { importNativeSchematic } from '@/lib/eda/kicad-import';
 import type { EditBatch, EditCommand, EdaDocument } from '@/lib/eda/types';
 import { apiPath } from '@/lib/utils';
 import styles from './agent-panel.module.css';
+import { RetrievalEvidence } from '@/components/app/retrieval-evidence';
+import type { RetrievalEvidence as RetrievalRecord } from '@/lib/agent/retrieval-payload';
 
 type Entry = { role: 'user' | 'agent'; text: string };
-type Proposal = { summary: string; model: string; batch: EditBatch; document: EdaDocument };
+type Proposal = { summary: string; model: string; batch: EditBatch; document: EdaDocument; retrieval?: RetrievalRecord };
 type Capability = { agent: boolean };
 type Sources = { schematic: string; pcb: string };
 
@@ -60,12 +62,12 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
     try {
       const base = draft ?? createEmptyDocument();
       const prior = history.slice(-6).map(item => `${item.role === 'user' ? '用户' : 'Agent'}：${item.text.slice(0, 500)}`).join('\n');
-      const response = await fetch(apiPath('/api/eda/agent'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ document: base, prompt: `${prior ? `前文：\n${prior}\n` : ''}本次要求：${request}` }) });
+      const response = await fetch(apiPath('/api/eda/agent'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ document: base, projectId: currentProjectId, prompt: `${prior ? `前文：\n${prior}\n` : ''}本次要求：${request}` }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? `Agent 请求失败 (${response.status})`);
       const candidate = applyEditBatch(base, data.batch);
       setHistory(current => [...current, { role: 'user', text: request }, { role: 'agent', text: data.summary }]);
-      setProposal({ summary: data.summary, model: data.model, batch: data.batch, document: candidate });
+      setProposal({ summary: data.summary, model: data.model, batch: data.batch, document: candidate, retrieval: data.retrieval });
       setPrompt('');
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'Agent 生成失败'); }
     finally { setBusy(false); }
@@ -119,6 +121,7 @@ export function AgentPanel({ onCreate, currentProjectId }: { onCreate: (sources:
     {proposal && <section className={styles.proposal} aria-label="待审阅修改"><strong>待审阅修改</strong><span>{proposal.model} · {proposal.batch.commands.length} 项修改</span><p>{proposal.summary}</p><ol className={styles.commandList}>{proposal.batch.commands.map((command, index) => <li key={index}>{describeCommand(command, draft ?? createEmptyDocument(), proposal.document)}</li>)}</ol><div className={styles.actions}><button onClick={() => setProposal(null)}>放弃</button><button className={styles.primary} onClick={accept}>加入设计草稿</button></div></section>}
     {preview && <section className={styles.preview} aria-label="设计草稿"><strong>设计草稿</strong><span>{preview.components.length} 个器件 · {preview.nets.length} 个网络</span><ul>{preview.components.slice(0, 18).map(item => <li key={item.id}>{item.ref} · {item.value}</li>)}</ul>{preview.components.length > 18 && <small>另有 {preview.components.length - 18} 个器件</small>}{preview.nets.length > 0 && <small>网络：{preview.nets.slice(0, 8).map(net => net.name).join('、')}</small>}</section>}
     {draft && !proposal && <div className={styles.create}><label>新工程名称<input aria-label="Agent 新工程名称" value={title} maxLength={80} onChange={event => setTitle(event.target.value)} /></label><button className={styles.primary} disabled={busy || !draft.components.length || title.trim().length < 2} onClick={() => void create()}>创建并打开 KiCad 工程</button></div>}
+    {proposal?.retrieval && <RetrievalEvidence value={proposal.retrieval} />}
     {error && <p className={styles.error} role="alert">{error}</p>}
     <div className={styles.composer}><label htmlFor="eda-agent-request">向 Agent 描述电路</label><textarea id="eda-agent-request" aria-label="向 Agent 描述电路" placeholder="你希望画什么原理图？请写明器件、供电、电气连接和约束。" maxLength={2000} value={prompt} onChange={event => setPrompt(event.target.value)} /><button className={styles.primary} disabled={busy || !capability?.agent || Boolean(proposal) || prompt.trim().length < 2} onClick={() => void ask()}><Send size={15} />生成修改提案</button>{proposal && <small>先审阅并处理当前提案，再继续对话。</small>}</div>
     <p className={styles.boundary}>可从空白草稿开始，或只读当前工程已保存的单页原理图。读取仅支持已验证的器件库与结构；新工程的 PCB 会重新生成。Agent 不覆盖当前文件。生成结果仍需检查 ERC、器件参数和硬件约束。</p>

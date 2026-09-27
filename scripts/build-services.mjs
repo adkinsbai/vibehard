@@ -2,6 +2,8 @@ import { mkdir, readFile } from "node:fs/promises";
 import { build } from "esbuild";
 
 const entries = {
+  "accept-agent-retrieval": "scripts/accept-agent-retrieval.ts",
+  "knowledge-retrieval": "scripts/knowledge-retrieval-worker.ts",
   "design-worker": "scripts/design-worker.ts",
   gateway: "gateway/index.ts",
   runner: "runner/index.ts",

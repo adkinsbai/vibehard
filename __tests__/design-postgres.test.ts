@@ -16,6 +16,7 @@ import { processNextDesign } from "@/lib/server/design-job-worker";
 import { callLlm, LlmRequestError } from "@/lib/server/llm-client";
 vi.mock("@/lib/server/llm-settings", () => ({ runtimeLlm: vi.fn().mockResolvedValue({ model: "isolated-test", baseUrl: "https://example.invalid", apiKey: "fixture-not-real", protocol: "responses" }), publicLlm: vi.fn() }));
 vi.mock("@/lib/server/llm-client", async original => ({ ...await original<typeof import("@/lib/server/llm-client")>(), callLlm: vi.fn() }));
+vi.mock('@/lib/server/retrieval-client', () => ({ queryPrivateIndex: vi.fn().mockResolvedValue({ sources: [], revision: 'a'.repeat(64) }) }));
 
 // Never run against a normal DATABASE_URL. Requires a disposable local cluster.
 const enabled = process.env.VIBEHARD_DESIGN_TEST_DATABASE === "1";

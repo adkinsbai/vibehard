@@ -152,6 +152,9 @@ export async function searchIndexedKnowledge(requirement: string, indexPath = pr
   // An explicit different board must never pick up ESP32-S3 corpus fragments.
   if (/\brv1106\b|\brv1126b\b/i.test(requirement) && !/\besp32[- ]?s3\b/i.test(requirement)) return [];
   const board = requestedBoard(requirement);
+  // A named, unknown variant must not silently fall back to a similar board.
+  const explicitBoards = requirement.match(/\bESP32-S3-[A-Za-z0-9][A-Za-z0-9._-]*/gi) ?? [];
+  if (explicitBoards.some(name => !boardNames.some(known => known.toLowerCase() === name.toLowerCase()))) return [];
   const queryTerms = terms(requirement);
   if (!board && !queryTerms.length) return [];
   // Quoted terms are passed as SQLite parameters; no user-controlled path or

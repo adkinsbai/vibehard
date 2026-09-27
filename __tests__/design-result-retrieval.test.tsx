@@ -13,7 +13,8 @@ describe("design retrieval provenance", () => {
   });
   it("shows the server-recorded source, version and reviewed scope", () => {
     render(<DesignResult result={{ ...basic, retrieval: { status: "matched", method: "keyword-chunks-v1", references: [{ scope: "platform", id: crypto.randomUUID(), title: "SHT40 开发记录", source: "notes.md", version: 3, sha256: "a".repeat(64), excerpt: "I2C 接口说明" }] } }} />);
-    expect(screen.getByText(/SHT40 开发记录 · v3 · 平台已发布/)).toBeVisible();
+    expect(screen.getByText(/SHT40 开发记录 · v3/)).toBeVisible();
+    expect(screen.getByText('平台已发布')).toBeVisible();
     expect(screen.getByText(/I2C 接口说明/)).toBeVisible();
   });
   it("labels auto-indexed evidence without implying human review", () => {
@@ -21,7 +22,8 @@ describe("design retrieval provenance", () => {
       { scope: "platform", reviewStatus: "auto-indexed", id: crypto.randomUUID(), title: "ESP32-S3 手册", source: "ESP32-S3/manual.pdf#page=3&part=1",
         version: 1, sha256: "b".repeat(64), excerpt: "I2C 引脚需核对" },
     ] } }} />);
-    expect(screen.getByText(/ESP32-S3 手册 · v1 · 平台自动入库 · 未人工复核/)).toBeVisible();
-    expect(screen.queryByText(/ESP32-S3 手册 · v1 · 平台已发布/)).not.toBeInTheDocument();
+    expect(screen.getByText(/ESP32-S3 手册 · v1/)).toBeVisible();
+    expect(screen.getByText('平台自动入库 · 未人工复核')).toBeVisible();
+    expect(screen.queryByText('平台已发布')).not.toBeInTheDocument();
   });
 });
