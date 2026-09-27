@@ -45,9 +45,10 @@ export default function TaishanPage() {
       style={{ height: `calc(100dvh - ${NAV_HEIGHT})` }}
     >
       <PageHeader
+        helpKey="taishan"
         icon={MonitorSmartphone}
         title="泰山派开发"
-        description="嵌入式应用开发平台：一句话生成 480x360 小屏应用，本地校验通过后一键部署到泰山派 RK3566 真机"
+        description="在 VibeHard 工作台内打开独立的 VibeBoard 嵌入式开发系统；应用生成、校验与设备部署以该系统的实际结果为准"
       />
 
       <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -65,7 +66,7 @@ export default function TaishanPage() {
           在新窗口打开
         </a>
         <span className="text-xs text-muted-foreground">
-          嵌入的是平台前端本身，账号体系独立，首次使用需要在框内单独登录一次。
+          VibeBoard 账号体系独立，首次使用需要在框内单独登录；项目和知识数据暂不与 VibeHard 自动同步。
         </span>
       </div>
 

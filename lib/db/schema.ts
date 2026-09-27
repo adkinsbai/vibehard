@@ -1,4 +1,6 @@
 import { relations } from "drizzle-orm";
+import type { KnowledgeDocument } from "@/lib/agent/knowledge";
+import type { DesignResult } from "@/lib/agent/llm";
 import {
   boolean,
   integer,
@@ -52,6 +54,45 @@ export const runnerNodes = pgTable("runner_nodes", {
   secretHash: text("secret_hash"),
   ...timestamps,
 });
+
+export const designJobs = pgTable("design_jobs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  requestId: uuid("request_id").notNull(),
+  requestedProjectId: uuid("requested_project_id"),
+  requirement: text("requirement").notNull(),
+  status: text("status").$type<"queued" | "running" | "completed" | "failed">().notNull().default("queued"),
+  model: text("model"),
+  knowledgeVersion: text("knowledge_version"),
+  result: jsonb("result").$type<DesignResult>(),
+  error: text("error"),
+  leaseToken: uuid("lease_token"),
+  deadlineAt: timestamp("deadline_at", { withTimezone: true }).notNull(),
+  startedAt: timestamp("started_at", { withTimezone: true }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  ...timestamps,
+}, table => [
+  uniqueIndex("design_jobs_request_uidx").on(table.userId, table.requestId),
+  index("design_jobs_queue_idx").on(table.status, table.createdAt),
+  index("design_jobs_project_idx").on(table.projectId, table.createdAt),
+]);
+
+// Small reviewed document library; not arbitrary uploads or a vector index.
+export const projectKnowledge = pgTable("project_knowledge", {
+  projectId: uuid("project_id").primaryKey().references(() => projects.id, { onDelete: "cascade" }),
+  documents: jsonb("documents").$type<KnowledgeDocument[]>().notNull().default([]),
+  ...timestamps,
+});
+
+// Curated, platform-wide text. Catalog file paths are not indexed as content.
+export const sharedKnowledge = pgTable("shared_knowledge", {
+  id: uuid("id").primaryKey(),
+  category: text("category").notNull(),
+  document: jsonb("document").$type<KnowledgeDocument>().notNull(),
+  createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+  ...timestamps,
+}, table => [index("shared_knowledge_category_idx").on(table.category)]);
 
 export const agentThreads = pgTable("agent_threads", {
   id: uuid("id").defaultRandom().primaryKey(),

@@ -10,6 +10,7 @@ import {
   auditLogs,
   modelProfiles,
   projects,
+  projectKnowledge,
   runnerCommands,
   runnerNodes,
   users,
@@ -19,6 +20,10 @@ import type { AgentEvent, ApprovalDecision, PlatformToRunnerMessage, RunnerEvent
 import { envelope } from "@/lib/agent/protocol";
 import { hashRunnerSecret } from "./security";
 import { publicLlm } from "./llm-settings";
+import { getProjectKnowledge } from "./knowledge-store";
+import { publishedSnapshot } from "./knowledge-state";
+import { prepareKnowledge } from "./knowledge-dispatch";
+import { knowledgeManifest } from "@/lib/agent/knowledge";
 
 type UserRecord = typeof users.$inferSelect;
 type ProjectRecord = typeof projects.$inferSelect;
@@ -169,15 +174,27 @@ export async function createTurn(userId: string, threadId: string, input: string
     input, model, modelProvider: providerId,
   };
   if (!db) {
+    const documents = await getProjectKnowledge(userId, owned.project.id) ?? [];
     if (memory.turns.some((turn) => turn.threadId === threadId && ACTIVE_TURN_STATUSES.includes(turn.status as typeof ACTIVE_TURN_STATUSES[number]))) throw new ThreadBusyError();
+    const turnIds = new Set(memory.turns.filter(turn => turn.threadId === threadId).map(turn => turn.id));
+    const previous = memory.events.filter(event => turnIds.has(event.turnId) && event.type === "task.started").at(-1)?.payload.knowledge;
+    const knowledge = prepareKnowledge(publishedSnapshot(documents), owned.thread.codexThreadId, previous, memory.runners.find(runner => runner.runnerKey === owned.project.runnerKey));
     memory.turns.push(record);
-    memory.events.push({ id: randomUUID(), turnId: record.id, eventId: randomUUID(), type: "task.queued", payload: { input, note: "未配置 DATABASE_URL，任务仅保存在本地预览中" }, sequence: 0, ...timestampFields() });
+    memory.events.push({ id: randomUUID(), turnId: record.id, eventId: randomUUID(), type: "task.queued", payload: { input, knowledge: knowledgeManifest(knowledge), note: "未配置 DATABASE_URL，任务仅保存在本地预览中" }, sequence: 0, ...timestampFields() });
     return record;
   }
   await db.transaction(async (tx) => {
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`knowledge:${owned.project.id}`}))`);
     await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${threadId}))`);
     const active = (await tx.select({ id: agentTurns.id }).from(agentTurns).where(and(eq(agentTurns.threadId, threadId), inArray(agentTurns.status, [...ACTIVE_TURN_STATUSES]))).limit(1))[0];
     if (active) throw new ThreadBusyError();
+    const thread = (await tx.select().from(agentThreads).where(eq(agentThreads.id, threadId)).limit(1))[0];
+    const documents = (await tx.select().from(projectKnowledge).where(eq(projectKnowledge.projectId, owned.project.id)).limit(1))[0]?.documents ?? [];
+    const previous = (await tx.select({ payload: agentEvents.payload }).from(agentEvents).innerJoin(agentTurns, eq(agentTurns.id, agentEvents.turnId))
+      .where(and(eq(agentTurns.threadId, threadId), eq(agentEvents.type, "task.started"))).orderBy(desc(agentEvents.sequence)).limit(1))[0]?.payload.knowledge;
+    const runner = (await tx.select().from(runnerNodes).where(eq(runnerNodes.runnerKey, owned.project.runnerKey ?? process.env.DEFAULT_RUNNER_KEY ?? "local-runner")).limit(1))[0];
+    startMessage.knowledge = prepareKnowledge(publishedSnapshot(documents), thread.codexThreadId, previous, runner);
+    startMessage.codexThreadId = startMessage.knowledge.contextReset ? undefined : thread.codexThreadId ?? undefined;
     await tx.insert(agentTurns).values(record);
     await tx.insert(runnerCommands).values({ taskId: record.id, runnerKey: owned.project.runnerKey ?? process.env.DEFAULT_RUNNER_KEY ?? "local-runner", type: startMessage.type, payload: startMessage as unknown as Record<string, unknown> });
     await tx.insert(auditLogs).values({ userId, projectId: owned.project.id, action: "turn.queued", metadata: { turnId: record.id, model } });

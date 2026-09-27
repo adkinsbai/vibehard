@@ -134,7 +134,7 @@ export default function PromptsPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <PageHeader
+      <PageHeader helpKey="prompts"
         icon={FileText}
         title="提示词模板库"
         description="沉淀智能硬件研发全流程的提示词模板，点击即可复制使用"

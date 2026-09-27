@@ -1,0 +1,6175 @@
+[
+  {
+    "name": "ESP32-S3-A7670E-4G",
+    "category": "4G通信",
+    "size": "",
+    "features": [
+      "4G Cat-1",
+      "GNSS 定位",
+      "SD 卡槽",
+      "电池管理"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "4G通信/ESP32-S3-A7670E-4G/1. 硬件资料/ESP32-S3-A-SIM7670X-4G.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图 v2",
+        "path": "4G通信/ESP32-S3-A7670E-4G/1. 硬件资料/ESP32-S3-A-SIM7670X-4G-V2.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "3D 图纸",
+        "path": "4G通信/ESP32-S3-A7670E-4G/1. 硬件资料/esp32-s3-a-sim7670x-4g-pcba.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ESP32-S3 中文资料手册",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ESP32-S3 英文资料手册",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_AT_Command_Manual_V1.09.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A76XX_Series_AT_Command_Manual_V1.09.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_TCPIP_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7600_Series_TCPIP_Applicati0n_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_Audio_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7600_Series_Audio_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_FTP(S)_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7600_Series_FTP(S)_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_HTTP(S)_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7600_Series_HTTP(S)_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_LBS_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7600_Series_LBS_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_MQTT(S)_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7600_Series_MQTT(S)_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_SSL_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7600_Series_SSL_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A76XX_Series_GNSS_Application_Note_V1.03.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A76XX_Series_GNSS_Application_Note_V1.03.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "A7672X_A7670X_Series_Hardware_Design_V1.03.pdf",
+        "path": "4G通信/ESP32-S3-A7670E-4G/2. 技术手册/A7672X_A7670X_Series_Hardware_Design_V1.03.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "示例程序 V1",
+        "path": "4G通信/ESP32-S3-A7670E-4G/3. 示例程序/ESP32-S3-A-SIM7670X_4G.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "示例程序 V2（2025 年 12 月后）",
+        "path": "4G通信/ESP32-S3-A7670E-4G/3. 示例程序/ESP32-S3-A-SIM7670X-4G-V2.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "A7670E Windows 驱动",
+        "path": "4G通信/ESP32-S3-A7670E-4G/4. 驱动和工具/A7600X-Windows-Driver.7z"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "CH343 Windows 驱动",
+        "path": "4G通信/ESP32-S3-A7670E-4G/4. 驱动和工具/CH343SER.7z"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "最新驱动",
+        "path": ""
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "串口和网络调试助手",
+        "path": "4G通信/ESP32-S3-A7670E-4G/4. 驱动和工具/Sscom_7670X.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "GPS 调试工具",
+        "path": "4G通信/ESP32-S3-A7670E-4G/4. 驱动和工具/uSTAR3.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "Unicode 转换软件",
+        "path": "4G通信/ESP32-S3-A7670E-4G/4. 驱动和工具/ascii-unicode.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-SIM7670G-4G",
+    "category": "4G通信",
+    "size": "",
+    "features": [
+      "4G Cat-1",
+      "GNSS 定位",
+      "SD 卡槽",
+      "电池管理"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/1. 硬件资料/ESP32-S3-A-SIM7670X-4G.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图 v2",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/1. 硬件资料/ESP32-S3-A-SIM7670X-4G-V2.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "3D 图纸",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/1. 硬件资料/esp32-s3-a-sim7670x-4g-pcba.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ESP32-S3 中文资料手册",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ESP32-S3 英文资料手册",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM767XX_Series_AT_Command_Manual_V1.01.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM767XX_Series_AT_Command_Manual_V1.01.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X_Series_Hardware_Design_V1.01.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_Series_Hardware_Design_V1.01.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_FTP(S)_Application Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_FTP(S)_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_HTTP(S)_Application Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_HTTP(S)_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_MQTT(S)_Application Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_MQTT(S)_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_NETWORK_Application Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_NETWORK_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_Sleep Mode_Application Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_Sleep_Mode_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_SSL_Application Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_SSL_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_TCPIP_Application Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_TCPIP_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_UART_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_UART_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672X SIM7652X Series_UIM HOT SWAP_Application_Note_V1.00.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672X_SIM7652X_Series_UIM_HOT_SWAP_Application_Note_V1.00.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM767XX_V1.01_KDL(230309).pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM767XX_V1.01_KDL(230309).pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672 Series_Spec_231205.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672_Series_Spec_231205.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SIM7672 Series_SPEC_Preliminary_230518.pdf",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/2. 技术手册/SIM7672_Series_SPEC_Preliminary_230518.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "示例程序 V1",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/3. 示例程序/ESP32-S3-A-SIM7670X_4G.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "示例程序 V2（2025 年 12 月后）",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/3. 示例程序/ESP32-S3-A-SIM7670X-4G-V2.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "CH343 Windows 驱动",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/4. 驱动和工具/CH343SER.7z"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "最新驱动",
+        "path": ""
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "串口和网络调试助手",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/4. 驱动和工具/Sscom_7670X.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "GPS 调试工具",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/4. 驱动和工具/uSTAR3.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "Unicode 转换软件",
+        "path": "4G通信/ESP32-S3-SIM7670G-4G/4. 驱动和工具/ascii-unicode.zip"
+      },
+      {
+        "section": "4. 驱动和工具",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-AMOLED-1.91",
+    "category": "AMOLED触摸屏",
+    "size": "1.91\"",
+    "features": [
+      "六轴 IMU"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/1. 硬件资料/ESP32-S3-AMOLED-1.91.PDF"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "结构与尺寸",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/1. 硬件资料/Esp32-s3-amoled-1_91-M.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/2. 技术手册/QMI8658C_datasheet_rev_0.9.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "RM67162 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/2. 技术手册/RM67162.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-AMOLED-1.91 示例程序",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/3. 示例程序/ESP32-S3-AMOLED-1.91-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-AMOLED-1.91-Arduino_Playablity",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/3. 示例程序/ESP32-S3-AMOLED-1.91-Arduino_Playablity.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-AMOLED-1.91 示例程序（GitHub 仓库）",
+        "path": "AMOLED触摸屏/ESP32-S3-AMOLED-1.91/3. 示例程序/e86290fd50a3.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-1.32",
+    "category": "AMOLED触摸屏",
+    "size": "1.32\"",
+    "features": [
+      "小智 AI",
+      "扬声器",
+      "电池管理",
+      "触摸屏",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.32-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "结构与尺寸",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.32-3dFile.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CO5300 Datasheet",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/2. 技术手册/Co5300_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 Datasheet",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.32 示例程序",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/3. 示例程序/ESP32-S3-Touch-AMOLED-1.32-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.32 示例程序 （Github 仓库）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.32/3. 示例程序/ESP32-S3-Touch-AMOLED-1.32.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-1.43",
+    "category": "AMOLED触摸屏",
+    "size": "1.43\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.43-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "3D 文件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.43-3DFile.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SH8601 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/SH8601Z0_V0.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/QMI8658C_datasheet_rev_0.9.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/Pcf85063atl1118-NdPQpTGE-loeW7GbZ7.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT3168 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/2. 技术手册/DATA_SHEET_FT3168.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.43 示例程序",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43/3. 示例程序/ESP32-S3-AMOLED-1.43-Demo-V3.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-1.43C",
+    "category": "AMOLED触摸屏",
+    "size": "1.43C\"",
+    "features": [
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.43C-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "结构与尺寸",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/1. 硬件资料/3dFile.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CO5300 Datasheet",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/Co5300_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 datasheet",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 UserGuide",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 datasheet",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.43C 示例程序 （Gitee 仓库）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.43C/3. 示例程序/ESP32-S3-Touch-AMOLED-1.43C.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-1.64",
+    "category": "AMOLED触摸屏",
+    "size": "1.64\"",
+    "features": [
+      "SD 卡槽",
+      "六轴 IMU",
+      "电池管理",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-1.64 V1 原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.64-schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-1.64 V2 原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.64-Rev1.1.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "结构文件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.64-DAD.zip"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "排针焊接说明",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.64-JW_Explanation.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/2. 技术手册/Esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/2. 技术手册/Esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/2. 技术手册/Esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/2. 技术手册/Esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CO5300 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/2. 技术手册/Co5300_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/2. 技术手册/QMI8658C_datasheet_rev_0.9.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT3168 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/2. 技术手册/DATA_SHEET_FT3168.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.64 V1 示例程序",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/3. 示例程序/ESP32-S3-Touch-AMOLED-1.64-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.64 V2 示例程序",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/3. 示例程序/main.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino-ESP32 离线器件包（提取码：1r4i）",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官网",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash 下载工具",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.64/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-1.75",
+    "category": "AMOLED触摸屏",
+    "size": "1.75\"",
+    "features": [
+      "GNSS 定位",
+      "RTC 时钟",
+      "SD 卡槽",
+      "六轴 IMU",
+      "小智 AI",
+      "扬声器",
+      "电源管理",
+      "触摸屏",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-1.75 原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.75.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-1.75 尺寸图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.75-3D.zip"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-1.75-B 尺寸图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.75-B-3D.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 UserGuide（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.75 Github 示例程序仓库",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/3. 示例程序/main.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "汉字取模软件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/4. 软件/Zimo221.7z"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Image2Lcd 图片取模软件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/4. 软件/Image2Lcd2.9.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/4. 软件/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "GPS 调试工具",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75/4. 软件/uSTAR3.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "图片取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "字库取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "MicroPython 开发文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32 Arduino Core’s documentation",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "arduino-esp32",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-1.75C",
+    "category": "AMOLED触摸屏",
+    "size": "1.75C\"",
+    "features": [
+      "六轴 IMU",
+      "小智 AI",
+      "扬声器",
+      "电池管理",
+      "电源管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.75C-schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.75C 示例程序（Github 仓库）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.75C/3. 示例程序/main.zip"
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "https://github.com/vthinkxie/claude-desktop-buddy-esp32",
+        "path": ""
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-1.8",
+    "category": "AMOLED触摸屏",
+    "size": "1.8\"",
+    "features": [
+      "RTC 时钟",
+      "SD 卡槽",
+      "六轴 IMU",
+      "小智 AI",
+      "扬声器",
+      "电源管理",
+      "触摸屏",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-1.8 原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.8.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-1.8 3D 图纸",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/1. 硬件资料/ESP32-S3-Touch-AMOLED-1.8-3D.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 UserGuide（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SH8601 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/SH8601A0_DataSheet_Preliminary_V0.0_UCS_191107_1_.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT3168 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/FT3168.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CO5300 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/2. 技术手册/CO5300_Datasheet_V0.00.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.8 GitHub 仓库",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/3. 示例程序/esp32-s3-touch-amoled-1.8.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-1.8 Gitee 仓库",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/3. 示例程序/esp32-s3-touch-amoled-1.8.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "汉字取模软件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/4. 软件/Zimo221.7z"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Image2Lcd 图片取模软件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/4. 软件/Image2Lcd2.9.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-1.8/4. 软件/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "图片取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "字库取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "MicroPython 开发文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32 Arduino Core’s documentation",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "arduino-esp32",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF",
+        "path": ""
+      },
+      {
+        "section": "6. 社区示例展示",
+        "name": "https://github.com/vthinkxie/claude-desktop-buddy-esp32",
+        "path": ""
+      },
+      {
+        "section": "6. 社区示例展示",
+        "name": "https://github.com/HermannBjorgvin/Clawdmeter",
+        "path": ""
+      },
+      {
+        "section": "6. 社区示例展示",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-2.06",
+    "category": "AMOLED触摸屏",
+    "size": "2.06\"",
+    "features": [
+      "RTC 时钟",
+      "SD 卡槽",
+      "六轴 IMU",
+      "小智 AI",
+      "电源管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/1. 硬件资料/ESP32-S3-Touch-AMOLED-2.06.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "工程图纸",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/1. 硬件资料/Esp32-s3-touch-amoled-2_06_外形尺寸.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 UserGuide（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT3168 datasheet（英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/FT3168.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 datasheet （英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CO5300 datasheet （英文）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/2. 技术手册/CO5300_Datasheet_V0.00.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-2.06 示例程序（Github 仓库）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/3. 示例程序/ESP32-S3-Touch-AMOLED-2.06.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "汉字取模软件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/4. 软件/Zimo221.7z"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Image2Lcd 图片取模软件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/4. 软件/Image2Lcd2.9.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.06/4. 软件/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool 下载工具用户指南",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "图片取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "字库取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "MicroPython开发文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32 Arduino Core’s documentation",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "arduino-esp32",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF",
+        "path": ""
+      },
+      {
+        "section": "6. 社区示例展示",
+        "name": "https://github.com/HermannBjorgvin/Clawdmeter",
+        "path": ""
+      },
+      {
+        "section": "6. 社区示例展示",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-2.16",
+    "category": "AMOLED触摸屏",
+    "size": "2.16\"",
+    "features": [
+      "六轴 IMU",
+      "小智 AI",
+      "电源管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/1. 硬件资料/ESP32-S3-Touch-AMOLED-2.16-Schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.16/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-2.16 示例程序（Github 仓库）",
+        "path": ""
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "https://github.com/vthinkxie/claude-desktop-buddy-esp32",
+        "path": ""
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "https://github.com/HermannBjorgvin/Clawdmeter",
+        "path": ""
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-AMOLED-2.41",
+    "category": "AMOLED触摸屏",
+    "size": "2.41\"",
+    "features": [
+      "RTC 时钟",
+      "SD 卡槽",
+      "六轴 IMU",
+      "电池管理",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-2.41 V1 原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/1. 硬件资料/ESP32-S3-Touch-AMOLED-2.41-sch.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-AMOLED-2.41 V2 原理图",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/1. 硬件资料/ESP32-S3-Touch-AMOLED-2.41_V2.0.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "2D 尺寸外观文件",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/1. 硬件资料/Dimension_Appearance_Diagram.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/Esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/Esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/Esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/Esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "RM690B0 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/RM690B0_DataSheet_V0.3_20210105_(Public_version).pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/QMI8658C_datasheet_rev_0.9.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/Pcf85063atl1118-NdPQpTGE-loeW7GbZ7.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT6336 数据手册（英）",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/2. 技术手册/D-FT6336U-DataSheet-V1.0.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-2.41 V1 示例程序",
+        "path": ""
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-AMOLED-2.41 V2 示例程序",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/3. 示例程序/main.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-AMOLED-2.41-Arduino_Playablity",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/3. 示例程序/ESP32-S3-AMOLED-2.41-Arduino_Playablity.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino-ESP32 离线器件包",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Visual Studio Code 官网",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "AMOLED触摸屏/ESP32-S3-Touch-AMOLED-2.41/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LCD-0.85",
+    "category": "LCD屏",
+    "size": "0.85\"",
+    "features": [
+      "小智 AI",
+      "电池管理",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-0.85.pdf",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/1. 硬件资料/ESP32-S3-LCD-0.85-Schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "WS2812B RGB LED 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/2. 技术手册/XL-0807RGBC-WS2812B.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-0.85_Demo 示例程序",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/3. 示例程序/ESP32-S3-LCD-0.85-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-0.85_Demo 示例程序 (Github 仓库）",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/3. 示例程序/main.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "串口调试助手",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "LCD屏/ESP32-S3-LCD-0.85/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "MicroPython 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LCD-1.9",
+    "category": "LCD屏",
+    "size": "1.9\"",
+    "features": [
+      "SD 卡槽",
+      "六轴 IMU",
+      "电容触摸",
+      "电池管理"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-1.9 原理图",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/1. 硬件资料/ESP32-S3-LCD-1.9-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.9 原理图",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/1. 硬件资料/ESP32-S3-Touch-LCD-1.9-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-1.9 结构与尺寸",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/1. 硬件资料/ESP32-S3-LCD-1.9-DAD.rar"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.9 结构与尺寸",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/1. 硬件资料/ESP32-S3-Touch-LCD-1.9-DAD.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/2. 技术手册/ST7789T3_SPEC_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/2. 技术手册/QMI8658C_datasheet_rev_0.9.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/2. 技术手册/CST816D_datasheet_En_V1.3.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-1.9 示例程序（Gitee 仓库）",
+        "path": "LCD屏/ESP32-S3-LCD-1.9/3. 示例程序/ESP32-S3-LCD-1.9.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LCD-2",
+    "category": "LCD屏",
+    "size": "2\"",
+    "features": [],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD屏/ESP32-S3-LCD-2/1. 硬件资料/ESP32-S3-Touch-LCD-2-SchDoc.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "工程文件",
+        "path": "LCD屏/ESP32-S3-LCD-2/1. 硬件资料/ESP32-S3-LCD-2-2Dand3D.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-2 示例程序",
+        "path": "LCD屏/ESP32-S3-LCD-2/3. 示例程序/ESP32-S3-LCD-2-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LCD-2.8",
+    "category": "LCD屏",
+    "size": "2.8\"",
+    "features": [
+      "六轴 IMU"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-2.8 原理图",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/1. 硬件资料/ESP32-S3-Touch-LCD-2.8.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-2.8 2D 图纸",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/1. 硬件资料/ESP32-S3-Touch-LCD-2.8结构.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-2.8 3D 图纸",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/1. 硬件资料/ESP32-S3-Touch-LCD-2.8_3D.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789T3 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/2. 技术手册/ST7789T3_SPEC_V1.0.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-2.8 示例程序",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/3. 示例程序/ESP32-S3-LCD-2.8-Demo.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD屏/ESP32-S3-LCD-2.8/4. 其他资料/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LCD-2.8B",
+    "category": "LCD屏",
+    "size": "2.8B\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-2.8B 原理图",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/1. 硬件资料/ESP32-S3-LCD-2.8B.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-2.8B 工程图纸",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/1. 硬件资料/ESP32-S3-LCD-2.8B-Drawing.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7701S 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/ST7701S_SPEC_V1.4.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TCA9554 规格书（英文）",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/2. 技术手册/tca9554.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-2.8B 示例程序",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/3. 示例程序/ESP32-S3-LCD-2.8B-Demo.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD屏/ESP32-S3-LCD-2.8B/4. 其他资料/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LCD-2.8C",
+    "category": "LCD屏",
+    "size": "2.8C\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-2.8C 原理图",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/1. 硬件资料/ESP32-S3-Touch-LCD-2.8C_schematic_diagram.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-2.8C 工程图纸",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/1. 硬件资料/ESP32-S3-LCD-2_8C.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7701S 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/ST7701S_SPEC_V1.4.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TCA9554 规格书（英文）",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/2. 技术手册/tca9554.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-2.8C 示例程序",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/3. 示例程序/ESP32-S3-LCD-2.8C-Demo.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD屏/ESP32-S3-LCD-2.8C/4. 其他资料/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LCD-Driver-Board",
+    "category": "LCD屏",
+    "size": "",
+    "features": [
+      "电容触摸"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-Driver-Board 原理图",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/1. 硬件资料/ESP32-S3-LCD-Driver-Board.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789V2 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/ST7789V2.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789T3 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/ST7789T3_SPEC_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7796S datasheet（英文）",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/ST7796S_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/CST816S_Datasheet_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 寄存器说明",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/CST816S_register_declaration.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT6336U datasheet（英文）",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/FT6336U_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST328 数据手册",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/2. 技术手册/CST328数据手册V2.2.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-LCD-Driver-Board 示例程序（Gitee 仓库）",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/3. 示例程序/esp32-s3-lcd-driver-board.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "汉字取模软件",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/4. 软件/Zimo221.7z"
+      },
+      {
+        "section": "4. 软件",
+        "name": "mage2Lcd 图片取模软件",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/4. 软件/Image2Lcd2.9.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool",
+        "path": "LCD屏/ESP32-S3-LCD-Driver-Board/4. 软件/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "乐鑫组件库",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 在线图片转换工具",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 在线字体转换工具",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-DualEye-Touch-LCD-1.28",
+    "category": "LCD触摸屏",
+    "size": "1.28\"",
+    "features": [
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "硬件资料",
+        "name": "ESP32-S3-DualEye-Touch-LCD-1.28 原理图",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/硬件资料/ESP32-S3-DualEye-Touch-LCD-1.28.pdf"
+      },
+      {
+        "section": "硬件资料",
+        "name": "ESP32-S3-DualEye-Touch-LCD-1.28 结构文件",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/硬件资料/ESP32-S3-DualEye-Touch-LCD-1.28-Structure.zip"
+      },
+      {
+        "section": "数据手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/数据手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "数据手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/数据手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "数据手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/数据手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "数据手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/数据手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "示例程序",
+        "name": "ESP32-S3-DualEye-Touch-LCD-1.28 示例程序（Gitee 仓库）",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/示例程序/108b6c3dcfe8.zip"
+      },
+      {
+        "section": "示例程序",
+        "name": "ESP32-S3-DualEye-Touch-LCD-1.28 示例程序（Github 仓库）",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/示例程序/108b6c3dcfe8.zip"
+      },
+      {
+        "section": "软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "其他资料链接",
+        "name": "MIC 测试音频",
+        "path": "LCD触摸屏/ESP32-S3-DualEye-Touch-LCD-1.28/其他资料链接/MIC_Test_audio.zip"
+      },
+      {
+        "section": "其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.28",
+    "category": "LCD触摸屏",
+    "size": "1.28\"",
+    "features": [
+      "MicroPython",
+      "电容触摸",
+      "电池管理",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.28 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/1. 硬件资料/ESP32-S3-Touch-LCD-1.28-Sch.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.28 Rev3 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/1. 硬件资料/ESP32-S3-Touch-LCD-1.28_Rev3.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.28 3D 图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/1. 硬件资料/ESP32-S3-Touch-LCD-1.28.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GC9A01A 手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/2. 技术手册/GC9A01A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816S 手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/2. 技术手册/CST816S_Datasheet_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816S 寄存器说明（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/2. 技术手册/CST816S_register_declaration.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.28 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/3. 示例程序/ESP32-S3-Touch-LCD-1.28-Demo.zip"
+      },
+      {
+        "section": "软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "Thonny 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.28/软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.46",
+    "category": "LCD触摸屏",
+    "size": "1.46\"",
+    "features": [
+      "六轴 IMU",
+      "小智 AI",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.46 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/1. 硬件资料/ESP32-S3-Touch-LCD-1.46.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.46 结构图纸-带盖板",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/1. 硬件资料/ESP32-S3-Touch-LCD-1.46_结构文件-带盖板.rar"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.46B 结构图纸-不带盖板",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/1. 硬件资料/ESP32-S3-Touch-LCD-1.46B_结构文件-不带盖板.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/2. 技术手册/QMI8658A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCM5101 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.46 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/3. 示例程序/ESP32-S3-Touch-LCD-1.46-Demo.zip"
+      },
+      {
+        "section": "软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "MIC 测试音频",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.46/5. 其他资料链接/MIC_Test_audio.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.47",
+    "category": "LCD触摸屏",
+    "size": "1.47\"",
+    "features": [
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.47/1. 硬件资料/ESP32-S3-Touch-LCD-1.47-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "工程文件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.47/1. 硬件资料/ESP32-S3-Touch-LCD-1.47-2D3D.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.47/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.47/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.47/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.47/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.47 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.47/3. 示例程序/ESP32-S3-Touch-LCD-1.47-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.54",
+    "category": "LCD触摸屏",
+    "size": "1.54\"",
+    "features": [
+      "六轴 IMU",
+      "小智 AI",
+      "电容触摸",
+      "电池管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.54.pdf",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/1. 硬件资料/ESP32-S3-LCD-1.54-Schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/CST816S_Datasheet_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 寄存器说明",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/CST816S_register_declaration.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789V2 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/ST7789V2.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.54 示例程序 (Gitee 仓库)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/3. 示例程序/ESP32-S3-Touch-LCD-1.54.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.54 示例程序 (Github 仓库)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/3. 示例程序/ESP32-S3-Touch-LCD-1.54.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "串口调试助手",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.54/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "MicroPython 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 社区示例展示",
+        "name": "https://github.com/HermannBjorgvin/Clawdmeter",
+        "path": ""
+      },
+      {
+        "section": "5. 社区示例展示",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.69",
+    "category": "LCD触摸屏",
+    "size": "1.69\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "电容触摸",
+      "电池管理",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "引脚图",
+        "path": ""
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/1. 硬件资料/ESP32-S3-Touch-LCD-1.69.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图 V2.1",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/1. 硬件资料/ESP32-S3-Touch-LCD-1.69_V2.1.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "2D 尺寸图",
+        "path": ""
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "3D 图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/1. 硬件资料/ESP32-S3-Touch-LCD-1_69.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789V2 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/ST7789V2.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/CST816S_Datasheet_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 寄存器说明",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/2. 技术手册/CST816S_register_declaration.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.69 示例程序 (Gitee)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/3. 示例程序/esp32-s3-touch-lcd-1.69.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.69 示例程序 (GitHub)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.69/3. 示例程序/master.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.83",
+    "category": "LCD触摸屏",
+    "size": "1.83\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "小智 AI",
+      "电源管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.83 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/1. 硬件资料/ESP32-S3-Touch-LCD-1.83-schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 UserGuide（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT3168 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/FT3168.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 datasheet （英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.83 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/3. 示例程序/ESP32-S3-Touch-LCD-1.83-Demos.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "Github 示例程序仓库",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/3. 示例程序/ESP32-S3-Touch-LCD-1.83.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "汉字取模软件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/4. 软件/Zimo221.7z"
+      },
+      {
+        "section": "4. 软件",
+        "name": "mage2Lcd 图片取模软件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/4. 软件/Image2Lcd2.9.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.83/4. 软件/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "图片取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "字库取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "MicroPython 开发文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "ESP32 Arduino Core’s documentation",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "arduino-esp32",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "ESP-IDF",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.85",
+    "category": "LCD触摸屏",
+    "size": "1.85\"",
+    "features": [
+      "六轴 IMU",
+      "小智 AI",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.85 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/1. 硬件资料/ESP32-S3-Touch-LCD-1.85.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.85 结构图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/1. 硬件资料/ESP32-S3-Touch-LCD-1.85_2D_structure.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/QMI8658A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCM5101 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/CST816S_Datasheet_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 寄存器说明（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/2. 技术手册/CST816S_register_declaration.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.85 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/3. 示例程序/ESP32-S3-Touch-LCD-1.85-Demo.zip"
+      },
+      {
+        "section": "软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "MIC 测试音频",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85/5. 其他资料链接/MIC_Test_audio.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.85B",
+    "category": "LCD触摸屏",
+    "size": "1.85B\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "小智 AI",
+      "扬声器",
+      "电容触摸",
+      "电池管理",
+      "触摸屏",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "硬件资料目录 (Gitee)",
+        "path": ""
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "硬件资料目录 (GitHub)",
+        "path": ""
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图 Rev1.1 (Gitee)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/1. 硬件资料/ESP32-S3-Touch-LCD-1.85B Rev1.1.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图 Rev1.1 (GitHub)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/1. 硬件资料/ESP32-S3-Touch-LCD-1.85B Rev1.1.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816S 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/CST816S_Datasheet_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816S 寄存器说明",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/CST816S_register_declaration.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.85B 示例程序 (Gitee)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/3. 示例程序/ESP32-S3-Touch-LCD-1.85B.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.85B 示例程序 (GitHub)",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/3. 示例程序/ESP32-S3-Touch-LCD-1.85B.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VS Code 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash Download Tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85B/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF 编程指南",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-1.85C",
+    "category": "LCD触摸屏",
+    "size": "1.85C\"",
+    "features": [
+      "六轴 IMU",
+      "小智 AI",
+      "电容触摸",
+      "电池管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.85C V1 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/1. 硬件资料/ESP32-S3-Touch-LCD-1.85C--Schematic.pdf_.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.85C V2 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/1. 硬件资料/ESP32-S3-Touch-LCD-1.85C_V2.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-1.85C 结构图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/1. 硬件资料/ESP32-S3-Touch-LCD-1.85C-dimension.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/QMI8658A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCM5101 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/CST816S_Datasheet_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST816T 寄存器说明（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/CST816S_register_declaration.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.85C V1 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/3. 示例程序/ESP32-S3-Touch-LCD-1.85C-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-1.85C V2 示例程序（Github 仓库）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/3. 示例程序/ESP32-S3-Touch-LCD-1.85C.zip"
+      },
+      {
+        "section": "软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "MIC 测试音频",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-1.85C/5. 其他资料链接/MIC_Test_audio.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-2",
+    "category": "LCD触摸屏",
+    "size": "2\"",
+    "features": [
+      "电池管理",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/1. 硬件资料/ESP32-S3-Touch-LCD-2-SchDoc.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2 2D/3D 文件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/1. 硬件资料/ESP32-S3-Touch-LCD-2_-20241108.rar"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2-C 2D/3D 文件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/1. 硬件资料/ESP32-S3-Touch-LCD-2-C.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-2 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2/3. 示例程序/ESP32-S3-Touch-LCD-2-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-2.1",
+    "category": "LCD触摸屏",
+    "size": "2.1\"",
+    "features": [
+      "六轴 IMU",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.1 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/1. 硬件资料/ESP32-S3-Touch-LCD-2.1_schematic_diagram.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.1 工程图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/1. 硬件资料/ESP32-S3-Touch-LCD-2.1_structure.zip"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.1B 工程图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/1. 硬件资料/ESP32-S3-Touch-LCD-2.1B-Drawing.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7701S 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/ST7701S_SPEC_V1.4.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST820  数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/CST820数据手册V1.1.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TCA9554 规格书（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/2. 技术手册/tca9554.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-2.1 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/3. 示例程序/ESP32-S3-Touch-LCD-2.1-Demo.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.1/4. 其他资料/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-2.8",
+    "category": "LCD触摸屏",
+    "size": "2.8\"",
+    "features": [
+      "六轴 IMU",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/1. 硬件资料/ESP32-S3-Touch-LCD-2.8.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8 2D 图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/1. 硬件资料/ESP32-S3-Touch-LCD-2.8结构.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8 3D 图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/1. 硬件资料/ESP32-S3-Touch-LCD-2.8_3D.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789T3 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/2. 技术手册/ST7789T3_SPEC_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CST328 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/2. 技术手册/CST328数据手册V2.2.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-2.8 V1 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/3. 示例程序/ESP32-S3-Touch-LCD-2.8-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-2.8 V2 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/3. 示例程序/ESP32-S3-Touch-LCD-2.8-V2-Demo.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8/4. 其他资料/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-2.8B",
+    "category": "LCD触摸屏",
+    "size": "2.8B\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8B 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/1. 硬件资料/ESP32-S3-Touch-LCD-2.8B_schematic_diagram.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8B 工程图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/1. 硬件资料/ESP32-S3-Touch-LCD-2.8B-20241031.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7701S 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/ST7701S_SPEC_V1.4.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/GT911_EN_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TCA9554 规格书（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/2. 技术手册/tca9554.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-2.8B 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/3. 示例程序/ESP32-S3-Touch-LCD-2.8B-Demo.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8B/4. 其他资料/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-2.8C",
+    "category": "LCD触摸屏",
+    "size": "2.8C\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8C 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/1. 硬件资料/ESP32-S3-Touch-LCD-2.8C_schematic_diagram.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8C 工程图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/1. 硬件资料/ESP32-S3-Touch-LCD-2.8C-structure.zip"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-2.8C 3D 图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/1. 硬件资料/ESP32-S3-Touch-LCD-2.8C-20241226.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7701S 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/ST7701S_SPEC_V1.4.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/GT911_EN_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TCA9554 规格书（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/2. 技术手册/tca9554.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-2.8C 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/3. 示例程序/ESP32-S3-Touch-LCD-2.8C-Demo.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-2.8C/4. 其他资料/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 其他资料",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-3.49",
+    "category": "LCD触摸屏",
+    "size": "3.49\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "小智 AI",
+      "电池管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-3.49 v1原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/1. 硬件资料/ESP32-S3-Touch-LCD-3.49-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-3.49 v2原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/1. 硬件资料/ESP32-S3-Touch-LCD-3.49 V2.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-3.49 结构",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/1. 硬件资料/ESP32-S3-Touch-LCD-3.49.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/QMI8658C_datasheet_rev_0.9.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/Pcf85063atl1118-NdPQpTGE-loeW7GbZ7.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7701 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/ST7701S_SPEC_V1.1.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXS15231B 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/2. 技术手册/AXS15231B_Datasheet_V0.5.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-3.49 V1示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/3. 示例程序/ESP32-S3-Touch-LCD-3.49-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-3.49 V2示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.49/3. 示例程序/esp32-s3-touch-lcd-3.49-v2.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-3.5",
+    "category": "LCD触摸屏",
+    "size": "3.5\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "小智 AI",
+      "电源管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/1. 硬件资料/ESP32-S3-Touch-LCD-3.5-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "工程文件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/1. 硬件资料/ESP32-S3-Touch-LCD-3.5-2Dand3D.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 UserGuide（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7796S datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/ST7796S_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "FT6336U datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/2. 技术手册/FT6336U_Datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-3.5 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/3. 示例程序/ESP32-S3-Touch-LCD-3.5-Demo.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "汉字取模软件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/4. 软件/Zimo221.7z"
+      },
+      {
+        "section": "4. 软件",
+        "name": "mage2Lcd 图片取模软件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/4. 软件/Image2Lcd2.9.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5/4. 软件/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "图片取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "字库取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-3.5B",
+    "category": "LCD触摸屏",
+    "size": "3.5B\"",
+    "features": [
+      "RTC 时钟",
+      "六轴 IMU",
+      "小智 AI",
+      "电源管理",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/1. 硬件资料/ESP32-S3-Touch-LCD-3.5B-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-3.5B 2D和3D图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/1. 硬件资料/ESP32-S3-Touch-LCD-3_5B.rar"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-3.5B-C 2D和3D图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/1. 硬件资料/ESP32-S3-Touch-LCD-3.5B-C_外形尺寸.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "QMI8658 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/QMI8658C.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXP2101 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/X-power-AXP2101_SWcharge_V1.0.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 UserGuide（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "AXS15231B datasheet（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/2. 技术手册/AXS15231B_Datasheet_V0.5.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-3.5B 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/3. 示例程序/ESP32-S3-Touch-LCD-3.5B-Demo.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "汉字取模软件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/4. 软件/Zimo221.7z"
+      },
+      {
+        "section": "4. 软件",
+        "name": "mage2Lcd 图片取模软件",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/4. 软件/Image2Lcd2.9.zip"
+      },
+      {
+        "section": "4. 软件",
+        "name": "Flash_download_tool",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-3.5B/4. 软件/flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "图片取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "字库取模教程",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料连链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-3.5B1",
+    "category": "LCD触摸屏",
+    "size": "3.5B1\"",
+    "features": [
+      "触摸屏"
+    ],
+    "resources": []
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-4.3",
+    "category": "LCD触摸屏",
+    "size": "4.3\"",
+    "features": [
+      "CAN 收发器",
+      "RS485",
+      "RTC 时钟",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/1. 硬件资料/ESP32-S3-Touch-LCD-4.3-Sch.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "工程图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/1. 硬件资料/ESP32-S3-Touch-LCD-4in3_3D_Drawing.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7262 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/ST7262.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/CH343DS1.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/CH343DS1-en.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TJA1051 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/TJA1051.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/CH422DS1_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/CH422DS1_EN.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-4.3_Demo.zip",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/3. 示例程序/ESP32-S3-Touch-LCD-4.3-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-4.3-Demo.zip",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/3. 示例程序/ESP32-S3-Touch-LCD-4.3-Demo.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VSCode 官网",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "SSCOM 串口和网络调试助手",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "USB-CAN-A_TOOL",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3/4. 软件工具/USBCANV2.10.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方资料",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-4.3B",
+    "category": "LCD触摸屏",
+    "size": "4.3B\"",
+    "features": [
+      "CAN 收发器",
+      "RS485",
+      "RTC 时钟",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-4.3B 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/1. 硬件资料/ESP32-S3-Touch-LCD-4.3B-Sch.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-4.3B 工程图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/1. 硬件资料/ESP32-S3-Touch-LCD-4in3B_Drawing.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7262 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/ST7262.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/CH343DS1.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/CH343DS1-en.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TJA1051 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/TJA1051.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/CH422DS1_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/CH422DS1_EN.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-4.3B-BOX-Demo.zip",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/3. 示例程序/ESP32-S3-Touch-LCD-4.3B-BOX-Demo.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VSCode 官网",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "SSCOM 串口和网络调试助手",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "USB-CAN-A_TOOL",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3B/4. 软件工具/USBCANV2.10.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方资料",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-4.3C",
+    "category": "LCD触摸屏",
+    "size": "4.3C\"",
+    "features": [
+      "RTC 时钟",
+      "小智 AI",
+      "触摸屏",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/1. 硬件资料/ESP32-S3-Touch-LCD-4.3C-Schematics.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "工程图纸",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7262 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/ST7262.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-4.3C/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-4.3C 示例程序",
+        "path": ""
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-5",
+    "category": "LCD触摸屏",
+    "size": "5\"",
+    "features": [
+      "CAN 收发器",
+      "RS485",
+      "RTC 时钟",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-5 原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/1. 硬件资料/ESP32-S3-Touch-LCD-5-Sch.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-5 工程图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/1. 硬件资料/ESP32-S3-Touch-LCD-5_Drawing.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7262 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/ST7262.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/CH343DS1.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/CH343DS1-en.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TJA1051 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/TJA1051.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/CH422DS1_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/CH422DS1_EN.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-5 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/3. 示例程序/ESP32-S3-Touch-LCD-5-Demo.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VSCode 官网",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "SSCOM 串口和网络调试助手",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "USB-CAN-A_TOOL",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/4. 软件工具/USBCANV2.10.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32 固件烧录工具",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-5/4. 软件工具/ESP32_S3_flash_download_tool.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方资料",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "6. 应用案例",
+        "name": "ESP32-S3-Touch-LCD-5 外壳 3D 打印模型（MakerWorld）",
+        "path": ""
+      },
+      {
+        "section": "6. 应用案例",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-7",
+    "category": "LCD触摸屏",
+    "size": "7\"",
+    "features": [
+      "CAN 收发器",
+      "RS485",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/1. 硬件资料/ESP32-S3-Touch-LCD-7-Sch.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LCD-7 图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/1. 硬件资料/ESP32-S3-LCD-7.zip"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Touch-LCD-7 图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/1. 硬件资料/ESP32-S3-Touch-LCD-7.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ESP32-S3-WROOM-1 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7262 Datasheet",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/ST7262.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/CH343DS1.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 Datasheet",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/CH343DS1-en.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TJA1051 Datasheet",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/TJA1051.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/CH422DS1_CN.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH422G Datasheet",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/2. 技术手册/CH422DS1_EN.PDF"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-7 示例程序",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/3. 示例程序/ESP32-S3-Touch-LCD-7.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "SSCOM 串口和网络调试助手",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/3. 示例程序/Sscom5.13.1.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "USB-CAN-A_TOOL",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7/3. 示例程序/USBCANV2.10.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-7B",
+    "category": "LCD触摸屏",
+    "size": "7B\"",
+    "features": [
+      "CAN 收发器",
+      "RS485",
+      "电容触摸",
+      "触摸屏"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/1. 硬件资料/ESP32-S3-Touch-LCD-7B-Schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "图纸",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/1. 硬件资料/ESP32-S3-Touch-LCD-7B.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7262 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/ST7262.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/CH343DS1.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/CH343DS1-en.PDF"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "TJA1051 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/2. 技术手册/TJA1051.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Touch-LCD-7B 示例程序包",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/3. 示例程序/ESP32-S3-Touch-LCD-7B-Demo.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Visual Studio Code 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "SSCOM 串口和网络调试助手",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "USB-CAN-A 工具软件 USBCANV2.10",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7B/4. 软件工具/USBCANV2.10.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方仓库",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF 官方仓库",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Touch-LCD-7C-BOX",
+    "category": "LCD触摸屏",
+    "size": "7C\"",
+    "features": [
+      "RTC 时钟",
+      "扬声器",
+      "电容触摸",
+      "触摸屏",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图-Github",
+        "path": ""
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图-Gitee",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7262 数据手册（英文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/ST7262.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "GT911 数据手册（中文）",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/GT911.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8389 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/ES8389_DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "BQ27220 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/Bq27220.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063A 数据手册",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/2. 技术手册/PCF85063A.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "示例代码-Github",
+        "path": ""
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "示例代码-Gitee",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Visual Studio Code 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "SSCOM 串口和网络调试助手",
+        "path": "LCD触摸屏/ESP32-S3-Touch-LCD-7C-BOX/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP32-Arduino 官方仓库",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "ESP-IDF 官方仓库",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "5. 其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-LR1121-XF",
+    "category": "LoRa通信",
+    "size": "",
+    "features": [
+      "LoRa"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-LR1121-XF.pdf",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LoRa通信/ESP32-S3-LR1121-XF/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LoRa通信/ESP32-S3-LR1121-XF/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "LoRa通信/ESP32-S3-LR1121-XF/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "LoRa通信/ESP32-S3-LR1121-XF/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "LR1121 Datasheet",
+        "path": ""
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "Gitee 示例程序仓库",
+        "path": "LoRa通信/ESP32-S3-LR1121-XF/3. 示例程序/main.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "GitHub 示例程序仓库",
+        "path": "LoRa通信/ESP32-S3-LR1121-XF/3. 示例程序/main.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-DualEye-LCD-1.28",
+    "category": "双眼LCD屏",
+    "size": "1.28\"",
+    "features": [],
+    "resources": [
+      {
+        "section": "硬件资料",
+        "name": "ESP32-S3-DualEye-LCD-1.28 原理图",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/硬件资料/ESP32-S3-DualEye-LCD-1.28-Schematic.pdf"
+      },
+      {
+        "section": "硬件资料",
+        "name": "ESP32-S3-DualEye-LCD-1.28 结构文件",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/硬件资料/ESP32-S3-DualEye-LCD-1.28.zip"
+      },
+      {
+        "section": "数据手册",
+        "name": "中文版",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/数据手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "数据手册",
+        "name": "英文版",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/数据手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "数据手册",
+        "name": "中文版",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/数据手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "数据手册",
+        "name": "英文版",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/数据手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "示例程序",
+        "name": "ESP32-S3-DualEye-LCD-1.28 示例程序（Gitee 仓库）",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/示例程序/108b6c3dcfe8.zip"
+      },
+      {
+        "section": "示例程序",
+        "name": "ESP32-S3-DualEye-LCD-1.28 示例程序（Github 仓库）",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/示例程序/108b6c3dcfe8.zip"
+      },
+      {
+        "section": "软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "软件工具",
+        "name": "Flash_download_tool",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "其他资料链接",
+        "name": "LVGL 官方文档",
+        "path": ""
+      },
+      {
+        "section": "其他资料链接",
+        "name": "MIC 测试音频",
+        "path": "双眼LCD屏/ESP32-S3-DualEye-LCD-1.28/其他资料链接/MIC_Test_audio.zip"
+      },
+      {
+        "section": "其他资料链接",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-RLCD-4.2",
+    "category": "反射式LCD",
+    "size": "4.2\"",
+    "features": [
+      "RTC 时钟",
+      "SD 卡槽",
+      "小智 AI",
+      "扬声器",
+      "电池管理",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/1. 硬件资料/ESP32-S3-RLCD-4.2-schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "结构与尺寸",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/1. 硬件资料/ESP32-S3-RLCD-4.2-3dFile.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7305 数据手册",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/ST_7305_V0_2.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 数据手册",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/Pcf85063atl1118-NdPQpTGE-loeW7GbZ7.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SHTC3 数据手册",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/2. 技术手册/SHTC3_Datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-RLCD-4.2 示例程序",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/3. 示例程序/ESP32-S3-RLCD-4.2-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-RLCD-4.2 示例程序（GitHub 仓库）",
+        "path": "反射式LCD屏/ESP32-S3-RLCD-4.2/3. 示例程序/ESP32-S3-RLCD-4.2.zip"
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "https://www.bilibili.com/video/BV1PsfhBCEqA",
+        "path": ""
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "https://github.com/ZhouhaoJiang/xiaozhi-esp32",
+        "path": ""
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "MakerWorld",
+        "path": ""
+      },
+      {
+        "section": "4. 社区示例展示",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-CAM-OVxxxx",
+    "category": "摄像头",
+    "size": "",
+    "features": [
+      "扬声器",
+      "摄像头",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/1. 硬件资料/ESP32-S3-CAM-XXXX-schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-CAM-OVxxxx 示例程序（Github 仓库）",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/3. 示例程序/main.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-CAM-OVxxxx 示例程序（Gitee 仓库）",
+        "path": "摄像头/ESP32-S3-CAM-OVxxxx/3. 示例程序/main.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-DEV-KIT-N8R8",
+    "category": "无屏主控板",
+    "size": "",
+    "features": [
+      "MicroPython"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/1. 硬件资料/ESP32-S3-DEV-KIT-N8R8-schematic.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "3D 结构",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/1. 硬件资料/ESP32-S3-DEV-KIT-N8R8_20260110.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/2. 技术手册/Esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/2. 技术手册/Esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "烧录软件与固件",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/3. 软件开发资源/ESP32-S3-DEV-KIT-N8R8-micropython-firmware.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "MicroPython 示例程序",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/3. 软件开发资源/ESP32-S3-DEV-KIT-MPY-Example.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "串口和网络调试助手",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/3. 软件开发资源/Sscom5.13.1.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "Flash 调试软件",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/3. 软件开发资源/Flash_download_tool_3.9.5_0.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "蓝牙调试助手",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/3. 软件开发资源/ESP32-C6_TO_BLEAssist.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "Window VCP 驱动",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/3. 软件开发资源/CH343SER.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "MAC 驱动",
+        "path": "无屏主控板/ESP32-S3-DEV-KIT-N8R8/3. 软件开发资源/CH34XSER_MAC.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-GEEK",
+    "category": "无屏主控板",
+    "size": "",
+    "features": [
+      "MicroPython",
+      "SD 卡槽"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-GEEK 原理图",
+        "path": "无屏主控板/ESP32-S3-GEEK/1. 硬件资料/ESP32-S3-GEEK-Schematic1.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-GEEK/2. 技术手册/Esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-GEEK/2. 技术手册/Esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-GEEK/2. 技术手册/Esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-GEEK/2. 技术手册/Esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-GEEK/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-GEEK/2. 技术手册/Esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ST7789P3 数据手册（英文）",
+        "path": "无屏主控板/ESP32-S3-GEEK/2. 技术手册/ST7789P3.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-GEEK 示例程序",
+        "path": "无屏主控板/ESP32-S3-GEEK/3. 示例程序/ESP32-S3-GEEK-Demo.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Thonny 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "串口调试助手",
+        "path": "无屏主控板/ESP32-S3-GEEK/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "网络调试助手",
+        "path": "无屏主控板/ESP32-S3-GEEK/4. 软件工具/NetAssist.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "IOS 端蓝牙调试助手",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Android 端蓝牙调试助手",
+        "path": "无屏主控板/ESP32-S3-GEEK/4. 软件工具/Android蓝牙调试助手.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Android 端 TCP 调试助手",
+        "path": "无屏主控板/ESP32-S3-GEEK/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "无屏主控板/ESP32-S3-GEEK/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "MicroPython 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Pico",
+    "category": "无屏主控板",
+    "size": "",
+    "features": [
+      "MicroPython"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "无屏主控板/ESP32-S3-Pico/1. 硬件资料/ESP32-S3-Pico-Schematics.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-Pico/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-Pico/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-Pico/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-Pico/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "WS2812B RGB LED 数据手册",
+        "path": "无屏主控板/ESP32-S3-Pico/2. 技术手册/XL-0807RGBC-WS2812B.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册",
+        "path": "无屏主控板/ESP32-S3-Pico/2. 技术手册/CH343DS1.PDF"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "ESP32-S3-Pico 示例程序",
+        "path": ""
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "Window VCP驱动",
+        "path": "无屏主控板/ESP32-S3-Pico/3. 软件开发资源/CH343SER.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "安卓APP",
+        "path": "无屏主控板/ESP32-S3-Pico/3. 软件开发资源/WCHUARTDemo_V1.3.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "MAC驱动",
+        "path": "无屏主控板/ESP32-S3-Pico/3. 软件开发资源/CH34XSER_MAC.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "串口和网络调试助手",
+        "path": "无屏主控板/ESP32-S3-Pico/3. 软件开发资源/Sscom5.13.1.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "MicroPython 固件和烧录工具",
+        "path": "无屏主控板/ESP32-S3-Pico/3. 软件开发资源/ESP32-S3-MicroPythn-4MB-Flash.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Tiny",
+    "category": "无屏主控板",
+    "size": "",
+    "features": [
+      "MicroPython"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Tiny 原理图",
+        "path": "无屏主控板/ESP32-S3-Tiny/1. 硬件资料/ESP32-S3-Tiny.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Tiny Adapter 原理图",
+        "path": "无屏主控板/ESP32-S3-Tiny/1. 硬件资料/Tiny-Adapter.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Tiny 结构图纸",
+        "path": "无屏主控板/ESP32-S3-Tiny/1. 硬件资料/ESP32-S3-Tiny-20251108.zip"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-Tiny/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-Tiny/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-Tiny/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-Tiny/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "WS2812B RGB LED 数据手册",
+        "path": "无屏主控板/ESP32-S3-Tiny/2. 技术手册/XL-0807RGBC-WS2812B.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "CH343 数据手册",
+        "path": "无屏主控板/ESP32-S3-Tiny/2. 技术手册/CH343DS1.PDF"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "Window VCP 驱动",
+        "path": "无屏主控板/ESP32-S3-Tiny/3. 软件开发资源/CH343SER.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "安卓 APP",
+        "path": "无屏主控板/ESP32-S3-Tiny/3. 软件开发资源/WCHUARTDemo_V1.3.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "MAC 驱动",
+        "path": "无屏主控板/ESP32-S3-Tiny/3. 软件开发资源/CH34XSER_MAC.7z"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "串口和网络调试助手",
+        "path": "无屏主控板/ESP32-S3-Tiny/3. 软件开发资源/Sscom5.13.1.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "MicroPython 固件和烧录工具",
+        "path": "无屏主控板/ESP32-S3-Tiny/3. 软件开发资源/ESP32-S3-MicroPythn-4MB-Flash.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Zero",
+    "category": "无屏主控板",
+    "size": "",
+    "features": [
+      "MicroPython"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "引脚图",
+        "path": ""
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "无屏主控板/ESP32-S3-Zero/1. 硬件资料/ESP32-S3-Zero-Sch.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "2D 尺寸图",
+        "path": ""
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-Zero/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-Zero/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "无屏主控板/ESP32-S3-Zero/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "无屏主控板/ESP32-S3-Zero/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "WS2812B RGB LED 数据手册",
+        "path": "无屏主控板/ESP32-S3-Zero/2. 技术手册/XL-0807RGBC-WS2812B.pdf"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "ESP32-S3-Zero 示例程序",
+        "path": "无屏主控板/ESP32-S3-Zero/3. 软件开发资源/Esp32-s3-zero-code.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "ESP32-S3-Zero-Basic-Kit 示例程序 (Gitee 仓库)",
+        "path": "无屏主控板/ESP32-S3-Zero/3. 软件开发资源/ESP32-S3-Zero-Basic-Kit.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "ESP32-S3-Zero-Basic-Kit 示例程序 (GitHub 仓库)",
+        "path": "无屏主控板/ESP32-S3-Zero/3. 软件开发资源/ESP32-S3-Zero-Basic-Kit.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "串口和网络调试助手",
+        "path": "无屏主控板/ESP32-S3-Zero/3. 软件开发资源/Sscom5.13.1.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "MicroPython 固件和烧录工具",
+        "path": "无屏主控板/ESP32-S3-Zero/3. 软件开发资源/ESP32-S3-MicroPythn-4MB-Flash.zip"
+      },
+      {
+        "section": "3. 软件开发资源",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-Matrix",
+    "category": "点阵屏",
+    "size": "",
+    "features": [
+      "MicroPython"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-Matrix 原理图",
+        "path": "点阵屏/ESP32-S3-Matrix/1. 硬件资料/ESP32-S3-Matrix.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "点阵屏/ESP32-S3-Matrix/2. 技术手册/Esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "点阵屏/ESP32-S3-Matrix/2. 技术手册/Esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "点阵屏/ESP32-S3-Matrix/2. 技术手册/Esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "点阵屏/ESP32-S3-Matrix/2. 技术手册/Esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-Matrix 示例程序",
+        "path": "点阵屏/ESP32-S3-Matrix/3. 示例程序/ESP32-S3-Matrix-Demo.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Thonny 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "串口调试助手",
+        "path": "点阵屏/ESP32-S3-Matrix/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "网络调试助手",
+        "path": "点阵屏/ESP32-S3-Matrix/4. 软件工具/NetAssist.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "IOS 端蓝牙调试助手",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Android 端蓝牙调试助手",
+        "path": "点阵屏/ESP32-S3-Matrix/4. 软件工具/Android蓝牙调试助手.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Android 端 TCP 调试助手",
+        "path": "点阵屏/ESP32-S3-Matrix/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "点阵屏/ESP32-S3-Matrix/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "MicroPython 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-RGB-Matrix",
+    "category": "点阵屏",
+    "size": "",
+    "features": [
+      "SD 卡槽",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-RGB-Matrix 原理图-GitHub",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/1. 硬件资料/ESP32-S3-RGB-Matrix-Schematics.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-RGB-Matrix 原理图-Gitee",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/1. 硬件资料/ESP32-S3-RGB-Matrix-Schematics.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-RGB-Matrix 工程图纸-GitHub",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/1. 硬件资料/ESP32-S3-RGB-Matrix-2D.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "ESP32-S3-RGB-Matrix 工程图纸-Gitee",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/1. 硬件资料/ESP32-S3-RGB-Matrix-2D.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/2. 技术手册/Esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/2. 技术手册/Esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/2. 技术手册/Esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/2. 技术手册/Esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-RGB-Matrix 示例程序-GitHub",
+        "path": ""
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-RGB-Matrix 示例程序-Gitee",
+        "path": ""
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-RGB-Matrix 小智固件-GitHub",
+        "path": ""
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-RGB-Matrix 小智固件-Gitee",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "串口调试助手",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/4. 软件工具/Sscom5.13.1.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "点阵屏/ESP32-S3-RGB-Matrix/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP-IDF 官方资料",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-ePaper-1.54",
+    "category": "电子纸屏",
+    "size": "1.54\"",
+    "features": [
+      "RTC 时钟",
+      "SD 卡槽",
+      "小智 AI",
+      "电池管理"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/1. 硬件资料/ESP32-S3-Touch-ePaper-1.54-Schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/2. 技术手册/Pcf85063atl1118-NdPQpTGE-loeW7GbZ7.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SHTC3 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/2. 技术手册/SHTC3_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ePaper_1.54 规格书",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/2. 技术手册/1.54inch_e-paper_V2_Datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-ePaper-1.54 示例程序（Gitee 仓库）",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54/3. 示例程序/4012105de970.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-ePaper-1.54G",
+    "category": "电子纸屏",
+    "size": "1.54G\"",
+    "features": [
+      "RTC 时钟",
+      "SD 卡槽",
+      "电池管理"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/1. 硬件资料/ESP32-S3-Touch-ePaper-1.54-Schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/2. 技术手册/Pcf85063atl1118-NdPQpTGE-loeW7GbZ7.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SHTC3 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/2. 技术手册/SHTC3_Datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ePaper_1.54G 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/2. 技术手册/1.54inch_e-Paper_(G).pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-ePaper-1.54G 示例程序（Gitee 仓库）",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/3. 示例程序/ESP32-S3-ePaper-1.54G.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-ePaper-1.54G 示例程序（Github 仓库）",
+        "path": "电子纸屏/ESP32-S3-ePaper-1.54G/3. 示例程序/ESP32-S3-ePaper-1.54G.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-ePaper-13.3E6",
+    "category": "电子纸屏",
+    "size": "13.3E6\"",
+    "features": [
+      "SD 卡槽",
+      "电池管理",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/1. 硬件资料/ESP32-S3-ePaper-Driver-Board.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "13.3inch e-Paper (E) 用户手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/13.3inch_e-Paper_(E)_user_manual.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ETA6098 数据手册",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/2. 技术手册/ETA6098.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-ePaper-13.3E6 示例程序 （gitee 仓库）",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/3. 示例程序/ESP32-S3-ePaper-13.3E6.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-ePaper-13.3E6 示例程序 （Github 仓库）",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/3. 示例程序/ESP32-S3-ePaper-13.3E6.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino-ESP32 离线器件包 （提取码：1r4i）",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "电子纸屏/ESP32-S3-ePaper-13.3E6/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32 网页烧录固件",
+        "path": ""
+      },
+      {
+        "section": "5. 社区示例展示",
+        "name": "https://github.com/teatall/13.3inch_e-Paper_E-Frame",
+        "path": ""
+      },
+      {
+        "section": "5. 社区示例展示",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-ePaper-13.3E67",
+    "category": "电子纸屏",
+    "size": "13.3E67\"",
+    "features": [],
+    "resources": []
+  },
+  {
+    "name": "ESP32-S3-ePaper-3.97",
+    "category": "电子纸屏",
+    "size": "3.97\"",
+    "features": [
+      "RTC 时钟",
+      "SD 卡槽",
+      "小智 AI",
+      "音频编解码"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/1. 硬件资料/ESP32-S3_e-Paper-3.97-schematic.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "3.97inch e-Paper Datesheet",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/3.97inch_e-Paper.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 Datesheet",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "PCF85063 Datesheet",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/Pcf85063atl1118-NdPQpTGE-loeW7GbZ7.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "SHTC3 Datesheet",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/2. 技术手册/SHTC3_Datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-ePaper-3.97 示例程序",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/3. 示例程序/ESP32-S3_ePaper-3.97-demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-ePaper-3.97 示例程序 （Github 仓库）",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/3. 示例程序/ESP32-S3-ePaper-3.97.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino IDE 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "ESP32-Arduino 官方文档",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Arduino-ESP32 离线器件包 （提取码：1r4i）",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "VScode 官方下载链接",
+        "path": ""
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "Flash_download_tool",
+        "path": "电子纸屏/ESP32-S3-ePaper-3.97/4. 软件工具/flash_download_tool.zip"
+      },
+      {
+        "section": "4. 软件工具",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  },
+  {
+    "name": "ESP32-S3-AUDIO-Board",
+    "category": "音频",
+    "size": "",
+    "features": [
+      "小智 AI",
+      "扬声器",
+      "音频编解码",
+      "麦克风"
+    ],
+    "resources": [
+      {
+        "section": "1. 硬件资料",
+        "name": "原理图",
+        "path": "音频/ESP32-S3-AUDIO-Board/1. 硬件资料/ESP32-S3-AUDIO-Board_1.1.pdf"
+      },
+      {
+        "section": "1. 硬件资料",
+        "name": "结构图纸",
+        "path": "音频/ESP32-S3-AUDIO-Board/1. 硬件资料/ESP32-S3-AUDIO-Board.rar"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "音频/ESP32-S3-AUDIO-Board/2. 技术手册/esp32-s3_datasheet_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "音频/ESP32-S3-AUDIO-Board/2. 技术手册/esp32-s3_datasheet_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "中文版",
+        "path": "音频/ESP32-S3-AUDIO-Board/2. 技术手册/esp32-s3_technical_reference_manual_cn.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "英文版",
+        "path": "音频/ESP32-S3-AUDIO-Board/2. 技术手册/esp32-s3_technical_reference_manual_en.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 数据手册",
+        "path": "音频/ESP32-S3-AUDIO-Board/2. 技术手册/ES8311.DS.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES8311 用户手册",
+        "path": "音频/ESP32-S3-AUDIO-Board/2. 技术手册/ES8311.user.Guide.pdf"
+      },
+      {
+        "section": "2. 技术手册",
+        "name": "ES7210 数据手册",
+        "path": "音频/ESP32-S3-AUDIO-Board/2. 技术手册/ES7210-datasheet.pdf"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "ESP32-S3-AUDIO-Board 示例程序",
+        "path": "音频/ESP32-S3-AUDIO-Board/3. 示例程序/ESP32-S3-AUDIO-Board-Demo.zip"
+      },
+      {
+        "section": "3. 示例程序",
+        "name": "文档反馈",
+        "path": ""
+      }
+    ]
+  }
+]

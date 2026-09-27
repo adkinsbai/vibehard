@@ -23,7 +23,7 @@ export function Footer() {
             </span>
           </div>
           <span className="rounded-md text-[13px] font-medium text-muted-foreground">
-            *
+            AI 辅助研发 · 工程师主导决策
           </span>
         </div>
 
@@ -34,12 +34,12 @@ export function Footer() {
           >
             登录
           </Link>
-          <Link
-            href="/register"
+          <a
+            href="#access"
             className="rounded-md text-[13px] font-semibold text-muted-foreground transition-colors duration-200 hover:text-foreground"
           >
-            注册
-          </Link>
+            即将开放注册
+          </a>
         </div>
       </div>
     </footer>

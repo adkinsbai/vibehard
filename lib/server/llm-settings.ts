@@ -2,7 +2,7 @@ import { createCipheriv, createDecipheriv, createHash, randomBytes, randomUUID }
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { auditLogs, llmSettings } from "@/lib/db/schema";
-import type { LlmInput, LlmPurpose, PublicLlm, RuntimeLlm } from "@/lib/agent/llm";
+import type { LlmDiscoveryInput, LlmInput, LlmPurpose, PublicLlm, RuntimeLlm } from "@/lib/agent/llm";
 
 type Row = typeof llmSettings.$inferSelect;
 declare global { var __vibehardLlmSettings: Map<string, Row> | undefined }
@@ -44,7 +44,7 @@ export async function runtimeLlm(purpose: LlmPurpose): Promise<RuntimeLlm | null
   const row = await read(purpose);
   return row ? { baseUrl: row.baseUrl, model: row.model, protocol: row.protocol as RuntimeLlm["protocol"], apiKey: decryptKey(row.encryptedApiKey, purpose), revision: row.revision } : null;
 }
-export async function candidateLlm(input: LlmInput): Promise<RuntimeLlm> {
+export async function candidateLlmCredentials(input: LlmDiscoveryInput) {
   const current = await read(input.purpose);
   if ((current?.revision ?? null) !== input.revision) throw new LlmConflictError("配置已被修改，请刷新页面后重试");
   const url = new URL(input.baseUrl);
@@ -54,7 +54,11 @@ export async function candidateLlm(input: LlmInput): Promise<RuntimeLlm> {
   if (!input.apiKey && current && current.baseUrl !== baseUrl) throw new LlmConfigError("更换 Base URL 时请重新输入 API Key");
   const apiKey = input.apiKey || (current ? decryptKey(current.encryptedApiKey, input.purpose) : "");
   if (!apiKey) throw new LlmConfigError("请输入 API Key");
-  return { baseUrl, model: input.model, protocol: input.protocol, apiKey, revision: current?.revision ?? "" };
+  return { baseUrl, apiKey };
+}
+export async function candidateLlm(input: LlmInput): Promise<RuntimeLlm> {
+  const { baseUrl, apiKey } = await candidateLlmCredentials(input);
+  return { baseUrl, model: input.model, protocol: input.protocol, apiKey, revision: input.revision ?? "" };
 }
 export async function saveLlm(input: LlmInput, userId: string | null) {
   const config = await candidateLlm(input);

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { CatalogNavLink } from "@/components/app/catalog-nav-link";
 import {
   LayoutDashboard,
   Bot,
@@ -69,7 +70,10 @@ const navSections: NavSection[] = [
   },
   {
     title: "平台管理",
-    items: [{ href: "/app/admin", label: "管理概览", icon: ShieldCheck }],
+    items: [
+      { href: "/app/admin", label: "管理概览", icon: ShieldCheck },
+      { href: "/app/knowledge-review", label: "知识库审核", icon: BookOpen },
+    ],
   },
 ];
 
@@ -85,6 +89,7 @@ export function AppSidebar() {
               {section.title}
             </p>
             <div className="space-y-1">
+              {section.title === "平台管理" && <CatalogNavLink />}
               {section.items.map((item) => {
                 const Icon = item.icon;
                 const isActive =

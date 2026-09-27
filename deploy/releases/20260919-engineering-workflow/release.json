@@ -1,0 +1,12 @@
+{
+  "release": "20260919-engineering-workflow",
+  "previousPlatformRelease": "20260919-design-knowledge-pricing",
+  "gatewayRelease": "20260918-cloud-runner",
+  "basePath": "/vibehard",
+  "databaseMigration": "none",
+  "preservedFrontend": ["app/demo", "public/demo", "next.config.ts", "app/app/pcb", "components/pcb"],
+  "restartServices": ["vibehard.service", "vibehard-runner.service"],
+  "preserveServices": ["vibehard-gateway.service", "vibeboard.service", "nginx", "device-runner"],
+  "workflow": {"id": "cloud-project-workflow", "version": "1.0.0", "enabledOn": "cloud-runner"},
+  "note": "No database, account, key or Runner credential changes; one owned workflow is embedded in the versioned Runner bundle."
+}

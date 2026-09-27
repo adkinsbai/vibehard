@@ -134,7 +134,7 @@ export default function DatasheetsPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <PageHeader
+      <PageHeader helpKey="datasheets"
         icon={BookOpen}
         title="芯片资料解析"
         description="输入芯片 / 传感器型号，AI 全网检索资料、调用 Skills 分析，生成 AI 可迅速调用的器件档案"

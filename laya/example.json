@@ -1,0 +1,19 @@
+{
+  "model": "multilingual",
+  "state": {
+    "requirement": "传感器必须支持 I2C 通信。",
+    "component": "用于接口验收的虚构器件 A",
+    "evidence": "该器件仅支持 SPI，不支持 I2C。"
+  },
+  "questions": {
+    "evidence_status": {
+      "type": "choice",
+      "instructions": "仅依据 evidence 判断它与 requirement 的关系；没有提到所需参数时选 unknown。",
+      "criteria": {
+        "supported": "证据明确支持需求",
+        "contradicted": "证据明确与需求冲突",
+        "unknown": "资料不足，无法判断"
+      }
+    }
+  }
+}

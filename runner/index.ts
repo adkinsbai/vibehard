@@ -8,11 +8,12 @@ import { envelope, parseGatewayToRunnerMessage, type AgentEvent, type GatewayToR
 import { CodexSession, redactSensitiveText } from "./codex-stdio";
 import { RunnerJournal } from "./state";
 import type { RuntimeLlm } from "@/lib/agent/llm";
+import { KNOWLEDGE_CAPABILITY } from "@/lib/agent/knowledge";
 
 const runnerKey = process.env.RUNNER_ID ?? "local-runner";
 const runnerInstanceId = randomUUID();
-const runnerCapabilities = (process.env.RUNNER_CAPABILITIES ?? "codex,workspace-read,workspace-write-approval")
-  .split(",").map((item) => item.trim()).filter(Boolean).slice(0, 50);
+const runnerCapabilities = [...new Set([KNOWLEDGE_CAPABILITY, ...(process.env.RUNNER_CAPABILITIES ?? "codex,workspace-read,workspace-write-approval")
+  .split(",").map((item) => item.trim()).filter(Boolean)])].slice(0, 50);
 let gatewayUrl = process.env.RUNNER_GATEWAY_URL ?? "ws://127.0.0.1:8787/runner";
 let secret = process.env.RUNNER_SHARED_SECRET ?? "";
 let codexVersion: string | undefined;

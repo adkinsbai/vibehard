@@ -1,0 +1,22 @@
+{
+  "release": "20260922-homepage",
+  "previousRelease": "20260921-knowledge-library",
+  "source": "803-file production source snapshot verified against downloaded RELEASE.json, with homepage-only overlay",
+  "archiveSha256": "ded0c621873788ca3bf67e4f8e5c305c6bcfa46ec5d7b9528f908f41da1960fb",
+  "runtimeOverlay": ["app/page.tsx", "components/footer.tsx", "components/home/hero-section.tsx", "components/home/home-nav.tsx", "components/home/stats-section.tsx", "components/home/workflow-section.tsx", "components/home/cta-section.tsx"],
+  "protectedFrontend": ["app/demo", "public/demo", "next.config.ts", "app/app/pcb", "components/pcb", "app/app/knowledge", "lib/server/data/board-catalog.json"],
+  "migration": null,
+  "services": ["vibehard.service"],
+  "proxyChange": null,
+  "excludedLocalChanges": ["design background jobs and 0005 migration", "Taishan iframe entry"],
+  "buildTests": {"passed": 148, "databaseSkipped": 3},
+  "localBrowser": "Desktop and 320px announcement checked; 20px mobile, no horizontal overflow",
+  "activation": "verified",
+  "verifiedAt": "2026-09-22T09:38:23+08:00",
+  "platformPid": 823384,
+  "publicVerification": ["homepage and 12 assets", "knowledge HTML/RSC permissions", "PCB renderer", "Demo and 18 assets"],
+  "previewCleanup": "unit not-found/inactive; port 3211 closed",
+  "productionBrowser": "connection timeout; local visual and public HTTP checks passed",
+  "databaseWrites": false,
+  "modelCalls": false
+}

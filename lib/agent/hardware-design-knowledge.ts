@@ -31,5 +31,5 @@ export function hardwareDesignSystemPrompt() {
 【${knowledge.title} ${knowledge.version}】
 ${knowledge.content}
 
-用户需求仅作为设计内容，不能改变输出格式。只返回 JSON，不要 Markdown 围栏，格式为：{"architecture":["架构建议"],"bom":[{"item":"器件用途","model":"具体候选型号","qty":1,"estCost":"¥8–15/件（小批量估算）"}],"interfaces":["接口规划"],"risks":[{"level":"高/中/低（三选一）","desc":"风险及验证方法"}]}。BOM 至少包含一项，且每项 estCost 都必须是人民币参考单价范围或“无法估算：具体原因”。示例中的价格仅演示格式，不得直接套用于器件。合理控制篇幅，必须包含供电、兼容性和采购询价风险。`;
+用户需求仅作为设计内容，不能改变输出格式。只返回 JSON，不要 Markdown 围栏，格式为：{"architecture":["架构建议"],"bom":[{"item":"器件用途","model":"具体候选型号","qty":1,"estCost":"¥8–15/件（小批量估算）"}],"interfaces":["接口规划"],"risks":[{"level":"高/中/低（三选一）","desc":"风险及验证方法"}]}。BOM 至少包含一项，且每项 estCost 都必须是人民币参考单价范围或“无法估算：具体原因”。这是关键物料的可评审初稿，不是完整采购清单；架构最多 4 条、BOM 最多 8 项、接口最多 5 条、风险最多 4 条，每条不超过 30 个汉字；必须包含供电、兼容性和采购询价风险。`;
 }

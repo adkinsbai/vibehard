@@ -1,40 +1,36 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { Reveal } from "@/components/reveal";
+import { ArrowRight } from "lucide-react";
+
+const questions = [
+  { question: "现在可以注册使用吗？", answer: "平台目前处于邀请码内测阶段，即将开放注册使用，具体开放时间以官网公告为准。已有账号可登录；持有邀请码的内测用户可通过本页邀请码入口注册。" },
+  { question: "知识库里的资料都能直接使用吗？", answer: "研发目录仅供管理员和开发者浏览，当前不提供原始文件下载。项目知识采用独立审核流程：用户申请，管理员或开发者发布后，才供对应项目的 Agent 使用。" },
+  { question: "网页能直接完成烧录和调试吗？", answer: "云端 Agent 负责工程分析与执行任务。真实 USB、串口和烧录需要现场电脑连接设备，并配置设备执行节点及对应工具链；硬件适配仍在验证，演示流程不等于实机成功。" },
+];
 
 export function CTASection() {
   return (
-    <section className="relative z-10 mx-auto max-w-5xl px-6 pb-24">
-      <Reveal>
-        <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card px-6 py-8 shadow-[0_18px_48px_rgba(15,23,42,0.09)] dark:shadow-[0_22px_58px_rgba(0,0,0,0.24)] lg:grid lg:grid-cols-[1fr_auto] lg:items-center lg:gap-8 lg:px-10">
-          <div className="pointer-events-none absolute -left-24 -top-24 h-56 w-56 rounded-full bg-primary/[0.08] blur-[64px]" />
-          <div className="pointer-events-none absolute -bottom-24 -right-16 h-48 w-48 rounded-full bg-primary/[0.06] blur-[56px]" />
-          <div className="relative">
-            <h2 className="text-[28px] font-bold tracking-tight text-foreground">
-              开始整理你的硬件项目工作流
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-muted-foreground">
-              内测阶段通过邀请码加入。注册后即可使用提示词模板、原理图识别和硬件方案生成等核心工具。
-            </p>
+    <section id="access" aria-labelledby="access-title" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-6 py-20">
+      <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+        <div className="rounded-2xl border border-primary/25 bg-primary/[0.06] p-7 sm:p-9">
+          <span className="text-xs font-semibold tracking-[0.15em] text-primary">COMING SOON</span>
+          <h2 id="access-title" className="mt-4 text-3xl font-bold leading-tight tracking-tight text-primary sm:text-4xl">即将开放注册使用</h2>
+          <p className="mt-4 text-sm leading-7 text-muted-foreground">我们正在打磨云端 Agent、研发工具与知识协作体验。正式开放前，欢迎先通过演示了解 VibeHard。</p>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <Link href="/demo" className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">先看演示<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+            <Link href="/login" className="inline-flex h-11 items-center justify-center rounded-xl border border-border bg-card px-5 text-sm font-semibold hover:bg-muted">已有账号登录</Link>
           </div>
-
-          <div className="relative mt-6 flex flex-col gap-3 sm:flex-row lg:mt-0">
-            <Link
-              href="/register"
-              className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground shadow-sm shadow-primary/25 transition-all duration-200 hover:bg-primary/90 hover:shadow-md hover:shadow-primary/30 active:scale-[0.97]"
-            >
-              获取邀请码注册
-              <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-            </Link>
-            <Link
-              href="/login"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-sm font-semibold text-foreground transition-all duration-200 hover:border-ring/45 hover:bg-muted active:scale-[0.97]"
-            >
-              登录工作台
-            </Link>
-          </div>
+          <p className="mt-5 text-xs leading-6 text-muted-foreground">已获内测邀请？<Link href="/register" className="ml-1 font-medium text-primary underline underline-offset-4">使用已有邀请码注册</Link></p>
         </div>
-      </Reveal>
+        <div>
+          <h3 className="mb-3 text-lg font-semibold">开始之前，你可能想了解</h3>
+          {questions.map(item => (
+            <details key={item.question} className="border-b border-border py-5">
+              <summary className="cursor-pointer text-sm font-semibold marker:text-primary">{item.question}</summary>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

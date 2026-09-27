@@ -2,6 +2,7 @@
 
 import { use } from "react";
 import Link from "next/link";
+import { ModuleHelp } from "@/components/app/module-help";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Cable } from "lucide-react";
 import { findZutilsTool, getZutilsToolCategory } from "@/lib/zutils-tools";
@@ -37,6 +38,7 @@ export default function ToolViewerPage({
             <h1 className="truncate text-sm font-semibold text-foreground">
               {tool.name}
             </h1>
+            <ModuleHelp module="tools" />
             {category && (
               <span className="hidden shrink-0 rounded-md border border-border/70 bg-background/70 px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground sm:inline">
                 {category.name}

@@ -1,0 +1,26 @@
+{
+  "release": "20260920-module-help",
+  "baseCommit": "54fa2ca",
+  "source": "Complete working-tree snapshot; pending commit",
+  "archiveSha256": "93c8cd9298ddd70b5e5d5a86f2112b893dd24e6a7fac504064751fa62e2f140c",
+  "platform": "/opt/vibehard/releases/20260920-module-help/standalone",
+  "previousPlatform": "/opt/vibehard/releases/20260920-knowledge-review/standalone",
+  "runnerUnchanged": "/opt/vibehard/releases/20260919-project-knowledge/services/runner.cjs",
+  "gatewayUnchanged": "/opt/vibehard/releases/20260918-cloud-runner",
+  "protectedFrontend": ["app/demo", "public/demo", "next.config.ts", "app/app/pcb", "components/pcb"],
+  "databaseMigration": null,
+  "restartedServices": ["vibehard.service"],
+  "proxyChange": null,
+  "verification": {
+    "regularTestsPassed": 118,
+    "databaseTestsSkipped": 3,
+    "backendSourcesUnchanged": true,
+    "helpCategories": 15,
+    "pageEntryPoints": 17,
+    "httpHelpPagesVerified": 15,
+    "candidateProductionPublicFrontend": "passed",
+    "browserClickThrough": "not completed: browser connection timed out",
+    "modelRequests": "not run; prior schematic timeout remains unresolved",
+    "temporaryPreviewStopped": true
+  }
+}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ModuleHelp } from "@/components/app/module-help";
 import {
   ArrowRight,
   FileText,
@@ -122,9 +123,9 @@ export function DashboardGrid() {
     <div className="p-6 lg:p-8">
       {/* 欢迎区 */}
       <div className="animate-fade-up mb-8">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground lg:text-3xl">
+        <div className="flex items-center gap-2"><h1 className="text-2xl font-bold tracking-tight text-foreground lg:text-3xl">
           欢迎使用 VibeHard AI
-        </h1>
+        </h1><ModuleHelp module="dashboard" /></div>
         <p className="mt-2 text-sm text-muted-foreground">
           选择一个工具开始你的硬件研发工作流
         </p>

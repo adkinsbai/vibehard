@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { LogOut, Bell, Settings, Loader2 } from "lucide-react";
+import { LogOut, Bell, Settings, Loader2, Terminal } from "lucide-react";
 import { logout } from "@/lib/auth";
 import { assetPath } from "@/lib/utils";
+import { CatalogNavLink } from "@/components/app/catalog-nav-link";
 
 export function AppNav() {
   const router = useRouter();
@@ -36,16 +38,25 @@ export function AppNav() {
         <span className="text-[15px] font-semibold tracking-tight text-foreground">
           VibeHard
         </span>
-        <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+        <span className="hidden rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary sm:inline-block">
           工作台
         </span>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
-        <Button variant="ghost" size="icon" className="h-9 w-9" title="通知">
+        <Link
+          href="/app/taishan"
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+          title="泰山派开发"
+        >
+          <Terminal className="h-4 w-4" />
+          <span className="hidden min-[390px]:inline">泰山派</span>
+        </Link>
+        <CatalogNavLink mobile />
+        <Button variant="ghost" size="icon" className="hidden h-9 w-9 sm:inline-flex" title="通知">
           <Bell className="h-4 w-4" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-9 w-9" title="设置">
+        <Button variant="ghost" size="icon" className="hidden h-9 w-9 sm:inline-flex" title="设置">
           <Settings className="h-4 w-4" />
         </Button>
         <ThemeToggle />

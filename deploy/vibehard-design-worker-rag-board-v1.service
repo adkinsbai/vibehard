@@ -1,0 +1,26 @@
+[Unit]
+Description=VibeHard durable hardware design worker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=true
+SupplementaryGroups=vibehard-knowledge
+WorkingDirectory=/opt/vibehard/releases/20260927-rag-board-links-v1
+EnvironmentFile=/etc/vibehard/platform.env
+Environment=VIBEHARD_OSS_INDEX_PATH=/opt/vibehard/knowledge/20260926-esp32-s3-v1/knowledge-fts.sqlite
+# Replace current with the verified release path when deploying; never change Runner credentials.
+ExecStart=/opt/vibehard/runtime/node-v22.23.1 /opt/vibehard/releases/20260927-rag-board-links-v1/services/design-worker.cjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=110
+MemoryMax=384M
+CPUQuota=50%
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

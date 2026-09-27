@@ -74,7 +74,7 @@ export default function EmbeddedPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <PageHeader
+      <PageHeader helpKey="embedded"
         icon={MonitorSmartphone}
         title="嵌入式开发"
         description="连接开发板，用自然语言生成运行在板子上的嵌入式 APP，模拟器验证后一键烧录"

@@ -38,7 +38,7 @@ export default function PcbPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
-      <PageHeader icon={CircuitBoard} title="PCB 生成" description="从器件布局到板级装配，查看 PCB 走线、封装与接口细节" />
+      <PageHeader helpKey="pcb" icon={CircuitBoard} title="PCB 生成" description="从器件布局到板级装配，查看 PCB 走线、封装与接口细节" />
       <div className="grid gap-5 xl:grid-cols-[minmax(260px,0.85fr)_minmax(0,2.15fr)]">
         <div className="min-w-0 space-y-4">
           <div className="rounded-lg border border-border/80 bg-card p-5">

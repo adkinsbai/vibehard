@@ -28,6 +28,8 @@ __pycache__/
 # misc
 .DS_Store
 *.pem
+__pycache__/
+*.pyc
 
 # debug
 npm-debug.log*
