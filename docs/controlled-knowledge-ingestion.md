@@ -2,7 +2,7 @@
 
 2026-09-27。本工具是首版管理员/运维 CLI，不是普通用户网页上传，也不授权同伴直接登录生产机。正常团队交付仍走 Git PR。原件继续放私有 OSS；解析/OCR 在离线受控工作目录串行执行，不占用生产 Runner。数据库保存的小型已发布文本不迁移。
 
-本地修复补充（尚未发布）：下述 `build-id` 和多索引集合规则来自 `codex/audit-boundary-fixes`。现网旧 CLI 仍是单索引指针；不能直接用新格式控制文件配旧 Worker。修复验收见 [四项审计缺陷修复](audit-boundary-fixes.md)。
+2026-09-28 发布补充：`build-id` 和多索引集合规则已随 `20260928-audit-fixes-v1` 的受限检索进程上线；匹配的管理员 CLI v2 已发布到独立 `20260928-knowledge-control-v2` 目录。生产指针仍指向原 legacy 索引，未激活新批次。任何新索引仍须按下述清单、隔离评估、权限、容量和回滚门槛执行。修复证据见 [四项审计缺陷修复](audit-boundary-fixes.md) 和 [工作台发布记录](release-project-dashboard-20260928.md)。
 
 ## 数据流与边界
 

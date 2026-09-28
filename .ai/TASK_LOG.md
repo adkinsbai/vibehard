@@ -453,6 +453,13 @@
 - Release: 从原正式 `20260922-taishan-integration` 复制并哈希校验 814 个源码文件，仅叠加 6 个运行时文件与 3 个测试文件，构建 `20260925-llm-model-discovery-v2`。首次候选包带旧泰山派验证脚本而预检失败，从未激活；v2 改用现行正式发布目录的脚本重新打包。
 - Validation: 隔离正式源码 158 项测试通过、3 DB 跳过，类型/lint/Next 构建通过；v2 候选与正式 3210 全套 PCB/Demo/认证/管理/知识/泰山派回归通过。公网 design 与 agent 配置各真实列出 2 个模型；管理员准入、普通用户拒绝、换 URL 要新 Key、按钮 bundle 都通过。公网 PCB renderer 与 18 资产/5 GIF 回归通过。未运行完整 Agent 工具流程或 RAG 方案生成。
 - Production: 仅 `vibehard.service` 切到新 release，PID 894091；部署脚本核对模型配置指纹与运行环境/其他服务 PID 未变。3211 候选已停，归档 SHA256 `3596b27e9ba65cf247ff38f85054ce9e71bf078ae8216c86d454fe5e4662197b`，旧 unit 在 release 的 root-only `backup/` 中。未 commit/push。
+## 2026-09-28 Task: 工作台真实数据、CI 及分阶段发布
+
+- Goal: 按平台优化顺序先确保项目入口显示真实持久记录，补自动化检查并独立发布；保留项目工程导入暂缓和设备/知识服务边界。
+- Changes: 默认分支 PR #13/#14/#15；项目首页改读所属项目与方案任务，新增 GitHub CI；数据库行锁测试超时仅放宽单个测试用例。独立知识 CLI v2 打包并上线，不激活新索引。
+- Validation: PR #15 Verify 全绿；合并提交 `2280836` 的 `/vibehard` 构建和完整源码清单通过。工作台候选、正式回环与公网 PCB/Demo/BOM/匿名权限通过，切换前备份；受保护服务 PID、Runner 新鲜心跳与 Gateway 活连接复核。正式平台 `20260928-project-dashboard-v1`，未迁移数据库或改模型/OSS。
+- Limits: 生产浏览器登录态项目/BOM 点击、新付费方案和 RV1126B USB 本轮未复测；服务器约 4.8 GB 空余，8 GB 原件禁止云端本地处理。详见 `docs/release-project-dashboard-20260928.md`。
+
 # 2026-09-27 统一检索候选
 
 - 在独立 `codex/unified-knowledge` 工作树实现方案/Agent/EDA 服务端权限与引用入口、私有 socket Worker、旧 Runner 降级和语料版本上下文重置。

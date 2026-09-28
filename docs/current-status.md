@@ -2,6 +2,13 @@
 
 最新更新：2026-09-28，北京时间。以下核查结果分别标注时间，不代表持续监控。
 
+## 2026-09-28 21:26 工作台真实数据已上线
+
+- GitHub 默认分支 PR #13/#14/#15 已合并；#14 在 CI 失败后提前合并，发布因此暂停，直到 #15 独立修复的完整 CI 全绿。正式平台现为 `20260928-project-dashboard-v1`，构建源 `22808364b5e63516554da6b271de83f1ba80e109`。首页项目数、最近方案状态、最近项目来自当前用户的真实持久记录，不再显示固定演示数字。
+- 候选、正式回环和公网 PCB/Demo/BOM/匿名权限通过，备份/回滚保留；方案 Worker/检索/云端与设备 Runner/Gateway/VibeBoard/EDA manager 未重启。切换后 Runner 心跳新鲜、Gateway 有实时连接。无数据库迁移、知识索引/OSS/模型设置变更。生产登录态真实项目点击与 BOM 下载、付费模型、RV1126B 实机本轮未复测；详见 [发布记录](release-project-dashboard-20260928.md)。
+- 管理员受控知识 CLI 打包修复已由 PR #13 发布到独立 `20260928-knowledge-control-v2` 目录：管理员状态查询通过、普通成员拒绝，生产索引指针与检索进程未改。三个从未激活的历史 release 已逐个压缩归档并校验后移除原目录，归档可恢复；云服务器约 4.8 GB 可用，不适合放 8 GB 资料原件。
+- 设备目标按用户最新说明转向 `/Volumes/ML/rv1126b-vibeboard` 已验证的 RV1126B VibeBoard 系统：当前 VibeHard 内仍是独立站点嵌入，账号/项目/Agent loop 尚未统一；现场 USB 连接器仍依赖在线电脑。后续设备闭环复用它，不从零实现另一个刷写器。
+
 ## 2026-09-28 19:50 审计修复与真实 BOM 分阶段上线
 
 - GitHub 默认分支已合并 PR #9（审计修复、真实 BOM 与公开价格快照）、#10（分阶段发布闸门）、#11（BOM 候选相对跳转校验修正）。正式平台为 `20260928-bom-pricing-v2`，方案 Worker 与受限检索为 `20260928-audit-fixes-v1`；云端 Runner/Gateway/VibeBoard/EDA manager 未重启。此前 `20260927-unified-retrieval-v1` 与 `20260927-controlled-ingestion-v1` 为回滚基线。
