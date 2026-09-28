@@ -1,6 +1,8 @@
 # 项目状态
 
-- 2026-09-28 21:40 本地候选、未发布：BOM 价格依据在新方案完成时由服务端冻结到既有 JSONB 结果，模型伪造字段被剔除；页面、Markdown、项目 BOM/CSV 优先读取保存的快照，旧方案明确标注当前参考报价而非历史价格。无数据库迁移/实时抓价。定向 20 项、类型和定向 lint 已通过，完整 CI/隔离生产候选与上线待后续单独阶段。参见 `docs/design-reference-prices.md`。
+- 2026-09-28 22:04 已发布：新方案 BOM 的服务端报价依据随 JSONB 结果保存，模型伪造字段剥离，旧方案标“当前参考”；平台和方案 Worker `20260928-bom-price-freeze-v1`，受限检索/Runner/Gateway/VibeBoard/EDA 未重启。默认分支合并提交 `9d5d65c` 的完整 CI 全绿后才完成候选、备份、零活跃任务切换及公网 PCB/Demo/BOM/匿名权限检查。无数据库迁移、索引或模型配置变更；生产登录态旧/新 BOM、CSV 和新付费模型任务未复测。详见 `docs/release-bom-price-freeze-20260928.md`。
+
+- 2026-09-28 21:40 本地候选阶段（已由顶部发布覆盖）：BOM 价格依据在新方案完成时由服务端冻结到既有 JSONB 结果，模型伪造字段被剔除；页面、Markdown、项目 BOM/CSV 优先读取保存的快照，旧方案明确标注当前参考报价而非历史价格。无数据库迁移/实时抓价。参见 `docs/design-reference-prices.md`。
 
 - 2026-09-28 21:26：工作台首页真实项目与方案任务状态已发布到 `20260928-project-dashboard-v1`，默认分支合并提交 `2280836`；PR #15 完整 CI（含两套隔离 PG 权限测试）全绿后才从该提交打包。候选/正式/公网 PCB、Demo、BOM 和匿名权限通过，旧 unit/数据库备份及回滚入口保留；Worker/检索/Runner/Gateway/VibeBoard/EDA 服务 PID 未变，云端与设备 Runner 心跳新鲜且 Gateway 有活连接。未做登录态人工项目点击或新付费任务，不能视作完成全部端到端验收。知识 CLI 独立更新已发布但索引未变；服务器约 4.8 GB 可用。见 `docs/release-project-dashboard-20260928.md`。
 

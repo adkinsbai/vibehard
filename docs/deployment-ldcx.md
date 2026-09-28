@@ -1,6 +1,10 @@
 # ldcx.tech deployment
 
-## 2026-09-28 project dashboard truth (current)
+## 2026-09-28 BOM price evidence freeze (current)
+
+Platform and independent design worker are `20260928-bom-price-freeze-v1`; restricted retrieval remains `20260928-audit-fixes-v1`. The default-branch merge commit `9d5d65c` passed full CI before a separate candidate/backup/activation of exactly those two units. No DB migration, model, index, OSS, Gateway, Runner, VibeBoard, EDA manager or nginx change. Exact hashes, limited authenticated-user acceptance and paired rollback are in [BOM freeze release record](release-bom-price-freeze-20260928.md).
+
+## 2026-09-28 project dashboard truth (previous platform)
 
 Platform `20260928-project-dashboard-v1`; design worker/private retrieval remain `20260928-audit-fixes-v1`, while the independent administrator knowledge CLI is `20260928-knowledge-control-v2`. Built from merged Git commit `2280836` only after PR #15's complete CI passed. Candidate, backup, activation, public PCB/Demo/BOM and anonymous access checks passed; protected services and their PIDs stayed unchanged. No database migration, new index, OSS, model or device deployment. The exact rollback command and remaining authenticated-user acceptance are in [dashboard release record](release-project-dashboard-20260928.md).
 

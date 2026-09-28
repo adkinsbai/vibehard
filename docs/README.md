@@ -1,5 +1,7 @@
 # 文档索引
 
+- [BOM 价格依据留痕发布](release-bom-price-freeze-20260928.md)：网页与方案 Worker 双服务候选、备份/上线/回滚及生产登录态待验。
+
 - [项目工作台真实数据发布](release-project-dashboard-20260928.md)：CI 追补、候选/正式验收、容量、登录态待验与回滚入口。
 
 - [9/28 审计修复与真实 BOM 发布](release-audit-bom-20260928.md)：两阶段 GitHub/候选/备份/上线证据、未覆盖验收和回滚步骤。

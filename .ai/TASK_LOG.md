@@ -467,6 +467,13 @@
 - Validation: 价格匹配、伪造字段剥离、快照优先、CSV 与 UI 定向 20 项通过；类型和定向 lint 通过。完整 CI、候选 HTTP、生产发布另行门禁。
 - Boundary: 没有实时供应商接口或采购承诺；旧记录保持兼容且不回填虚构历史价格；无数据库迁移或模型/OSS 配置更改。
 
+## 2026-09-28 Task: BOM 留痕独立发布
+
+- GitHub: PR #17 业务、PR #18 双服务发布闸门均已合并；#18 的合并早于 CI 结束，待默认分支提交 `9d5d65c` 完整 Verify 通过才开始生产候选。
+- Release: `20260928-bom-price-freeze-v1`，网页及独立方案 Worker 同步切换，检索/Runner/Gateway/VibeBoard/EDA 不重启。候选与正式回环/公网保护检查、零活跃任务、数据库和旧 unit 备份、回滚入口通过。
+- Evidence: 完整归档 SHA-256 `d392023b937a6bcb44a4dd6731b3f1a7dca556838e23f68ab03ec8a1d811e3a1`；Worker SHA-256 `7f0580fc4ce09d0516d84fab836ee8aad890404c7f2e1e167d6692bbc82236be`。Runner 新鲜心跳与 Gateway 活连接复核；无索引、OSS、模型配置或数据库结构更改。
+- Remaining: 没有生产用户浏览器登录态与新付费模型验收，不能把 CI/匿名 HTTP 检查说成完整用户端到端。详见 `docs/release-bom-price-freeze-20260928.md`。
+
 # 2026-09-27 统一检索候选
 
 - 在独立 `codex/unified-knowledge` 工作树实现方案/Agent/EDA 服务端权限与引用入口、私有 socket Worker、旧 Runner 降级和语料版本上下文重置。
