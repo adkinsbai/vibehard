@@ -1,5 +1,7 @@
 # 项目状态
 
+- 2026-09-28 22:40 已发布：VibeHard 中“设备开发 · RV1126B”入口及真实使用边界；平台 `20260928-rv1126b-entry-v1`，Worker/检索/Runner/Gateway/VibeBoard/EDA 未重启。PR #20/#21 与默认合并提交完整 CI 全绿；五文件前端包通过候选、备份、零活跃任务激活和公网 PCB/Demo/BOM/匿名权限检查。独立 VibeBoard 200，云端与设备 Runner 心跳新鲜、Gateway 活连接；无 DB/OSS/索引/模型或真机写入。生产登录态新入口、两套账号/项目统一及新一次设备部署未验；见 `docs/release-rv1126b-entry-20260928.md`。
+
 - 2026-09-28 22:04 已发布：新方案 BOM 的服务端报价依据随 JSONB 结果保存，模型伪造字段剥离，旧方案标“当前参考”；平台和方案 Worker `20260928-bom-price-freeze-v1`，受限检索/Runner/Gateway/VibeBoard/EDA 未重启。默认分支合并提交 `9d5d65c` 的完整 CI 全绿后才完成候选、备份、零活跃任务切换及公网 PCB/Demo/BOM/匿名权限检查。无数据库迁移、索引或模型配置变更；生产登录态旧/新 BOM、CSV 和新付费模型任务未复测。详见 `docs/release-bom-price-freeze-20260928.md`。
 
 - 2026-09-28 21:40 本地候选阶段（已由顶部发布覆盖）：BOM 价格依据在新方案完成时由服务端冻结到既有 JSONB 结果，模型伪造字段被剔除；页面、Markdown、项目 BOM/CSV 优先读取保存的快照，旧方案明确标注当前参考报价而非历史价格。无数据库迁移/实时抓价。参见 `docs/design-reference-prices.md`。

@@ -1,6 +1,10 @@
 # ldcx.tech deployment
 
-## 2026-09-28 BOM price evidence freeze (current)
+## 2026-09-28 RV1126B entry clarification (current platform)
+
+Platform `20260928-rv1126b-entry-v1`; design worker `20260928-bom-price-freeze-v1`; private retrieval `20260928-audit-fixes-v1`; independent VibeBoard unchanged. Default merge commit `a38dd19` passed full CI. A platform-only candidate, backup, zero-active-task activation, public PCB/Demo/BOM and anonymous boundary checks passed; five allowed runtime files changed, no DB/OSS/index/model/device write. The exact archive hash, independent site/Runner checks, login-state limitation and rollback are in [RV1126B entry release record](release-rv1126b-entry-20260928.md).
+
+## 2026-09-28 BOM price evidence freeze (previous platform)
 
 Platform and independent design worker are `20260928-bom-price-freeze-v1`; restricted retrieval remains `20260928-audit-fixes-v1`. The default-branch merge commit `9d5d65c` passed full CI before a separate candidate/backup/activation of exactly those two units. No DB migration, model, index, OSS, Gateway, Runner, VibeBoard, EDA manager or nginx change. Exact hashes, limited authenticated-user acceptance and paired rollback are in [BOM freeze release record](release-bom-price-freeze-20260928.md).
 
