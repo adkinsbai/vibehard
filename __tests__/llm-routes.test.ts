@@ -78,7 +78,10 @@ describe("LLM routes", () => {
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify(result));
     vi.mocked(claimDesign).mockResolvedValue({ id: "job", createdAt: new Date(), leaseToken: "lease", requirement: "独立的机器人方案" } as Awaited<ReturnType<typeof claimDesign>>);
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({ ...result, retrieval: { status: "no-match", method: "keyword-chunks-v1", references: [] } }) }), expect.any(Number));
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({
+      ...result, bom: [{ ...result.bom[0], referencePrice: { kind: "estimate", display: result.bom[0].estCost } }],
+      retrieval: { status: "no-match", method: "keyword-chunks-v1", references: [] },
+    }) }), expect.any(Number));
     expect(callLlm).toHaveBeenCalledWith(expect.objectContaining({ model: "design-model" }), expect.any(String), "独立的机器人方案", expect.any(AbortSignal), expect.any(Number), undefined, expect.any(Object), { profile: "design-draft" });
     expect(vi.mocked(callLlm).mock.calls[0][4]).toBeLessThanOrEqual(90_000);
     expect(vi.mocked(callLlm).mock.calls[0][1]).toContain("内置方案知识库（基础工程规则）");

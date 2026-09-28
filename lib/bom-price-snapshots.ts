@@ -43,3 +43,15 @@ export function bomReferencePrice(model: string, estCost: string): BomReferenceP
   const snapshot = snapshots[model.trim().toUpperCase()];
   return snapshot ? { ...snapshot } : { kind: "estimate", display: estCost };
 }
+
+export type PricedBomLine = { model: string; estCost: string; referencePrice?: BomReferencePrice };
+
+// New jobs persist the source snapshot with the model result. Historical jobs did not;
+// their fallback is a current reference, not evidence of the price at generation time.
+export function freezeBomPrices<T extends { bom: PricedBomLine[] }>(result: T): Omit<T, "bom"> & { bom: (T["bom"][number] & { referencePrice: BomReferencePrice })[] } {
+  return { ...result, bom: result.bom.map(line => ({ ...line, referencePrice: bomReferencePrice(line.model, line.estCost) })) };
+}
+
+export function recordedOrCurrentBomPrice(line: PricedBomLine): BomReferencePrice {
+  return line.referencePrice ?? bomReferencePrice(line.model, line.estCost);
+}

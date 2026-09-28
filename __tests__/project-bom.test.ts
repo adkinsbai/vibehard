@@ -6,7 +6,8 @@ import { GET } from "@/app/api/projects/[id]/bom/route";
 import { requestUser } from "@/lib/server/http";
 import { ownedProject } from "@/lib/server/store";
 import { latestProjectBom } from "@/lib/server/project-bom";
-import { bomReferencePrice } from "@/lib/bom-price-snapshots";
+import { bomReferencePrice, freezeBomPrices, recordedOrCurrentBomPrice } from "@/lib/bom-price-snapshots";
+import { designResultSchema } from "@/lib/agent/llm";
 
 vi.mock("@/lib/server/http", async original => ({ ...await original<typeof import("@/lib/server/http")>(), requestUser: vi.fn() }));
 vi.mock("@/lib/server/store", () => ({ ownedProject: vi.fn() }));
@@ -14,7 +15,7 @@ vi.mock("@/lib/server/project-bom", async original => ({ ...await original<typeo
 
 const id = "9e18a623-1612-4a26-b293-bc658a8bad48";
 const bom: ProjectBom = { projectId: id, projectName: "测试工程", designId: "1b027527-8d79-4371-a7c7-a738ef43b2a9",
-  completedAt: "2026-09-28T00:00:00.000Z", model: "test-model", items: [
+  completedAt: "2026-09-28T00:00:00.000Z", model: "test-model", priceRecorded: false, items: [
     { item: "温度传感器", model: "SHT30", qty: 1, estCost: "¥8（估算）" },
   ] };
 const context = { params: Promise.resolve({ id }) };
@@ -75,4 +76,23 @@ it("exports supplier currency, SKU and source separately from model estimates", 
   expect(csv).toContain('"US$0.9515/件","供应商公开报价快照","LCSC","C78960","1","2026-09-28"');
   expect(csv).toContain('"¥10–18/件（估算）","模型估算"');
   expect(csv).not.toContain('"ESP32-C3-MINI-1 或同类","1","US$');
+});
+
+it("stores an immutable supplier/estimate snapshot and prefers it over a later catalogue lookup", () => {
+  const modelResult = { architecture: ["I2C"], interfaces: ["I2C"], risks: [{ level: "低", desc: "核价" }], bom: [
+    { item: "光照", model: "BH1750FVI-TR", qty: 2, estCost: "¥6–10/件（估算）", referencePrice: { kind: "supplier", display: "伪造报价" } },
+    { item: "主控", model: "ESP32-C3-MINI-1 或同类", qty: 1, estCost: "¥10–18/件（估算）" },
+  ] };
+  const parsed = designResultSchema.omit({ retrieval: true }).parse(modelResult);
+  expect(parsed.bom[0]).not.toHaveProperty("referencePrice");
+  const frozen = freezeBomPrices(parsed);
+  expect(frozen.bom[0].referencePrice).toMatchObject({ display: "US$0.9515/件", checkedAt: "2026-09-28", supplierSku: "C78960" });
+  expect(frozen.bom[1].referencePrice).toEqual({ kind: "estimate", display: "¥10–18/件（估算）" });
+  expect(parsed.bom[0]).not.toHaveProperty("referencePrice");
+  const historical = { ...frozen.bom[0], referencePrice: { kind: "supplier" as const, display: "US$0.75/件", checkedAt: "2026-01-01", sourceUrl: "https://example.invalid/old" } };
+  expect(recordedOrCurrentBomPrice(historical)).toEqual(historical.referencePrice);
+  const csv = projectBomCsv({ ...bom, priceRecorded: true, items: [{ ...historical, qty: 2, item: "光照" }] });
+  expect(csv).toContain('"US$0.75/件"');
+  expect(csv).toContain('"生成时保存的快照"');
+  expect(csv).not.toContain('"US$0.9515/件"');
 });

@@ -29,7 +29,7 @@ describe("BomPage", () => {
     vi.stubGlobal("fetch", vi.fn().mockImplementation((path: string) => Promise.resolve(
       path.endsWith("/api/projects")
         ? new Response(JSON.stringify({ projects: [{ id: "p1", name: "测试工程" }] }), { status: 200 })
-        : new Response(JSON.stringify({ bom: { projectId: "p1", projectName: "测试工程", designId: "d1", completedAt: "2026-09-28T00:00:00.000Z", model: "test-model", items: [{ item: "真实器件", model: "MCU-1", qty: 2, estCost: "¥5（估算）" }] } }), { status: 200 }),
+        : new Response(JSON.stringify({ bom: { projectId: "p1", projectName: "测试工程", designId: "d1", completedAt: "2026-09-28T00:00:00.000Z", model: "test-model", priceRecorded: false, items: [{ item: "真实器件", model: "MCU-1", qty: 2, estCost: "¥5（估算）" }] } }), { status: 200 }),
     )));
 
     render(<BomPage />);
@@ -38,6 +38,7 @@ describe("BomPage", () => {
     expect(screen.getByRole("combobox", { name: "选择工程" })).toHaveValue("p1");
     expect(await screen.findByText("真实器件")).toBeInTheDocument();
     expect(screen.getByText("MCU-1")).toBeInTheDocument();
+    expect(screen.getByText(/历史方案未保存生成时价格/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /下载真实 BOM.csv/ })).toHaveAttribute("href", "/api/projects/p1/bom?format=csv&designId=d1");
     expect(screen.queryByText("库存")).not.toBeInTheDocument();
     expect(screen.queryByText("立创一键下单")).not.toBeInTheDocument();
