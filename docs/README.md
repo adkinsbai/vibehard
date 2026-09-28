@@ -1,5 +1,7 @@
 # 文档索引
 
+- [RV1126B 设备入口发布](release-rv1126b-entry-20260928.md)：独立 VibeBoard 入口说明、前端候选/正式保护检查、边界与回滚。
+
 - [BOM 价格依据留痕发布](release-bom-price-freeze-20260928.md)：网页与方案 Worker 双服务候选、备份/上线/回滚及生产登录态待验。
 
 - [项目工作台真实数据发布](release-project-dashboard-20260928.md)：CI 追补、候选/正式验收、容量、登录态待验与回滚入口。
