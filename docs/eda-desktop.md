@@ -1,5 +1,7 @@
 # KiCad / noVNC 工作台
 
+2026-09-28 开发分支 `codex/eda-native-module-chain` 已增加正式模块审核目录和 FreeRouting 候选网页流程，详见 [本地验收记录](eda-native-module-acceptance-2026-09-28.md) 与 [模块发布门槛](eda-module-publication-2026-09-28.md)。该分支仍为草稿 PR，**未部署至下述正式平台**；下文“没有自动布线”等表述描述当前线上旧版本。候选 LED 包尚无独立硬件签审，不可作为正式硬件模块发布。生产镜像和公网多账号验收也尚未完成。
+
 2026-09-26：云端多账号隔离版已部署至 [ldcx.tech/vibehard/eda](https://ldcx.tech/vibehard/eda)，当前平台 release 为 `20260926-eda-grid-v1`。每个账号的每个工程拥有独立容器和持久卷；同一工程多个标签页重连同一桌面。真实设计模型已生成受控提案并导出原生 KiCad 文件，修复网格坐标后 KiCad ERC 0 项；示例 PCB 尚未布线，DRC 报 3 项未连接。具体测量与限制见 [云端验收记录](eda-cloud-acceptance-2026-09-26.md)。下文“本机”段落保留开发环境的启动与历史验收。
 
 ## 组成和数据流
