@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/app/page-header";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// 嵌入式开发平台（VibeBoard）前端挂进来的地址。
+// 独立设备开发平台（VibeBoard）前端挂进来的地址。
 //
 // 默认是根路径绝对地址 /Vibeboard/，**故意不经过 assetPath() 加 basePath 前缀**：
 // VibeBoard 挂在 ldcx.tech 的站点根下，不在本工作台的 /vibehard 子路径里。
@@ -47,8 +47,8 @@ export default function TaishanPage() {
       <PageHeader
         helpKey="taishan"
         icon={MonitorSmartphone}
-        title="泰山派开发"
-        description="在 VibeHard 工作台内打开独立的 VibeBoard 嵌入式开发系统；应用生成、校验与设备部署以该系统的实际结果为准"
+        title="设备开发 · RV1126B"
+        description="在独立 VibeBoard 中生成、校验应用，并通过在线电脑的 USB/ADB 连接器部署到已绑定的 RV1126B；以真机结果为准"
       />
 
       <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -66,7 +66,7 @@ export default function TaishanPage() {
           在新窗口打开
         </a>
         <span className="text-xs text-muted-foreground">
-          VibeBoard 账号体系独立，首次使用需要在框内单独登录；项目和知识数据暂不与 VibeHard 自动同步。
+          VibeBoard 需单独登录，项目和知识暂不与 VibeHard 自动同步。应用部署不等于系统固件烧录；现场电脑需联网且不休眠。
         </span>
       </div>
 
@@ -103,7 +103,7 @@ export default function TaishanPage() {
           key={nonce}
           ref={frameRef}
           src={TAISHAN_APP_URL}
-          title="泰山派开发平台"
+          title="VibeBoard 设备开发平台"
           className="h-full w-full border-0"
           onLoad={() => setState("ready")}
         />
