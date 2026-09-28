@@ -47,10 +47,10 @@ export function AppNav() {
         <Link
           href="/app/taishan"
           className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
-          title="泰山派开发"
+          title="设备开发"
         >
           <Terminal className="h-4 w-4" />
-          <span className="hidden min-[390px]:inline">泰山派</span>
+          <span className="hidden min-[390px]:inline">设备</span>
         </Link>
         <CatalogNavLink mobile />
         <Button variant="ghost" size="icon" className="hidden h-9 w-9 sm:inline-flex" title="通知">

@@ -12,6 +12,7 @@ import {
   Wrench,
   Zap,
   Bot,
+  Usb,
 } from "lucide-react";
 import { Reveal } from "@/components/reveal";
 
@@ -77,9 +78,19 @@ const tools = [
     stats: "方案 BOM",
   },
   {
+    id: "taishan",
+    title: "设备开发 · RV1126B",
+    description: "打开独立 VibeBoard，使用已验收的网页应用生成、在线电脑 USB/ADB 部署与真机截图；需另行登录和绑定设备。",
+    icon: Usb,
+    color: "text-cyan-500",
+    bgColor: "bg-cyan-500/10",
+    borderColor: "hover:border-cyan-500/35",
+    stats: "USB/ADB",
+  },
+  {
     id: "embedded",
     title: "嵌入式开发",
-    description: "查看嵌入式开发流程演示；已接入的 RV1126B 网页开发与 USB 部署请从泰山派入口使用。",
+    description: "查看嵌入式开发流程演示；实际 RV1126B 网页应用部署请从“设备开发”入口使用。",
     icon: MonitorSmartphone,
     color: "text-teal-500",
     bgColor: "bg-teal-500/10",
