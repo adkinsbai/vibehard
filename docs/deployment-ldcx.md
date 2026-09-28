@@ -1,8 +1,12 @@
 # ldcx.tech deployment
 
-## 2026-09-27 staged reliability / unified retrieval / controlled ingestion
+## 2026-09-28 audit fixes and BOM pricing (current)
 
-Current verified units:
+Platform `20260928-bom-pricing-v2`; design worker and private retrieval `20260928-audit-fixes-v1`. Cloud Runner remains `/opt/vibehard/cloud-runner`; Gateway/VibeBoard/EDA manager/nginx unchanged. The two stages passed separate candidate, backup, activation and public protection gates. The unactivated BOM v1 package had a verifier-only relative URL bug and must never be used. Full immutable archive hashes, validation limitations and reverse-order rollback are in [release record](release-audit-bom-20260928.md). No DB migration, OSS or model credential change.
+
+## 2026-09-27 staged reliability / unified retrieval / controlled ingestion (previous)
+
+Units verified at that time (now superseded above):
 
 | Scope | Release | Evidence |
 | --- | --- | --- |
