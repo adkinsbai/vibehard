@@ -1,7 +1,8 @@
-// Read-only release checks. SESSION_SECRET is used only for a short-lived,
-// fictional user's PCB page-render request; no account data is accessed.
+// Read-only release checks against the actual build and its served assets.
+// The pre-rendered PCB HTML is checked on disk because authenticated production
+// pages must not be accessed with synthetic or borrowed credentials.
 import assert from "node:assert/strict";
-import { createHash, createHmac } from "node:crypto";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -14,7 +15,6 @@ const request = (path, options = {}) => fetch(new URL(path, base), {
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 assert.ok(standalone, "Pass the standalone directory as the second argument");
-assert.ok(process.env.SESSION_SECRET, "Set SESSION_SECRET without printing it");
 assert.equal((await request("login")).status, 200);
 const guarded = await request("app/pcb", { redirect: "manual" });
 assert.equal(guarded.status, 307);
@@ -40,16 +40,7 @@ for (const slug of ["design", "datasheets", "pcb", "debug", "embedded"]) {
   recordings[slug] = digest(actual);
 }
 
-const payload = Buffer.from(JSON.stringify({
-  id: "release-render-check", email: "release-check@example.invalid",
-  name: "Release Check", role: "user", exp: Date.now() + 60000,
-})).toString("base64url");
-const signature = createHmac("sha256", process.env.SESSION_SECRET).update(payload).digest("base64url");
-const pcb = await request("app/pcb", {
-  headers: { Cookie: `vibehard_session=${payload}.${signature}` }, redirect: "manual",
-});
-assert.equal(pcb.status, 200);
-const pcbHtml = await pcb.text();
+const pcbHtml = await readFile(resolve(standalone, ".next/server/app/app/pcb.html"), "utf8");
 assert.ok(pcbHtml.includes("温湿度监测节点 v0.2"), "PCB page reverted to the old example");
 assert.ok(pcbHtml.includes("ESP32-S3-WROOM-1"));
 
