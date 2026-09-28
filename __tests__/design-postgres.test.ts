@@ -199,6 +199,9 @@ if (enabled) {
     expect(await processNextDesign()).toBe(true);
     expect((await getDesign(owner.id, first.id))?.result).toMatchObject({ ...result, retrieval: { status: "no-match", references: [] } });
     const successful = await getDesign(owner.id, first.id);
+    expect(successful?.result?.bom[0].referencePrice).toEqual({ kind: "estimate", display: "¥5（估算）" });
+    expect(await latestProjectBom(owner.id, first.projectId, first.id)).toMatchObject({ priceRecorded: true,
+      items: [{ model: "MCU", referencePrice: { kind: "estimate", display: "¥5（估算）" } }] });
     expect(successful?.diagnostics?.phases.map(p => p.phase)).toEqual(["queue", "config", "retrieval", "model", "validation", "saving"]);
     expect(successful?.diagnostics?.phases.every(p => p.durationMs !== undefined)).toBe(true);
     const admin = (await listDesignDiagnostics()).find(j => j.id === first.id)!;
@@ -216,5 +219,6 @@ if (enabled) {
       console.log(JSON.stringify(rows[0])); await db.end();
     `, first.id], { encoding: "utf8" });
     expect(JSON.parse(durable)).toMatchObject({ status: "completed", result });
+    expect(JSON.parse(durable).result.bom[0].referencePrice).toEqual({ kind: "estimate", display: "¥5（估算）" });
   });
 });

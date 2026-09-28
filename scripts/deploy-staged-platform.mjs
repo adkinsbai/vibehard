@@ -8,13 +8,15 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from
 const [release, mode] = process.argv.slice(2);
 assert.equal(process.getuid(), 0);
 assert.ok(["preflight", "backup", "activate", "rollback", "cleanup"].includes(mode));
-assert.match(release ?? "", /^\/opt\/vibehard\/releases\/20260928-(?:audit-fixes-v1|bom-pricing-v2|project-dashboard-v1)$/);
+assert.match(release ?? "", /^\/opt\/vibehard\/releases\/20260928-(?:audit-fixes-v1|bom-pricing-v2|project-dashboard-v1|bom-price-freeze-v1)$/);
 assert.equal(new URL(process.env.DATABASE_URL).pathname, "/vibehard");
 const manifest = JSON.parse(readFileSync(`${release}/RELEASE.json`, "utf8"));
 assert.equal(release, `/opt/vibehard/releases/${manifest.release}`);
 assert.equal(manifest.stage === "audit" ? manifest.release : manifest.previousPlatform,
-  manifest.stage === "dashboard" ? "20260928-bom-pricing-v2" : "20260928-audit-fixes-v1");
+  manifest.stage === "pricefreeze" ? "20260928-project-dashboard-v1" : manifest.stage === "dashboard" ? "20260928-bom-pricing-v2" : "20260928-audit-fixes-v1");
 const audit = manifest.stage === "audit";
+const changesWorker = audit || manifest.stage === "pricefreeze";
+const changesRetrieval = audit;
 const previousPlatform = `/opt/vibehard/releases/${manifest.previousPlatform}`;
 const previousWorker = `/opt/vibehard/releases/${manifest.previousWorker}`;
 const previousRetrieval = `/opt/vibehard/releases/${manifest.previousRetrieval}`;
@@ -22,7 +24,7 @@ const node = "/opt/vibehard/runtime/node-v22.23.1";
 const candidate = `vibehard-${manifest.stage}-preflight-20260928.service`;
 const backup = `${release}/backup`;
 const evidence = `${release}/evidence`;
-const units = audit ? ["vibehard.service", "vibehard-design-worker.service", "vibehard-knowledge-retrieval.service"] : ["vibehard.service"];
+const units = ["vibehard.service", ...(changesWorker ? ["vibehard-design-worker.service"] : []), ...(changesRetrieval ? ["vibehard-knowledge-retrieval.service"] : [])];
 const unitPath = name => `/etc/systemd/system/${name}`;
 const hash = file => createHash("sha256").update(readFileSync(file)).digest("hex");
 const run = (command, args, options = {}) => {
@@ -49,6 +51,11 @@ function verifyPackage() {
   }
   for (const [file, digest] of Object.entries(manifest.sourceSha256)) assert.equal(hash(`${release}/source/${file}`), digest, file);
   for (const [file, digest] of Object.entries(manifest.artifacts)) assert.equal(hash(`${release}/services/${file}`), digest, file);
+  if (changesWorker) {
+    assert.ok(manifest.artifacts["design-worker.cjs"], "Reviewed worker bundle required");
+    run(node, ["--check", `${release}/services/design-worker.cjs`]);
+  }
+  if (changesRetrieval) assert.ok(manifest.artifacts["knowledge-retrieval.cjs"], "Reviewed retrieval bundle required");
   for (const [file, digest] of Object.entries(manifest.toolSha256)) assert.equal(hash(`${release}/scripts/${file}`), digest, file);
   assert.ok(readFileSync(`${release}/standalone/server.js`, "utf8").includes('basePath":"/vibehard"'));
 }
@@ -69,10 +76,8 @@ function cleanup() {
 }
 function expectedActive() {
   assert.equal(property("vibehard.service", "WorkingDirectory"), `${previousPlatform}/standalone`);
-  if (audit) {
-    assert.equal(property("vibehard-design-worker.service", "WorkingDirectory"), previousWorker);
-    assert.equal(property("vibehard-knowledge-retrieval.service", "WorkingDirectory"), previousRetrieval);
-  }
+  if (changesWorker) assert.equal(property("vibehard-design-worker.service", "WorkingDirectory"), previousWorker);
+  if (changesRetrieval) assert.equal(property("vibehard-knowledge-retrieval.service", "WorkingDirectory"), previousRetrieval);
 }
 async function restore() {
   for (const name of units) run("systemctl", ["stop", name]);
@@ -113,7 +118,8 @@ if (mode === "activate") {
   assert.ok(JSON.parse(readFileSync(`${evidence}/preflight.json`, "utf8")).passed);
   assert.equal(hash(`${backup}/platform.dump`), JSON.parse(readFileSync(`${backup}/BACKUP.json`, "utf8")).sha256);
   const protectedUnits = ["vibehard-runner.service", "vibehard-gateway.service", "vibeboard.service", "vibehard-eda-manager.service"];
-  if (!audit) protectedUnits.push("vibehard-design-worker.service", "vibehard-knowledge-retrieval.service");
+  if (!changesWorker) protectedUnits.push("vibehard-design-worker.service");
+  if (!changesRetrieval) protectedUnits.push("vibehard-knowledge-retrieval.service");
   const protectedPids = protectedUnits.map(name => [name, property(name, "MainPID")]);
   const nginxPid = run("docker", ["inspect", "nginx", "--format", "{{.State.Pid}}"]);
   const configs = ["/etc/vibehard/platform.env", "/etc/vibehard/eda-platform.env", "/etc/vibehard/runner.env", "/etc/vibehard/model.env"]
@@ -150,6 +156,7 @@ if (mode === "activate") {
 if (mode === "rollback") {
   idle();
   assert.equal(property("vibehard.service", "WorkingDirectory"), `${release}/standalone`);
+  if (changesWorker) assert.equal(property("vibehard-design-worker.service", "WorkingDirectory"), release);
   await restore(); cleanup();
   console.log(JSON.stringify({ rolledBackTo: manifest.previousPlatform }));
 }
