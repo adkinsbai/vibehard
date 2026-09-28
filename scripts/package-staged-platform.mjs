@@ -7,7 +7,7 @@ import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, writeFileSyn
 import path from "node:path";
 
 const [source, ref, stage, output, previousManifestPath] = process.argv.slice(2);
-const names = { audit: "20260928-audit-fixes-v1", bom: "20260928-bom-pricing-v1" };
+const names = { audit: "20260928-audit-fixes-v1", bom: "20260928-bom-pricing-v2" };
 assert.ok(stage in names);
 assert.match(output ?? "", /^\/private\/tmp\/vibehard-staged-release\.[A-Za-z0-9]+$/);
 assert.ok(path.isAbsolute(source) && existsSync(previousManifestPath));
