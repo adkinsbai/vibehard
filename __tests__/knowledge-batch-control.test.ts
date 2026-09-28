@@ -45,7 +45,7 @@ describe('controlled shared ingestion', () => {
   });
   it('retrieves old/new corpus concurrently through the private socket with bounded citations and revocation', async () => {
     const a=fixture(), b=fixture(randomUUID(),1,'RV1106'); const paths=[a.index,b.index];
-    const directory=mkdtempSync('/private/tmp/index-set-test-'); roots.push(directory);
+    const directory=mkdtempSync('/tmp/index-set-test-'); roots.push(directory);
     const socket=join(directory,'test.sock'); const disabled=join(directory,'disabled.json'); atomicControl(disabled,[]);
     const oldSocket=process.env.VIBEHARD_RETRIEVAL_SOCKET;
     process.env.VIBEHARD_RETRIEVAL_SOCKET=socket; process.env.VIBEHARD_DISABLED_SOURCES_FILE=disabled;
