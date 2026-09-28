@@ -17,6 +17,7 @@ import uuid
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
+from routing import RoutingError, candidate_sources, SOURCE_FILES, MAX_BUNDLE
 
 
 class DesktopError(Exception):
@@ -98,16 +99,64 @@ class ProjectFiles:
             if lease.read_text().strip() != owner:
                 raise DesktopError('This local desktop runtime is assigned to another account', 403)
 
-    def initialize(self, owner, project, sources):
+    def verify_candidate_sources(self, directory, sources, allow_missing=False):
+        mapping = {field: filename for filename, (field, _) in SOURCE_FILES.items()}
+        if not isinstance(sources, dict) or not all(isinstance(sources.get(field), str) for field in ('schematic', 'pcb', 'project')) or set(sources) - set(mapping):
+            raise DesktopError('Candidate project source is incomplete', 400)
+        expected = {filename: sources[field].encode('utf-8') for field, filename in mapping.items() if field in sources}
+        allowed = set(mapping.values())
+        if directory.exists():
+            for path in directory.rglob('*'):
+                relative = path.relative_to(directory)
+                if any(part.startswith('.') for part in relative.parts):
+                    continue
+                if path.suffix in ('.kicad_sch', '.kicad_pcb', '.kicad_pro', '.kicad_sym', '.kicad_mod', '.kicad_dru') or path.name in ('sym-lib-table', 'fp-lib-table'):
+                    if path.is_symlink() or relative.as_posix() not in allowed:
+                        raise DesktopError('Existing KiCad project contains an unverified native file', 409)
+        for filename in allowed:
+            path = directory / filename
+            supplied = expected.get(filename)
+            if path.exists() or path.is_symlink():
+                if supplied is None or path.is_symlink() or not path.is_file() or path.read_bytes() != supplied:
+                    raise DesktopError('Existing KiCad project differs from the routing candidate', 409)
+            elif not allow_missing and supplied is not None:
+                raise DesktopError('Candidate native project is incomplete', 409)
+
+    def initialize(self, owner, project, sources, verify_sources=False):
         directory = self.directory(owner, project)
         self.claim(owner)
         if (directory / 'circuit.kicad_pro').exists():
-            self.ensure_library_tables(directory)
+            if verify_sources:
+                self.verify_candidate_sources(directory, sources)
+            if not verify_sources:
+                self.ensure_library_tables(directory)
             return directory
+        if not isinstance(sources, dict) or set(sources) - {field for field, _ in SOURCE_FILES.values()}:
+            raise DesktopError('Unknown native project source field')
         for name, root in [('schematic', 'kicad_sch'), ('pcb', 'kicad_pcb')]:
             source = sources.get(name, '')
             if not isinstance(source, str) or not source.lstrip().startswith('(' + root) or len(source.encode()) > 8_000_000:
                 raise DesktopError('Invalid or oversized native KiCad file')
+        optional = {'project': ('circuit.kicad_pro', 128_000),
+                    'symLibTable': ('sym-lib-table', 128_000),
+                    'fpLibTable': ('fp-lib-table', 128_000),
+                    'designRules': ('circuit.kicad_dru', 128_000)}
+        if not isinstance(sources.get('project', '{}'), str):
+            raise DesktopError('Invalid native project configuration')
+        try:
+            if not isinstance(json.loads(sources.get('project', '{}')), dict):
+                raise ValueError()
+        except (ValueError, TypeError):
+            raise DesktopError('Invalid native project configuration') from None
+        for field, (_, maximum) in optional.items():
+            if field in sources and (not isinstance(sources[field], str) or len(sources[field].encode('utf-8')) > maximum):
+                raise DesktopError('Native project configuration exceeds its size limit', 413)
+        if any(field in sources for field in optional):
+            if sum(len(value.encode('utf-8')) for value in sources.values()) > MAX_BUNDLE:
+                raise DesktopError('Native project handoff exceeds its size limit', 413)
+            candidate_sources({filename: sources[field].encode('utf-8') for filename, (field, _) in SOURCE_FILES.items() if field in sources}, sources['pcb'].encode('utf-8'))
+        if verify_sources:
+            self.verify_candidate_sources(directory, sources, allow_missing=True)
         directory.mkdir(parents=True, exist_ok=True, mode=0o700)
         for name, extension in [('schematic', 'sch'), ('pcb', 'pcb')]:
             target = directory / f'circuit.kicad_{extension}'
@@ -115,8 +164,15 @@ class ProjectFiles:
             if not target.exists():
                 with target.open('x', encoding='utf-8') as handle:
                     handle.write(sources[name])
-        (directory / 'circuit.kicad_pro').write_text('{}', encoding='utf-8')
-        self.ensure_library_tables(directory)
+        for field, (filename, _) in optional.items():
+            if field in sources:
+                (directory / filename).write_text(sources[field], encoding='utf-8')
+        if 'project' not in sources:
+            (directory / 'circuit.kicad_pro').write_text('{}', encoding='utf-8')
+        if not verify_sources:
+            self.ensure_library_tables(directory)
+        else:
+            self.verify_candidate_sources(directory, sources)
         return directory
 
     def native_files(self, directory):
@@ -148,15 +204,18 @@ class Session:
     editors: dict = field(default_factory=dict)
     viewers: set = field(default_factory=set)
     started: float = field(default_factory=time.time)
+    kicad_version: str = ''
 
 
 class DesktopRuntime:
     def __init__(self, root):
+        from routing import RouteJobs
         self.files = ProjectFiles(root)
         self.sessions = {}
         self.tickets = TicketStore()
         self.lock = asyncio.Lock()
         self.jobs = asyncio.Semaphore(1)
+        self.routing = RouteJobs(root)
 
     async def run(self, args, env=None, timeout=30):
         process = await asyncio.create_subprocess_exec(*args, env=env, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, start_new_session=True)
@@ -177,7 +236,7 @@ class DesktopRuntime:
         session.processes.append(process)
         return process
 
-    async def start(self, owner, project, sources, editor):
+    async def start(self, owner, project, sources, editor, verify_sources=False):
         key = f'{identifier(owner)}/{identifier(project)}'
         self.files.claim(owner)
         async with self.lock:
@@ -185,13 +244,15 @@ class DesktopRuntime:
             if session and session.processes[0].returncode is not None:
                 await self.stop(key)
                 session = None
+            if session and verify_sources:
+                self.files.initialize(owner, project, sources, verify_sources=True)
             if not session:
                 if len(self.sessions) >= 2:
                     raise DesktopError('Close another project desktop first (local limit: 2)', 409)
                 for binary in ('Xtigervnc', 'openbox', 'eeschema', 'pcbnew', 'kicad-cli', 'xauth', 'xdotool'):
                     if not shutil.which(binary):
                         raise DesktopError('KiCad desktop dependencies are not installed', 503)
-                path = self.files.initialize(owner, project, sources)
+                path = self.files.initialize(owner, project, sources, verify_sources=verify_sources)
                 used = {s.display for s in self.sessions.values()}
                 display = next((n for n in range(100, 120) if n not in used and not Path(f'/tmp/.X11-unix/X{n}').exists() and not Path(f'/tmp/.X{n}-lock').exists()), None)
                 if display is None:
@@ -201,8 +262,8 @@ class DesktopRuntime:
                 config_root = home / '.config'
                 _, version, _ = await self.run(['kicad-cli', '--version'])
                 major = version.decode().strip().split('.')[0]
-                if not major.isdigit():
-                    raise DesktopError('Cannot detect KiCad version', 503)
+                if major != '9':
+                    raise DesktopError('This desktop requires KiCad 9', 503)
                 config = config_root / 'kicad' / (major + '.0')
                 config.mkdir(parents=True, exist_ok=True)
                 common = config / 'kicad_common.json'
@@ -219,7 +280,7 @@ class DesktopRuntime:
                 # A WSLg/host bus must never receive these editor windows.
                 for name in ('WAYLAND_DISPLAY', 'DBUS_SESSION_BUS_ADDRESS', 'SESSION_MANAGER'):
                     env.pop(name, None)
-                session = Session(key, path, display, env)
+                session = Session(key, path, display, env, kicad_version=version.decode().strip())
                 self.sessions[key] = session
                 try:
                     await self.spawn(session, ['Xtigervnc', f':{display}', '-geometry', '1440x900', '-depth', '24', '-rfbport', str(5900 + display), '-localhost', 'yes', '-SecurityTypes', 'None', '-AlwaysShared', '-nolisten', 'tcp', '-auth', str(authority)])
@@ -279,7 +340,7 @@ class DesktopRuntime:
         path = self.files.directory(owner, project)
         session = self.sessions.get(f'{owner}/{project}')
         files = self.files.native_files(path) if path.exists() else {}
-        return {'running': bool(session and session.processes[0].returncode is None), 'files': [{'name': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()} for name, data in files.items()], 'mode': 'local-single-owner'}
+        return {'running': bool(session and session.processes[0].returncode is None), 'files': [{'name': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()} for name, data in files.items()], 'mode': 'local-single-owner', 'kicadVersion': session.kicad_version if session else None}
 
     async def check(self, owner, project, kind):
         if kind not in ('erc', 'drc'):
@@ -334,7 +395,7 @@ def create_app(runtime, secret, origins, max_viewers=2):
                 if not secrets.compare_digest(request.headers.get('Authorization', ''), 'Bearer ' + secret):
                     raise DesktopError('Unauthorized', 401)
             return await handler(request)
-        except DesktopError as error:
+        except (DesktopError, RoutingError) as error:
             return web.json_response({'error': str(error)}, status=error.status)
         except (ValueError, TypeError, KeyError):
             return web.json_response({'error': 'Invalid desktop request'}, status=400)
@@ -350,7 +411,7 @@ def create_app(runtime, secret, origins, max_viewers=2):
         command = body.get('action')
         key = f'{owner}/{project}'
         if command == 'start':
-            await runtime.start(owner, project, body.get('sources', {}), body.get('editor', 'schematic'))
+            await runtime.start(owner, project, body.get('sources', {}), body.get('editor', 'schematic'), verify_sources=body.get('verifySources') is True)
             return web.json_response({**runtime.status(owner, project), 'ticket': runtime.tickets.issue(key)})
         if command == 'stop':
             await runtime.stop(key)
@@ -373,6 +434,12 @@ def create_app(runtime, secret, origins, max_viewers=2):
             return web.json_response(await runtime.check(owner, project, body.get('kind')))
         if command == 'snapshot':
             return web.json_response(await runtime.snapshot(owner, project))
+        if command == 'routeStart':
+            return web.json_response(await runtime.routing.start(owner, project, runtime.files.directory(owner, project)))
+        if command == 'routeStatus':
+            return web.json_response(runtime.routing.status(owner, project, body.get('jobId')))
+        if command == 'routeCandidate':
+            return web.json_response(runtime.routing.candidate(owner, project, body.get('jobId'), runtime.files.directory(owner, project)))
         raise DesktopError('Unknown desktop action')
 
     async def health(_request):

@@ -1,6 +1,6 @@
 import { parseSExpression, type SExpression } from './sexpr';
 import { PARTS, createComponent } from './library';
-import { addModuleInternalTracks, MODULES } from './modules';
+import { addModuleInternalTracks, findModule, MODULES, type ModuleCatalog } from './modules';
 import { createEmptyDocument, parseDocument } from './document';
 import type { EdaComponent, EdaDocument, EdaNet } from './types';
 type Node = SExpression[];
@@ -16,7 +16,7 @@ export function inspectNativeSchematic(source: string) {
   return root;
 }
 /** Native CLI netlist is the authority for wires/junctions/labels. Unsupported library parts fail explicitly. */
-export function importNativeSchematic(source: string, nativeNetlist: string): EdaDocument {
+export function importNativeSchematic(source: string, nativeNetlist: string, catalog: ModuleCatalog = MODULES): EdaDocument {
   const root = inspectNativeSchematic(source); const netlist = parseSExpression(nativeNetlist);
   if (!Array.isArray(netlist) || netlist[0] !== 'export') throw new Error('KiCad 未返回有效网表');
   const document = createEmptyDocument();
@@ -47,7 +47,7 @@ export function importNativeSchematic(source: string, nativeNetlist: string): Ed
       try { tag = JSON.parse(moduleProperty); } catch { throw new Error('模块来源属性无效'); }
       const { instanceId, moduleId, version, sourceSha256, localId, pcb } = tag;
       if (tag.schemaVersion !== 1 || typeof instanceId !== 'string' || typeof moduleId !== 'string' || typeof version !== 'string' || typeof sourceSha256 !== 'string' || typeof localId !== 'string' || !pcb || typeof pcb !== 'object') throw new Error('模块来源属性无效');
-      const definition = MODULES[moduleId];
+      const definition = findModule(catalog, moduleId, version);
       if (!definition || definition.version !== version || definition.sourceSha256 !== sourceSha256 || !definition.parts.some(item => item.localId === localId && item.kind === part.kind)) throw new Error('模块来源与当前目录不一致');
       component.id = `${instanceId}-${localId}`;
       component.locked = true;
@@ -65,7 +65,8 @@ export function importNativeSchematic(source: string, nativeNetlist: string): Ed
   const instanceIds = [...new Set(tags.map(tag => tag.instanceId))];
   if (instanceIds.length) document.moduleInstances = instanceIds.map(instanceId => {
     const members = tags.filter(tag => tag.instanceId === instanceId);
-    const first = members[0]; const definition = MODULES[first.moduleId];
+    const first = members[0]; const definition = findModule(catalog, first.moduleId, first.version);
+    if (!definition) throw new Error(`模块来源与当前目录不一致：${first.moduleId}@${first.version}`);
     if (members.length !== definition.parts.length || members.some(tag => tag.moduleId !== first.moduleId || tag.version !== first.version || tag.sourceSha256 !== first.sourceSha256)) throw new Error(`模块实例不完整：${instanceId}`);
     for (const net of definition.nets) {
       const actual = document.nets.find(item => item.name === `${instanceId}_${net.name}`);
@@ -77,11 +78,11 @@ export function importNativeSchematic(source: string, nativeNetlist: string): Ed
     addModuleInternalTracks(document, instanceId, definition, { x: firstComponent.pcb.x - firstPart.pcb.x, y: firstComponent.pcb.y - firstPart.pcb.y });
     return { id: instanceId, moduleId: first.moduleId, version: first.version, sourceSha256: first.sourceSha256, componentIds: definition.parts.map(part => `${instanceId}-${part.localId}`), internalNetIds: definition.nets.map(net => `${instanceId}-${net.localId}`), internalTrackIds: definition.tracks.map(track => `${instanceId}-${track.localId}`) };
   });
-  return parseDocument(document);
+  return parseDocument(document, catalog);
 }
 
 /** Single rectangular, two-layer boards. Refuse unsupported copper instead of silently deleting it. */
-export function importNativePcb(source: string, base?: EdaDocument): EdaDocument {
+export function importNativePcb(source: string, base?: EdaDocument, catalog: ModuleCatalog = MODULES): EdaDocument {
   const root = parseSExpression(source);
   if (!Array.isArray(root) || root[0] !== 'kicad_pcb') throw new Error('需要 KiCad PCB 文件');
   if (['via', 'zone', 'arc', 'group', 'gr_text', 'gr_poly', 'gr_arc'].some(tag => nodes(root, tag).length)) throw new Error('PCB 含有尚未支持的过孔、铺铜、弧线或注释；当前不能无损导入');
@@ -91,7 +92,7 @@ export function importNativePcb(source: string, base?: EdaDocument): EdaDocument
   if (edge.length !== 1 || nodes(root, 'gr_line').some(node => one(node, 'layer')[1] === 'Edge.Cuts')) throw new Error('当前导入需要一个矩形板框');
   const a = one(edge[0], 'start'); const b = one(edge[0], 'end');
   const left = Math.min(Number(a[1]), Number(b[1])); const top = Math.min(Number(a[2]), Number(b[2]));
-  const doc = base ? parseDocument(base) : createEmptyDocument();
+  const doc = base ? parseDocument(base, catalog) : createEmptyDocument();
   const previous = doc.components;
   doc.board = { width: Math.abs(Number(a[1])-Number(b[1])), height: Math.abs(Number(a[2])-Number(b[2])) };
   const nativeNets = new Map(nodes(root, 'net').map(net => [Number(net[1]), { id: `pcb-net-${net[1]}`, name: String(net[2]), nodes: [] } as EdaNet]));
@@ -143,5 +144,5 @@ export function importNativePcb(source: string, base?: EdaDocument): EdaDocument
     return { id: `import-track-${index}`, netId: net.id, layer: layer === 'F.Cu' ? 'top' : 'bottom', width: Number(one(segment, 'width')[1]), points: ['start','end'].map(key => { const p=one(segment,key); return {x:Number(p[1])-left,y:Number(p[2])-top}; }) };
   });
   doc.revision++; doc.appliedBatchIds = [];
-  return parseDocument(doc);
+  return parseDocument(doc, catalog);
 }

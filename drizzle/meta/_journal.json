@@ -57,6 +57,13 @@
       "when": 1790494791165,
       "tag": "0007_design_diagnostics",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790582534685,
+      "tag": "0008_misty_wolf_cub",
+      "breakpoints": true
     }
   ]
 }

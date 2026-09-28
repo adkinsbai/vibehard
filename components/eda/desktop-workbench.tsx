@@ -10,14 +10,76 @@ import styles from './desktop-workbench.module.css';
 type Project = { id: string; name: string };
 type SavedFile = { name: string; bytes: number; sha256: string };
 type DesktopState = { running: boolean; files: SavedFile[]; ticket?: string };
-type Sources = { schematic: string; pcb: string };
+type Sources = { schematic: string; pcb: string; project?: string; symLibTable?: string; fpLibTable?: string; designRules?: string };
+type RouteSummary = { unconnected: number; schematicParity: number; violations: Record<string, number>; violationSignatures?: Record<string, number> };
+type RouteJob = { jobId: string; projectId: string; state: 'queued' | 'running' | 'ready' | 'failed'; before?: RouteSummary; after?: RouteSummary; sourceSha256?: string; candidateSha256?: string; error?: string };
 type Connection = 'idle' | 'connecting' | 'connected' | 'disconnected';
 const DRAFT = 'vibehard-eda-draft-v1';
+const PENDING_ROUTE = 'vibehard-eda-pending-route-v1';
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const SHA256 = /^[a-f0-9]{64}$/i;
+
+type PendingRoute = { sourceProjectId: string; jobId: string; id: string; sources?: Sources };
+
+function readPendingRoute(): PendingRoute | null {
+  try {
+    const raw = sessionStorage.getItem(PENDING_ROUTE);
+    if (!raw) return null;
+    const value: unknown = JSON.parse(raw);
+    if (!value || typeof value !== 'object') throw new Error('Invalid pending route');
+    const record = value as Record<string, unknown>;
+    if (!UUID.test(String(record.sourceProjectId)) || !UUID.test(String(record.jobId)) || !UUID.test(String(record.id)) || Object.keys(record).some(key => !['sourceProjectId', 'jobId', 'id'].includes(key))) throw new Error('Invalid pending route');
+    return { sourceProjectId: String(record.sourceProjectId), jobId: String(record.jobId), id: String(record.id) };
+  } catch {
+    try { sessionStorage.removeItem(PENDING_ROUTE); } catch { /* Storage may be disabled. */ }
+    return null;
+  }
+}
+
+function clearPendingRoute() {
+  try { sessionStorage.removeItem(PENDING_ROUTE); } catch { /* In-memory state still clears. */ }
+}
+
+function persistPendingRoute(record: PendingRoute) {
+  sessionStorage.setItem(PENDING_ROUTE, JSON.stringify({ sourceProjectId: record.sourceProjectId, jobId: record.jobId, id: record.id }));
+}
+
+function routeIssueCount(summary: RouteSummary) {
+  return Object.values(summary.violations).reduce((sum, count) => sum + count, 0);
+}
+
+function checkedRouteCandidate(value: unknown, job: RouteJob): Sources {
+  if (!value || typeof value !== 'object') throw new Error('布线候选格式不正确');
+  const candidate = value as Record<string, unknown>;
+  if (candidate.jobId !== job.jobId || candidate.state !== 'ready' || candidate.sourceSha256 !== job.sourceSha256 || candidate.candidateSha256 !== job.candidateSha256 || !SHA256.test(String(candidate.sourceSha256)) || !SHA256.test(String(candidate.candidateSha256))) {
+    throw new Error('布线候选已变化，请重新发起任务');
+  }
+  const sources = candidate.sources as Sources | undefined;
+  if (!sources || typeof sources !== 'object' || Object.keys(sources).some(key => !['schematic', 'pcb', 'project', 'symLibTable', 'fpLibTable', 'designRules'].includes(key)) ||
+      typeof sources.schematic !== 'string' || typeof sources.pcb !== 'string' || typeof sources.project !== 'string' ||
+      !/^\s*\(kicad_sch\b/.test(sources.schematic) || !/^\s*\(kicad_pcb\b/.test(sources.pcb) ||
+      new TextEncoder().encode(sources.schematic).byteLength > 900_000 || new TextEncoder().encode(sources.pcb).byteLength > 900_000 || new TextEncoder().encode(sources.project).byteLength > 128_000) {
+    throw new Error('布线候选文件格式或大小不符合导入限制');
+  }
+  try { const parsed: unknown = JSON.parse(sources.project); if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error(); }
+  catch { throw new Error('布线候选的 KiCad 项目配置不正确'); }
+  for (const [name, root] of [['symLibTable', 'sym_lib_table'], ['fpLibTable', 'fp_lib_table']] as const) {
+    const table = sources[name];
+    if (table !== undefined && (typeof table !== 'string' || !new RegExp(`^\\s*\\(${root}\\b`).test(table) || new TextEncoder().encode(table).byteLength > 128_000)) throw new Error('布线候选库表不符合导入限制');
+  }
+  if (sources.designRules !== undefined && (typeof sources.designRules !== 'string' || !sources.designRules.length || new TextEncoder().encode(sources.designRules).byteLength > 128_000)) throw new Error('布线候选设计规则不符合导入限制');
+  if (Object.values(sources).reduce((sum, item) => sum + new TextEncoder().encode(item).byteLength, 0) > 1_850_000 || new TextEncoder().encode(JSON.stringify({ action: 'start', editor: 'schematic', sources })).byteLength > 1_900_000) throw new Error('布线候选总量超过 1.9 MB 导入限制');
+  return sources;
+}
 
 async function jsonResponse(response: Response) {
   const body = await response.json();
   if (!response.ok) throw new Error(body.error ?? `请求失败 (${response.status})`);
   return body;
+}
+
+async function request(id: string, body: object) {
+  return fetch(apiPath(`/api/eda/desktop/${id}`), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 }
 
 export function DesktopWorkbench() {
@@ -32,6 +94,9 @@ export function DesktopWorkbench() {
   const [connection, setConnection] = useState<Connection>('idle');
   const [files, setFiles] = useState<SavedFile[]>([]);
   const [report, setReport] = useState('');
+  const [routeJob, setRouteJob] = useState<RouteJob | null>(null);
+  const [routeReviewed, setRouteReviewed] = useState(false);
+  const [pendingRouteProject, setPendingRouteProject] = useState<PendingRoute | null>(null);
   const [sidebar, setSidebar] = useState(true);
   const [agentOpen, setAgentOpen] = useState(true);
   const [ticket, setTicket] = useState<string | null>(null);
@@ -46,7 +111,16 @@ export function DesktopWorkbench() {
       if (!active) return;
       if (response.status === 401) { setLoginRequired(true); return; }
       const data = await jsonResponse(response);
-      if (active) { setLoginRequired(false); setProjects(data.projects); }
+      if (active) {
+        setLoginRequired(false); setProjects(data.projects);
+        const pending = readPendingRoute();
+        if (pending && Array.isArray(data.projects) && data.projects.some((item: Project) => item.id === pending.sourceProjectId) && data.projects.some((item: Project) => item.id === pending.id)) {
+          setProjectId(pending.sourceProjectId);
+          setPendingRouteProject(pending);
+          setRouteJob({ jobId: pending.jobId, projectId: pending.sourceProjectId, state: 'queued' });
+          setMessage('正在重新核对待导入的布线候选；原工程仍保留。');
+        } else if (pending) clearPendingRoute();
+      }
     }).catch(() => { if (active) setError('无法获取工程列表，请检查平台服务。'); });
     return () => { active = false; };
   }, []);
@@ -95,17 +169,41 @@ export function DesktopWorkbench() {
     return () => { active = false; window.clearTimeout(timeout); disconnect(); rfb.current = null; };
   }, [ticket]);
 
+  useEffect(() => {
+    if (!routeJob || routeJob.projectId !== projectId || (routeJob.state !== 'queued' && routeJob.state !== 'running')) return;
+    let active = true;
+    let timer: number | undefined;
+    const poll = async () => {
+      try {
+        const data = await jsonResponse(await request(routeJob.projectId, { action: 'routeStatus', jobId: routeJob.jobId })) as Omit<RouteJob, 'projectId'>;
+        if (!active) return;
+        if (data.jobId !== routeJob.jobId || !['queued', 'running', 'ready', 'failed'].includes(data.state)) throw new Error('布线任务状态不正确');
+        setRouteJob({ ...data, projectId: routeJob.projectId });
+        if (data.state === 'failed') setError(data.error || '自动布线失败，请查看原工程后重试');
+        if (data.state === 'ready') setMessage('自动布线候选已生成，请审阅检查结果');
+        if (data.state === 'queued' || data.state === 'running') timer = window.setTimeout(poll, 3000);
+      } catch (cause) {
+        if (!active) return;
+        setRouteJob(current => current?.jobId === routeJob.jobId ? { ...current, state: 'failed' } : current);
+        setError(cause instanceof Error ? cause.message : '无法获取自动布线任务状态');
+      }
+    };
+    void poll();
+    return () => { active = false; if (timer !== undefined) window.clearTimeout(timer); };
+  // The job identity and state control the polling lifetime; updates with the same state keep their timer.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeJob?.jobId, routeJob?.state, projectId]);
+
   const run = async (operation: () => Promise<void>) => {
     setBusy(true); setError('');
     try { await operation(); }
     catch (cause) { setError(cause instanceof Error ? cause.message : '操作失败'); }
     finally { setBusy(false); }
   };
-  const request = async (id: string, body: object) => fetch(apiPath(`/api/eda/desktop/${id}`), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  const start = async (id: string, mode: 'schematic' | 'pcb', sources?: Sources) => {
+  const start = async (id: string, mode: 'schematic' | 'pcb', sources?: Sources, verifySources = false) => {
     setConnection('connecting');
     try {
-      const state: DesktopState = await jsonResponse(await request(id, { action: 'start', editor: mode, ...(sources ? { sources } : {}) }));
+      const state: DesktopState = await jsonResponse(await request(id, { action: 'start', editor: mode, ...(sources ? { sources } : {}), ...(verifySources ? { verifySources: true } : {}) }));
       if (!state.ticket) throw new Error('桌面服务未返回连接票据');
       setProjectId(id); setEditor(mode); setFiles(state.files); setTicket(state.ticket); setReport('');
     } catch (cause) { setConnection('disconnected'); throw cause; }
@@ -113,8 +211,9 @@ export function DesktopWorkbench() {
   const create = async (sources?: Sources, requestedName = name) => {
     if (requestedName.trim().length < 2) throw new Error('工程名称至少需要两个字符');
     const data = await jsonResponse(await fetch(apiPath('/api/projects'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: requestedName.trim(), workspaceKey: `eda-${crypto.randomUUID()}` }) }));
-    setProjects(current => [...current, data.project]); setProjectId(data.project.id); setFiles([]); setTicket(null);
+    setProjects(current => [...current, data.project]);
     await start(data.project.id, 'schematic', sources);
+    setRouteJob(null); setRouteReviewed(false); setPendingRouteProject(null);
   };
   const migrate = async () => {
     const raw = localStorage.getItem(DRAFT);
@@ -171,6 +270,56 @@ export function DesktopWorkbench() {
     setReport(`${label} · ${total} 项问题 · ${details} · 退出码 ${data.exitCode}\n检查对象：磁盘上已保存的原生文件；规则未报错不代表电路功能或可制造性已验证。\n\n${JSON.stringify(report, null, 2)}`);
     setMessage(`${label}：${total} 项问题，详情见检查结果`);
   };
+  const startRouting = async () => {
+    const data = await jsonResponse(await request(projectId, { action: 'routeStart' })) as Omit<RouteJob, 'projectId'>;
+    if (!/^[0-9a-f-]{36}$/i.test(data.jobId) || !['queued', 'running', 'ready'].includes(data.state)) throw new Error('布线服务未返回有效任务');
+    clearPendingRoute();
+    setRouteJob({ ...data, projectId }); setRouteReviewed(false); setPendingRouteProject(null);
+    setMessage('已提交自动布线任务；可继续使用 KiCad 编辑器。任务只读取已保存的文件。');
+  };
+  const reviewRoute = async () => {
+    if (!routeJob || routeJob.projectId !== projectId || routeJob.state !== 'ready') throw new Error('布线候选尚未准备好');
+    const candidate = await jsonResponse(await request(projectId, { action: 'routeCandidate', jobId: routeJob.jobId }));
+    checkedRouteCandidate(candidate, routeJob);
+    setRouteReviewed(true);
+    setMessage('已核对候选文件和源工程指纹；确认后会创建一个新工程，原工程保留。');
+  };
+  const acceptRoute = async () => {
+    if (!routeJob || routeJob.projectId !== projectId || routeJob.state !== 'ready' || !routeReviewed) throw new Error('请先审阅布线候选');
+    let destinationId = pendingRouteProject?.jobId === routeJob.jobId && pendingRouteProject.sourceProjectId === projectId ? pendingRouteProject.id : null;
+    let sources = pendingRouteProject?.jobId === routeJob.jobId && pendingRouteProject.sourceProjectId === projectId ? pendingRouteProject.sources : null;
+    if (destinationId && !sources) {
+      const candidate = await jsonResponse(await request(projectId, { action: 'routeCandidate', jobId: routeJob.jobId }));
+      sources = checkedRouteCandidate(candidate, routeJob);
+      if (!window.confirm('将重新打开待导入候选工程。为腾出运行名额，来源 KiCad 桌面会结束；请确认所有窗口已保存。')) return;
+      await jsonResponse(await request(projectId, { action: 'stop' }));
+      setTicket(null); setConnection('idle');
+      setPendingRouteProject({ sourceProjectId: projectId, jobId: routeJob.jobId, id: destinationId, sources });
+    }
+    if (!destinationId) {
+      const candidate = await jsonResponse(await request(projectId, { action: 'routeCandidate', jobId: routeJob.jobId }));
+      const candidateSources = checkedRouteCandidate(candidate, routeJob);
+      sources = candidateSources;
+      if (!window.confirm('接受候选会结束当前 KiCad 桌面，以腾出运行名额。请确认原理图和 PCB 窗口都已保存；未保存的窗口修改会丢失。原工程的已保存文件仍会保留。')) return;
+      try { sessionStorage.setItem(`${PENDING_ROUTE}-probe`, '1'); sessionStorage.removeItem(`${PENDING_ROUTE}-probe`); }
+      catch { throw new Error('浏览器会话存储不可用，无法保证失败后恢复候选'); }
+      await jsonResponse(await request(projectId, { action: 'stop' }));
+      setTicket(null); setConnection('idle');
+      const requestedName = `${current?.name ?? name} · 自动布线候选`.slice(0, 80);
+      const data = await jsonResponse(await fetch(apiPath('/api/projects'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: requestedName, workspaceKey: `eda-${crypto.randomUUID()}` }) }));
+      const createdId: unknown = data.project?.id;
+      if (typeof createdId !== 'string' || !/^[0-9a-f-]{36}$/i.test(createdId)) throw new Error('新工程未返回有效编号');
+      destinationId = createdId;
+      setProjects(currentProjects => [...currentProjects, data.project]);
+      const pending = { sourceProjectId: projectId, jobId: routeJob.jobId, id: createdId, sources: candidateSources };
+      setPendingRouteProject(pending);
+      persistPendingRoute(pending);
+    }
+    if (!destinationId || !sources) throw new Error('布线候选文件不可用');
+    await start(destinationId, 'schematic', sources, true);
+    clearPendingRoute(); setRouteJob(null); setRouteReviewed(false); setPendingRouteProject(null);
+    setMessage('候选已复制为你的新 KiCad 工程；原工程及其已保存文件保留。请在新工程中复核 PCB。');
+  };
   const close = async () => {
     if (!window.confirm('结束 KiCad 会话？请先在原理图和 PCB 窗口分别保存。未保存修改将丢失。')) return;
     await jsonResponse(await request(projectId, { action: 'stop' }));
@@ -192,7 +341,7 @@ export function DesktopWorkbench() {
       {sidebar && <aside className={styles.sidebar} aria-label="工程与文件">
         <h2>工程</h2>
         {loginRequired ? <div className={styles.note}><p>登录后可打开属于你的 KiCad 工程。</p><a className={styles.primaryLink} href={apiPath('/login')}>登录平台</a></div> : <>
-          <label>选择工程<select aria-label="选择工程" value={projectId} disabled={busy} onChange={event => { setProjectId(event.target.value); setFiles([]); setTicket(null); setConnection('idle'); setReport(''); }}><option value="">选择已有工程</option>{projects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)}</select></label>
+          <label>选择工程<select aria-label="选择工程" value={projectId} disabled={busy} onChange={event => { setProjectId(event.target.value); setFiles([]); setTicket(null); setConnection('idle'); setReport(''); setRouteJob(null); setRouteReviewed(false); setPendingRouteProject(null); }}><option value="">选择已有工程</option>{projects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)}</select></label>
           <button className={styles.primary} disabled={!projectId || busy} onClick={() => void run(() => start(projectId, editor))}><FolderOpen size={16} />打开工程</button>
           <div className={styles.divider} /><label>新工程名称<input aria-label="新工程名称" maxLength={80} value={name} onChange={event => setName(event.target.value)} /></label>
           <button disabled={busy} onClick={() => void run(() => create())}>新建空白工程</button>
@@ -207,6 +356,19 @@ export function DesktopWorkbench() {
         <h2>工程检查</h2><div className={styles.checks}><button disabled={!projectId || busy} onClick={() => void run(() => check('erc'))}>运行 ERC</button><button disabled={!projectId || busy} onClick={() => void run(() => check('drc'))}>运行 DRC</button></div>
         <p className={styles.hint}>检查和下载前，请先保存原理图及 PCB。DRC 同时核对原理图与 PCB；未保存的窗口内容不在检查范围内。</p>
         {report && <details open className={styles.report}><summary>检查结果</summary><pre>{report}</pre></details>}
+        <h2>PCB 自动布线</h2>
+        <button disabled={!projectId || busy || routeJob?.state === 'queued' || routeJob?.state === 'running'} onClick={() => void run(startRouting)}>自动布线</button>
+        <p className={styles.hint}>先在 KiCad 中保存原理图和 PCB。任务只使用磁盘文件，不会覆盖当前工程；运行中仍可使用编辑器。原理图和 PCB 各限 900 KB，工程配置、库表和设计规则各限 128 KB，完整候选导入请求限 1.9 MB。其他自定义原生文件会被拒绝，以免候选丢失依赖。</p>
+        {routeJob && <div className={styles.routePanel} role="status">
+          <strong>{routeJob.state === 'queued' ? '等待布线资源' : routeJob.state === 'running' ? '正在自动布线' : routeJob.state === 'failed' ? '布线失败' : '候选已就绪'}</strong>
+          {routeJob.before && routeJob.after && <p>未布通 {routeJob.before.unconnected} → {routeJob.after.unconnected}<br />原理图不一致 {routeJob.before.schematicParity} → {routeJob.after.schematicParity}<br />其他 DRC 问题 {routeIssueCount(routeJob.before)} → {routeIssueCount(routeJob.after)}</p>}
+          {routeJob.error && <p className={styles.error}>{routeJob.error}</p>}
+          {routeJob.state === 'failed' && pendingRouteProject?.jobId === routeJob.jobId && <button disabled={busy} onClick={() => { setError(''); setRouteJob({ jobId: routeJob.jobId, projectId, state: 'queued' }); }}>重新检查候选</button>}
+          {routeJob.state === 'ready' && <>
+            <button disabled={busy || (pendingRouteProject?.jobId === routeJob.jobId && !!pendingRouteProject.sources)} onClick={() => void run(reviewRoute)}>审阅布线候选</button>
+            {routeReviewed && <><p>源 PCB 指纹：{routeJob.sourceSha256?.slice(0, 12)}…<br />候选指纹：{routeJob.candidateSha256?.slice(0, 12)}…</p><p>{pendingRouteProject?.jobId === routeJob.jobId ? '新工程记录已建立，但候选尚未导入。可重试打开；原工程仍保留。' : '接受后会结束当前桌面，创建新 KiCad 工程；原工程已保存文件保持不变。'}新工程仍需人工复核。</p><button className={styles.primary} disabled={busy} onClick={() => void run(acceptRoute)}>{pendingRouteProject?.jobId === routeJob.jobId ? '重试打开候选工程' : '接受为新工程'}</button></>}
+          </>}
+        </div>}
         <div className={styles.divider} /><p className={styles.hint}>右侧 Agent 可从对话生成新原生工程。当前打开的工程仍由 KiCad 编辑。</p>
         <a href={apiPath('/eda/legacy')} target="_blank" rel="noreferrer">打开旧版草稿编辑器 ↗</a>
         <button className={styles.danger} disabled={!projectId || busy} onClick={() => void run(close)}>结束当前会话</button>

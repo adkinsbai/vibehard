@@ -1,10 +1,12 @@
 import { readFile } from 'node:fs/promises';
 
 export type DesktopAction = {
-  action: 'start' | 'status' | 'stop' | 'archive' | 'check' | 'snapshot';
+  action: 'start' | 'status' | 'stop' | 'archive' | 'check' | 'snapshot' | 'routeStart' | 'routeStatus' | 'routeCandidate';
   editor?: 'schematic' | 'pcb';
   kind?: 'erc' | 'drc';
-  sources?: { schematic: string; pcb: string };
+  verifySources?: true;
+  jobId?: string;
+  sources?: { schematic: string; pcb: string; project?: string; symLibTable?: string; fpLibTable?: string; designRules?: string };
 };
 
 export async function desktopRequest(owner: string, project: string, action: DesktopAction): Promise<Response> {

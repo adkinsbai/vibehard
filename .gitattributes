@@ -1,1 +1,3 @@
 lib/eda/modules/** text eol=lf
+docs/eda-module-candidates/** text eol=lf
+scripts/fixtures/eda-routing/*.kicad_* text eol=lf

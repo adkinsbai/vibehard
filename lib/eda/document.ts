@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { PARTS, createComponent, equivalentPinIds } from './library';
-import { validateModuleInstances } from './modules';
+import { MODULES, validateModuleInstances, type ModuleCatalog } from './modules';
 import type { EdaDocument } from './types';
 
 export const idSchema = z.string().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/, 'IDs must use ASCII letters, digits, underscore or hyphen');
@@ -41,7 +41,7 @@ function unique(values: string[], label: string) {
   }
 }
 
-export function parseDocument(input: unknown): EdaDocument {
+export function parseDocument(input: unknown, catalog: ModuleCatalog = MODULES): EdaDocument {
   let candidate = input;
   if (typeof input === 'string') {
     if (input.length > 1_000_000) throw new Error('EDA document exceeds 1 MB limit');
@@ -87,7 +87,7 @@ export function parseDocument(input: unknown): EdaDocument {
       if (instance.internalTrackIds.some(id => !doc.tracks.some(track => track.id === id))) throw new Error(`Missing module internal track: ${instance.id}`);
     }
   }
-  validateModuleInstances(doc);
+  validateModuleInstances(doc, catalog);
   const components = new Map(doc.components.map((component) => [component.id, component]));
   const netIds = new Set(doc.nets.map((net) => net.id));
   const ownedPins = new Set<string>();

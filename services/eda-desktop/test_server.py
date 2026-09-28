@@ -51,6 +51,53 @@ class DesktopBoundaries(unittest.TestCase):
             files.initialize(OWNER, PROJECT, {'schematic': '(kicad_sch replacement)', 'pcb': '(kicad_pcb replacement)'})
             self.assertEqual((path / 'circuit.kicad_sch').read_text(), '(kicad_sch edited)')
 
+    def test_candidate_initialization_preserves_project_tables_and_design_rules(self):
+        with tempfile.TemporaryDirectory() as root:
+            files = ProjectFiles(Path(root))
+            sources = {'schematic': '(kicad_sch source)', 'pcb': '(kicad_pcb candidate)',
+                       'project': '{"board":{"design_settings":{"foo":1}}}',
+                       'symLibTable': '(sym_lib_table (lib (name "User")))',
+                       'fpLibTable': '(fp_lib_table (lib (name "User")))',
+                       'designRules': '(version 1)\n(rule "width")'}
+            path = files.initialize(OWNER, PROJECT, sources)
+            self.assertEqual((path / 'circuit.kicad_pro').read_text(), sources['project'])
+            self.assertEqual((path / 'sym-lib-table').read_text(), sources['symLibTable'])
+            self.assertEqual((path / 'fp-lib-table').read_text(), sources['fpLibTable'])
+            self.assertEqual((path / 'circuit.kicad_dru').read_text(), sources['designRules'])
+            self.assertEqual((path / 'circuit.kicad_pcb').read_text(), sources['pcb'])
+            self.assertEqual(files.initialize(OWNER, PROJECT, sources, verify_sources=True), path)
+            with self.assertRaises(DesktopError) as mismatch:
+                files.initialize(OWNER, PROJECT, {**sources, 'pcb': '(kicad_pcb other)'}, verify_sources=True)
+            self.assertEqual(mismatch.exception.status, 409)
+            with self.assertRaises(DesktopError) as missing_aux:
+                files.initialize(OWNER, PROJECT, {key: value for key, value in sources.items() if key != 'designRules'}, verify_sources=True)
+            self.assertEqual(missing_aux.exception.status, 409)
+            with self.assertRaises(DesktopError):
+                files.initialize(OWNER, '33333333-3333-4333-8333-333333333333', {**sources, 'evil': 'data'})
+
+    def test_interrupted_candidate_import_cannot_mix_existing_and_new_native_files(self):
+        with tempfile.TemporaryDirectory() as root:
+            files = ProjectFiles(Path(root))
+            sources = {'schematic': '(kicad_sch candidate)', 'pcb': '(kicad_pcb candidate)',
+                       'project': '{"candidate":true}', 'symLibTable': '(sym_lib_table)'}
+            path = files.directory(OWNER, PROJECT)
+            path.mkdir(parents=True)
+            schematic = path / 'circuit.kicad_sch'
+            schematic.write_text('(kicad_sch old)')
+            with self.assertRaises(DesktopError) as conflict:
+                files.initialize(OWNER, PROJECT, sources, verify_sources=True)
+            self.assertEqual(conflict.exception.status, 409)
+            self.assertEqual(schematic.read_text(), '(kicad_sch old)')
+            self.assertFalse((path / 'circuit.kicad_pcb').exists())
+            self.assertFalse((path / 'circuit.kicad_pro').exists())
+
+            schematic.write_text(sources['schematic'])
+            resumed = files.initialize(OWNER, PROJECT, sources, verify_sources=True)
+            self.assertEqual(resumed, path)
+            self.assertEqual((path / 'circuit.kicad_pcb').read_text(), sources['pcb'])
+            self.assertEqual((path / 'circuit.kicad_pro').read_text(), sources['project'])
+            files.initialize(OWNER, PROJECT, sources, verify_sources=True)
+
     def test_rejects_path_traversal_and_second_owner(self):
         with tempfile.TemporaryDirectory() as root:
             files = ProjectFiles(Path(root))

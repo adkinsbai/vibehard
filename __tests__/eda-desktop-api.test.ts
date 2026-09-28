@@ -71,3 +71,37 @@ it('rejects malformed and oversized native imports before calling the broker', a
   }
   expect(desktopRequest).not.toHaveBeenCalled();
 });
+it('requires an owned project and a UUID job ID for asynchronous routing actions', async () => {
+  vi.mocked(requestUser).mockResolvedValue({ id, email: 'a@b.com', name: 'a', role: 'member' });
+  vi.mocked(ownedProject).mockResolvedValue(null);
+  expect((await POST(request({ action: 'routeStart' }), context())).status).toBe(404);
+  vi.mocked(ownedProject).mockResolvedValue({ id } as NonNullable<Awaited<ReturnType<typeof ownedProject>>>);
+  expect((await POST(request({ action: 'routeStart' }, 'https://foreign.example'), context())).status).toBe(403);
+  expect((await POST(request({ action: 'routeStatus', jobId: '../other-project' }), context())).status).toBe(400);
+  expect((await POST(request({ action: 'routeCandidate' }), context())).status).toBe(400);
+  expect((await POST(request({ action: 'routeStart', sources: { schematic: '(kicad_sch)', pcb: '(kicad_pcb)' } }), context())).status).toBe(400);
+  expect(desktopRequest).not.toHaveBeenCalled();
+  vi.mocked(desktopRequest).mockResolvedValue(Response.json({ jobId: id, state: 'queued' }));
+  const response = await POST(request({ action: 'routeStart' }), context());
+  expect(response.status).toBe(200);
+  expect(await response.json()).toEqual({ jobId: id, state: 'queued' });
+  expect(vi.mocked(desktopRequest).mock.calls.at(-1)?.[2]).toEqual({ action: 'routeStart' });
+});
+it('forwards a candidate request only for the currently authenticated project', async () => {
+  vi.mocked(requestUser).mockResolvedValue({ id, email: 'a@b.com', name: 'a', role: 'member' });
+  vi.mocked(ownedProject).mockResolvedValue({ id } as NonNullable<Awaited<ReturnType<typeof ownedProject>>>);
+  vi.mocked(desktopRequest).mockResolvedValue(Response.json({ jobId: id, state: 'ready' }));
+  expect((await POST(request({ action: 'routeCandidate', jobId: id }), context())).status).toBe(200);
+  expect(vi.mocked(desktopRequest).mock.calls.at(-1)?.[2]).toEqual({ action: 'routeCandidate', jobId: id });
+});
+it('passes a bounded native project configuration with the accepted schematic and PCB', async () => {
+  vi.mocked(requestUser).mockResolvedValue({ id, email: 'a@b.com', name: 'a', role: 'member' });
+  vi.mocked(ownedProject).mockResolvedValue({ id } as NonNullable<Awaited<ReturnType<typeof ownedProject>>>);
+  vi.mocked(desktopRequest).mockResolvedValue(Response.json({ running: true, ticket: 'ticket' }));
+  const sources = { schematic: '(kicad_sch)', pcb: '(kicad_pcb)', project: '{"board":{"rules":{}}}', symLibTable: '(sym_lib_table)', fpLibTable: '(fp_lib_table)', designRules: '(version 1)' };
+  expect((await POST(request({ action: 'start', sources, verifySources: true }), context())).status).toBe(200);
+  expect(vi.mocked(desktopRequest).mock.calls.at(-1)?.[2]).toMatchObject({ sources, verifySources: true });
+  expect((await POST(request({ action: 'start', verifySources: true }), context())).status).toBe(400);
+  expect((await POST(request({ action: 'start', sources: { ...sources, arbitraryFile: 'unsafe' } }), context())).status).toBe(400);
+  expect((await POST(request({ action: 'start', sources: { ...sources, project: 'not-json' } }), context())).status).toBe(400);
+});

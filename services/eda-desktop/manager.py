@@ -23,6 +23,7 @@ from aiohttp import ClientSession, ClientTimeout, WSMsgType, web
 from server import identifier
 
 REAPER_KEY = web.AppKey('reaper', asyncio.Task)
+MAX_MODULE_REQUEST = 3_000_000
 
 
 class ManagerError(Exception):
@@ -145,7 +146,49 @@ class DockerController:
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.settings = settings
         self.lock = asyncio.Lock()
+        self.module_verifier = asyncio.Semaphore(1)
         self.last_used = {}
+
+    async def verify_module(self, payload):
+        if not payload or len(payload) > MAX_MODULE_REQUEST:
+            raise ManagerError('Module request exceeds its size limit', 413)
+        if self.module_verifier.locked():
+            raise ManagerError('Native module verifier is busy', 429)
+        async with self.module_verifier:
+            name = 'vibehard-eda-module-' + secrets.token_hex(8)
+            args = ['run', '--rm', '--name', name, '--network', 'none', '--read-only',
+                    '--tmpfs', '/tmp:rw,nosuid,nodev,size=16m,mode=1777',
+                    '--user', '10001:10001', '--cap-drop', 'ALL',
+                    '--security-opt', 'no-new-privileges', '--memory', '768m',
+                    '--memory-swap', '768m', '--cpus', '0.5', '--pids-limit', '64',
+                    '--env', 'HOME=/tmp', '--env', 'XDG_CONFIG_HOME=/tmp',
+                    '--entrypoint', 'python3', '-i', self.settings.image,
+                    '/opt/vibehard-eda/module_verify.py']
+            process = await asyncio.create_subprocess_exec('docker', *args,
+                                                           stdin=asyncio.subprocess.PIPE,
+                                                           stdout=asyncio.subprocess.PIPE,
+                                                           stderr=asyncio.subprocess.PIPE)
+            try:
+                out, _err = await asyncio.wait_for(process.communicate(payload), 65)
+            except (TimeoutError, asyncio.CancelledError):
+                process.kill()
+                await process.wait()
+                await self._docker('rm', '-f', name, check=False, timeout=10)
+                raise ManagerError('Native module verifier timed out', 503) from None
+            if process.returncode != 0 or len(out) > 2_700_000:
+                raise ManagerError('Native module verifier failed', 503)
+            try:
+                result = json.loads(out)
+                if not isinstance(result, dict):
+                    raise ValueError()
+                if 'error' in result:
+                    status = result.get('status')
+                    raise ManagerError('KiCad native module check rejected this package', status if status in (413, 422) else 503)
+                if not isinstance(result.get('netlist'), str) or len(result['netlist'].encode('utf-8')) > 2_000_000 or not isinstance(result.get('kicadVersion'), str):
+                    raise ValueError()
+                return {'netlist': result['netlist'], 'kicadVersion': result['kicadVersion']}
+            except (ValueError, TypeError, UnicodeError):
+                raise ManagerError('Native module verifier returned invalid data', 503) from None
 
     async def _docker(self, *args, check=True, timeout=60):
         process = await asyncio.create_subprocess_exec(
@@ -305,7 +348,7 @@ class DockerController:
 
 
 class CloudManager:
-    ACTIONS = {'start', 'stop', 'status', 'archive', 'check', 'snapshot'}
+    ACTIONS = {'start', 'stop', 'status', 'archive', 'check', 'snapshot', 'routeStart', 'routeStatus', 'routeCandidate'}
 
     def __init__(self, controller, tickets, platform_access_url, origins):
         self.controller = controller
@@ -344,6 +387,9 @@ class CloudManager:
             except (ValueError, KeyError, TypeError):
                 raise ManagerError('KiCad worker returned an invalid ticket', 503) from None
         return status, content_type, payload
+
+    async def verify_module(self, payload):
+        return await self.controller.verify_module(payload)
 
     async def verify_browser(self, request, key):
         cookie = request.headers.get('Cookie', '')
@@ -390,6 +436,15 @@ def create_app(manager, control_token):
 
     async def health(_request):
         return web.json_response({'ok': True}, headers={'Cache-Control': 'no-store'})
+
+    async def verify_module(request):
+        if request.content_length is not None and request.content_length > MAX_MODULE_REQUEST:
+            raise ManagerError('Module request exceeds its size limit', 413)
+        payload = await request.content.read(MAX_MODULE_REQUEST + 1)
+        if len(payload) > MAX_MODULE_REQUEST:
+            raise ManagerError('Module request exceeds its size limit', 413)
+        result = await manager.verify_module(payload)
+        return web.json_response(result, headers={'Cache-Control': 'no-store'})
 
     async def websocket(request):
         origin = request.headers.get('Origin')
@@ -450,6 +505,7 @@ def create_app(manager, control_token):
 
     app = web.Application(middlewares=[guard], client_max_size=18_000_000)
     app.router.add_get('/health', health)
+    app.router.add_post('/v1/modules/verify', verify_module)
     app.router.add_post('/v1/projects/{owner}/{project}', action)
     app.router.add_get('/client/ws', websocket)
     app.on_startup.append(startup)

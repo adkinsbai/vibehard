@@ -6,7 +6,8 @@ type ModulePart = { localId: string; sourceRef: string; kind: PartKind; value: s
 type ModuleNet = { localId: string; name: string; nodes: { localId: string; pinId: string }[] };
 type ModuleTrack = { localId: string; netLocalId: string; layer: 'top' | 'bottom'; width: number; points: { x: number; y: number }[] };
 type ModulePort = { id: string; name: string; label: string; direction: string; signal: string; required: boolean; terminal: { reference: string; pin: string }; voltage?: { min: number; max: number } };
-export type ModuleDefinition = { moduleId: string; version: string; verification: 'software-fixture' | 'reviewed'; description: string; sourceSha256: string; parts: ModulePart[]; nets: ModuleNet[]; tracks: ModuleTrack[]; ports: ModulePort[] };
+export type ModuleDefinition = { moduleId: string; version: string; verification: 'software-fixture' | 'pending-review' | 'reviewed'; description: string; sourceSha256: string; parts: ModulePart[]; nets: ModuleNet[]; tracks: ModuleTrack[]; ports: ModulePort[] };
+export type ModuleCatalog = Readonly<Record<string, ModuleDefinition>>;
 
 /** Bundled software fixture. It is not a reviewed circuit or a purchasable module. */
 export const MODULES: Record<string, ModuleDefinition> = {
@@ -26,11 +27,27 @@ export const MODULES: Record<string, ModuleDefinition> = {
   },
 };
 
-export function modulePortPin(document: EdaDocument, instanceId: string, portId: string): PinRef {
+export function catalogFromDefinitions(definitions: readonly ModuleDefinition[]): ModuleCatalog {
+  const catalog: Record<string, ModuleDefinition> = Object.create(null);
+  for (const definition of definitions) {
+    if (definition.verification !== 'reviewed' || !/^[a-f0-9]{64}$/.test(definition.sourceSha256)) throw new Error('Only source-pinned reviewed modules can enter a published catalog');
+    const key = `${definition.moduleId}@${definition.version}`;
+    if (catalog[key]) throw new Error(`Duplicate module version ${key}`);
+    catalog[key] = structuredClone(definition);
+  }
+  return catalog;
+}
+
+export function findModule(catalog: ModuleCatalog, moduleId: string, version: string): ModuleDefinition | undefined {
+  const definition = catalog[`${moduleId}@${version}`] ?? catalog[moduleId];
+  return definition?.moduleId === moduleId && definition.version === version ? definition : undefined;
+}
+
+export function modulePortPin(document: EdaDocument, instanceId: string, portId: string, catalog: ModuleCatalog = MODULES): PinRef {
   const instance = document.moduleInstances?.find(item => item.id === instanceId);
   if (!instance) throw new Error(`Unknown module instance ${instanceId}`);
-  const definition = MODULES[instance.moduleId];
-  if (!definition || definition.version !== instance.version || definition.sourceSha256 !== instance.sourceSha256) throw new Error(`Unavailable module version ${instance.moduleId}`);
+  const definition = findModule(catalog, instance.moduleId, instance.version);
+  if (!definition || definition.sourceSha256 !== instance.sourceSha256) throw new Error(`Unavailable module version ${instance.moduleId}`);
   const port = definition.ports.find(item => item.id === portId);
   if (!port) throw new Error(`Unknown module port ${portId}`);
   const part = definition.parts.find(item => item.sourceRef === port.terminal.reference);
@@ -40,10 +57,10 @@ export function modulePortPin(document: EdaDocument, instanceId: string, portId:
   return { componentId, pinId: port.terminal.pin };
 }
 
-export function isModulePort(document: EdaDocument, pin: PinRef): boolean {
+export function isModulePort(document: EdaDocument, pin: PinRef, catalog: ModuleCatalog = MODULES): boolean {
   const instance = document.moduleInstances?.find(item => item.componentIds.includes(pin.componentId));
   if (!instance) return true;
-  const definition = MODULES[instance.moduleId];
+  const definition = findModule(catalog, instance.moduleId, instance.version);
   return Boolean(definition?.ports.some(port => {
     const part = definition.parts.find(item => item.sourceRef === port.terminal.reference);
     return part && `${instance.id}-${part.localId}` === pin.componentId && port.terminal.pin === pin.pinId;
@@ -57,9 +74,9 @@ function nextRef(document: EdaDocument, prefix: string): string {
   return `${prefix}${n}`;
 }
 
-export function insertModule(document: EdaDocument, command: { moduleId: string; version: string; instanceId: string; schematic: { x: number; y: number }; pcb: { x: number; y: number } }): void {
-  const definition = MODULES[command.moduleId];
-  if (!definition || definition.version !== command.version) throw new Error(`Unknown module version ${command.moduleId}@${command.version}`);
+export function insertModule(document: EdaDocument, command: { moduleId: string; version: string; instanceId: string; schematic: { x: number; y: number }; pcb: { x: number; y: number } }, catalog: ModuleCatalog = MODULES): void {
+  const definition = findModule(catalog, command.moduleId, command.version);
+  if (!definition) throw new Error(`Unknown module version ${command.moduleId}@${command.version}`);
   if (document.moduleInstances?.some(item => item.id === command.instanceId)) throw new Error(`Duplicate module instance ${command.instanceId}`);
   const componentIds = definition.parts.map(item => `${command.instanceId}-${item.localId}`);
   const internalNetIds = definition.nets.map(item => `${command.instanceId}-${item.localId}`);
@@ -87,10 +104,10 @@ export function addModuleInternalTracks(document: EdaDocument, instanceId: strin
   });
 }
 
-export function validateModuleInstances(document: EdaDocument): void {
+export function validateModuleInstances(document: EdaDocument, catalog: ModuleCatalog = MODULES): void {
   for (const instance of document.moduleInstances ?? []) {
-    const definition = MODULES[instance.moduleId];
-    if (!definition || definition.version !== instance.version || definition.sourceSha256 !== instance.sourceSha256) throw new Error(`Module source hash or provenance mismatch: ${instance.id}`);
+    const definition = findModule(catalog, instance.moduleId, instance.version);
+    if (!definition || definition.sourceSha256 !== instance.sourceSha256) throw new Error(`Module source hash or provenance mismatch: ${instance.id}`);
     const expectedParts = definition.parts.map(part => `${instance.id}-${part.localId}`);
     const expectedNets = definition.nets.map(net => `${instance.id}-${net.localId}`);
     const expectedTracks = definition.tracks.map(track => `${instance.id}-${track.localId}`);
@@ -121,8 +138,8 @@ export function validateModuleInstances(document: EdaDocument): void {
         throw new Error(`Module internal track mismatch: ${instance.id}-${track.localId}`);
       }
     }
-    const power = definition.ports.filter(port => port.signal === 'power').map(port => ({ port, pin: modulePortPin(document, instance.id, port.id) }));
-    const ground = definition.ports.filter(port => port.signal === 'ground').map(port => ({ port, pin: modulePortPin(document, instance.id, port.id) }));
+    const power = definition.ports.filter(port => port.signal === 'power').map(port => ({ port, pin: modulePortPin(document, instance.id, port.id, catalog) }));
+    const ground = definition.ports.filter(port => port.signal === 'ground').map(port => ({ port, pin: modulePortPin(document, instance.id, port.id, catalog) }));
     for (const high of power) for (const low of ground) {
       const shared = document.nets.some(net => net.nodes.some(node => node.componentId === high.pin.componentId && node.pinId === high.pin.pinId)
         && net.nodes.some(node => node.componentId === low.pin.componentId && node.pinId === low.pin.pinId));
@@ -131,11 +148,11 @@ export function validateModuleInstances(document: EdaDocument): void {
   }
 }
 
-export function missingRequiredModulePorts(document: EdaDocument): { instanceId: string; portId: string }[] {
+export function missingRequiredModulePorts(document: EdaDocument, catalog: ModuleCatalog = MODULES): { instanceId: string; portId: string }[] {
   return (document.moduleInstances ?? []).flatMap(instance => {
-    const definition = MODULES[instance.moduleId];
+    const definition = findModule(catalog, instance.moduleId, instance.version);
     return (definition?.ports ?? []).filter(port => port.required && !document.nets.some(net => {
-      const pin = modulePortPin(document, instance.id, port.id);
+      const pin = modulePortPin(document, instance.id, port.id, catalog);
       return net.nodes.some(node => node.componentId === pin.componentId && node.pinId === pin.pinId)
         && net.nodes.some(node => !instance.componentIds.includes(node.componentId));
     })).map(port => ({ instanceId: instance.id, portId: port.id }));

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { PARTS, equivalentPinIds } from './library';
-import { insertModule, isModulePort } from './modules';
+import { MODULES, insertModule, isModulePort, type ModuleCatalog } from './modules';
 import { componentSchema, coordinateSchema, dimensionSchema, idSchema, parseDocument, pinRefSchema, rotationSchema, textSchema, trackSchema } from './document';
 import type { EditBatch, EdaComponent, EdaDocument, EdaNet, PinRef } from './types';
 
@@ -58,18 +58,18 @@ function nextNetId(doc: EdaDocument): string {
   return `net-${index}`;
 }
 
-export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument {
+export function applyEditBatch(doc: EdaDocument, batch: EditBatch, catalog: ModuleCatalog = MODULES): EdaDocument {
   const edit = parseEditBatch(batch);
   if (doc.appliedBatchIds?.includes(edit.id)) return doc;
   if (edit.baseRevision !== doc.revision) throw new Error(`Revision conflict: expected ${doc.revision}, received ${edit.baseRevision}`);
-  const next = parseDocument(doc);
+  const next = parseDocument(doc, catalog);
   for (const command of edit.commands) {
     switch (command.type) {
       case 'addComponent':
         next.components.push(command.component);
         break;
       case 'insertModule':
-        insertModule(next, command);
+        insertModule(next, command, catalog);
         break;
       case 'removeComponent': {
         const component = requiredComponent(next, command.id);
@@ -98,7 +98,7 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
       case 'connectPins': {
         requiredPin(next, command.a);
         requiredPin(next, command.b);
-        if (!isModulePort(next, command.a) || !isModulePort(next, command.b)) throw new Error('Only declared module ports may be connected');
+        if (!isModulePort(next, command.a, catalog) || !isModulePort(next, command.b, catalog)) throw new Error('Only declared module ports may be connected');
         if (command.a.componentId === command.b.componentId && command.a.pinId === command.b.pinId) throw new Error('Cannot connect a pin to itself');
         const aNet = owningNet(next, command.a);
         const bNet = owningNet(next, command.b);
@@ -123,7 +123,7 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
       }
       case 'disconnectPin': {
         requiredPin(next, command.pin);
-        if (!isModulePort(next, command.pin)) throw new Error('Only declared module ports may be disconnected');
+        if (!isModulePort(next, command.pin, catalog)) throw new Error('Only declared module ports may be disconnected');
         const net = owningNet(next, command.pin);
         if (!net) throw new Error(`Pin ${command.pin.componentId}.${command.pin.pinId} is not connected`);
         invalidateTracks(next, [net.id]);
@@ -158,5 +158,5 @@ export function applyEditBatch(doc: EdaDocument, batch: EditBatch): EdaDocument 
   next.revision++;
   next.appliedBatchIds.push(edit.id);
   if (next.appliedBatchIds.length > 5000) next.appliedBatchIds = next.appliedBatchIds.slice(-5000);
-  return parseDocument(next);
+  return parseDocument(next, catalog);
 }

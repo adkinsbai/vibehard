@@ -8,11 +8,31 @@ import { exportKicadPcb, exportKicadSchematic } from '@/lib/eda/kicad';
 import { readEdaJson } from '@/lib/server/eda-http';
 
 export const runtime = 'nodejs';
+const nativeProjectJson = z.string().max(128_000).refine(value => {
+  if (Buffer.byteLength(value, 'utf8') > 128_000) return false;
+  try { const parsed: unknown = JSON.parse(value); return !!parsed && typeof parsed === 'object' && !Array.isArray(parsed); }
+  catch { return false; }
+});
+const nativeSource = z.string().max(900_000).refine(value => Buffer.byteLength(value, 'utf8') <= 900_000);
+const nativeAux = z.string().max(128_000).refine(value => Buffer.byteLength(value, 'utf8') <= 128_000);
 const inputSchema = z.object({
-  action: z.enum(['start', 'status', 'stop', 'archive', 'check', 'snapshot']),
+  action: z.enum(['start', 'status', 'stop', 'archive', 'check', 'snapshot', 'routeStart', 'routeStatus', 'routeCandidate']),
   editor: z.enum(['schematic', 'pcb']).optional(),
   kind: z.enum(['erc', 'drc']).optional(),
-  sources: z.object({ schematic: z.string().max(900_000).regex(/^\s*\(kicad_sch\b/), pcb: z.string().max(900_000).regex(/^\s*\(kicad_pcb\b/) }).strict().optional(),
+  verifySources: z.literal(true).optional(),
+  jobId: z.uuid().optional(),
+  sources: z.object({
+    schematic: nativeSource.regex(/^\s*\(kicad_sch\b/),
+    pcb: nativeSource.regex(/^\s*\(kicad_pcb\b/),
+    project: nativeProjectJson.optional(),
+    symLibTable: nativeAux.regex(/^\s*\(sym_lib_table\b/).optional(),
+    fpLibTable: nativeAux.regex(/^\s*\(fp_lib_table\b/).optional(),
+    designRules: nativeAux.min(1).optional(),
+  }).strict().refine(sources => {
+    const size = (value: string | undefined) => Buffer.byteLength(value ?? '', 'utf8');
+    return size(sources.schematic) + size(sources.pcb) + size(sources.project) + size(sources.symLibTable) + size(sources.fpLibTable) + size(sources.designRules) <= 1_850_000 &&
+      Buffer.byteLength(JSON.stringify({ action: 'start', editor: 'schematic', sources }), 'utf8') <= 1_900_000;
+  }).optional(),
 }).strict();
 
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -33,6 +53,9 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
   try {
     const input = inputSchema.parse(body);
     if (input.action === 'check' && !input.kind) return NextResponse.json({ error: '请选择 ERC 或 DRC' }, { status: 400 });
+    if (input.verifySources && (input.action !== 'start' || !input.sources?.project)) return NextResponse.json({ error: '校验原生工程需要完整候选文件' }, { status: 400 });
+    if ((input.action === 'routeStatus' || input.action === 'routeCandidate') && !input.jobId) return NextResponse.json({ error: '请选择布线任务' }, { status: 400 });
+    if (input.action.startsWith('route') && (input.sources || input.editor || input.kind || (input.action === 'routeStart' && input.jobId))) return NextResponse.json({ error: '布线仅使用已保存工程' }, { status: 400 });
     if (input.action === 'start' && !input.sources) {
       const empty = createEmptyDocument();
       input.sources = { schematic: exportKicadSchematic(empty), pcb: exportKicadPcb(empty) };

@@ -15,7 +15,7 @@ const manifestSchema = z.strictObject({
   schemaVersion: z.literal(1),
   moduleId: z.string().regex(/^[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+$/).max(120),
   version: z.string().regex(/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/),
-  verification: z.enum(['software-fixture', 'reviewed']),
+  verification: z.enum(['software-fixture', 'pending-review', 'reviewed']),
   description: z.string().trim().min(1).max(400),
   review: z.strictObject({ reviewer: z.string().trim().min(1).max(120), reviewedAt: z.iso.date(), source: z.string().trim().min(1).max(120) }).optional(),
   entrySchematic: pathSchema,

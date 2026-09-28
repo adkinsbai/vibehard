@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "Device") (type "KiCad") (uri "${KICAD9_SYMBOL_DIR}/Device.kicad_sym") (options "") (descr "Official KiCad 9 Device symbols"))
+)

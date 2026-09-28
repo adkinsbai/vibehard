@@ -2,7 +2,7 @@ import asyncio
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, Mock, patch
 
 from manager import CloudManager, DockerController, DockerSettings, ManagerError, ProjectKey, TicketStore, container_command, create_app
 
@@ -119,6 +119,79 @@ class DockerCapacity(unittest.IsolatedAsyncioTestCase):
 
 
 class ManagerRoutes(unittest.IsolatedAsyncioTestCase):
+    async def test_module_verifier_container_has_no_project_mount_or_network(self):
+        with tempfile.TemporaryDirectory() as root:
+            controller = DockerController(Path(root), DockerSettings(image='test-image'))
+            process = Mock(returncode=0)
+            process.communicate = AsyncMock(return_value=(b'{"netlist":"(export)","kicadVersion":"9.0.8"}', b''))
+            with patch('manager.asyncio.create_subprocess_exec', new=AsyncMock(return_value=process)) as spawn:
+                result = await controller.verify_module(b'{"manifest":{}}')
+            self.assertEqual(result['kicadVersion'], '9.0.8')
+            args = spawn.call_args.args
+            self.assertIn('--network', args)
+            self.assertEqual(args[args.index('--network') + 1], 'none')
+            self.assertIn('--read-only', args)
+            self.assertIn('--cap-drop', args)
+            self.assertEqual(args[args.index('--user') + 1], '10001:10001')
+            self.assertNotIn('--mount', args)
+            self.assertNotIn('--volume', args)
+
+    async def test_module_verifier_timeout_removes_ephemeral_container(self):
+        with tempfile.TemporaryDirectory() as root:
+            controller = DockerController(Path(root), DockerSettings(image='test-image'))
+            process = Mock()
+            process.communicate = AsyncMock()
+            process.wait = AsyncMock()
+            controller._docker = AsyncMock(return_value=b'')
+
+            async def timeout(coroutine, _seconds):
+                coroutine.close()
+                raise TimeoutError()
+
+            with patch('manager.asyncio.create_subprocess_exec', new=AsyncMock(return_value=process)), patch('manager.asyncio.wait_for', side_effect=timeout):
+                with self.assertRaises(ManagerError) as error:
+                    await controller.verify_module(b'{"manifest":{}}')
+            self.assertEqual(error.exception.status, 503)
+            process.kill.assert_called_once()
+            self.assertEqual(controller._docker.call_args.args[:2], ('rm', '-f'))
+
+    async def test_private_module_verify_requires_token_and_enforces_request_limit(self):
+        from aiohttp.test_utils import TestClient, TestServer
+        controller = FakeController()
+        controller.verify_module = AsyncMock(return_value={'netlist': '(export)', 'kicadVersion': '9.0.8'})
+        manager = CloudManager(controller, None, 'http://127.0.0.1/access/{project}', {'https://ldcx.tech'})
+        client = TestClient(TestServer(create_app(manager, 's' * 32)))
+        await client.start_server()
+        try:
+            url = '/v1/modules/verify'
+            self.assertEqual((await client.post(url, data=b'{}')).status, 401)
+            headers = {'Authorization': 'Bearer ' + 's' * 32}
+            response = await client.post(url, data=b'{"manifest":{}}', headers=headers)
+            self.assertEqual(response.status, 200)
+            self.assertEqual((await response.json())['netlist'], '(export)')
+            controller.verify_module.assert_awaited_once_with(b'{"manifest":{}}')
+            self.assertEqual((await client.post(url, data=b'x' * 3_000_001, headers=headers)).status, 413)
+        finally:
+            await client.close()
+
+    async def test_routing_actions_require_manager_token_and_keep_project_scope(self):
+        from aiohttp.test_utils import TestClient, TestServer
+        controller = FakeController()
+        manager = CloudManager(controller, None, 'http://127.0.0.1/access/{project}', {'https://ldcx.tech'})
+        manager._forward = AsyncMock(return_value=(200, 'application/json', b'{"jobId":"job","state":"ready"}'))
+        client = TestClient(TestServer(create_app(manager, 's' * 32)))
+        await client.start_server()
+        try:
+            path = f'/v1/projects/{OWNER_A}/{PROJECT_A}'
+            body = {'action': 'routeCandidate', 'jobId': '44444444-4444-4444-8444-444444444444'}
+            self.assertEqual((await client.post(path, json=body)).status, 401)
+            response = await client.post(path, json=body, headers={'Authorization': 'Bearer ' + 's' * 32})
+            self.assertEqual(response.status, 200)
+            self.assertEqual(manager._forward.call_args.args[0], ProjectKey(OWNER_A, PROJECT_A))
+            self.assertEqual(manager._forward.call_args.args[2], body)
+        finally:
+            await client.close()
+
     async def test_websocket_access_verifier_rechecks_project_cookie(self):
         from aiohttp import web
         from aiohttp.test_utils import TestServer

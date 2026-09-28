@@ -2,6 +2,8 @@ import { relations } from "drizzle-orm";
 import type { KnowledgeDocument } from "@/lib/agent/knowledge";
 import type { DesignResult } from "@/lib/agent/llm";
 import type { DesignDiagnostics } from "@/lib/agent/design-diagnostics";
+import type { ModuleManifest } from "@/lib/eda/module-package";
+import type { ModuleDefinition } from "@/lib/eda/modules";
 import {
   boolean,
   integer,
@@ -95,6 +97,26 @@ export const sharedKnowledge = pgTable("shared_knowledge", {
   createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
   ...timestamps,
 }, table => [index("shared_knowledge_category_idx").on(table.category)]);
+
+// Immutable native source and compiled, version-pinned module definition. Publication is a separate reviewed transition.
+export const edaModuleVersions = pgTable("eda_module_versions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  moduleId: text("module_id").notNull(),
+  version: text("version").notNull(),
+  packageSha256: text("package_sha256").notNull(),
+  manifest: jsonb("manifest").$type<ModuleManifest>().notNull(),
+  payloadsBase64: jsonb("payloads_base64").$type<Record<string, string>>().notNull(),
+  definition: jsonb("definition").$type<ModuleDefinition>().notNull(),
+  status: text("status").$type<"pending" | "published" | "rejected" | "disabled">().notNull().default("pending"),
+  submittedBy: uuid("submitted_by").notNull().references(() => users.id),
+  reviewedBy: uuid("reviewed_by").references(() => users.id),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  reviewReference: text("review_reference"),
+  ...timestamps,
+}, table => [
+  uniqueIndex("eda_module_versions_identity_uidx").on(table.moduleId, table.version),
+  index("eda_module_versions_status_idx").on(table.status),
+]);
 
 export const agentThreads = pgTable("agent_threads", {
   id: uuid("id").defaultRandom().primaryKey(),

@@ -8,11 +8,12 @@ import { zipSync, strToU8 } from 'fflate';
 import { parseDocument } from '@/lib/eda/document';
 import { exportBomCsv, exportKicadPcb, exportKicadSchematic } from '@/lib/eda/kicad';
 import { PARTS } from '@/lib/eda/library';
+import { MODULES, type ModuleCatalog } from '@/lib/eda/modules';
 import { kicadAvailable, runEdaCheck } from './eda-tools';
 const execute = promisify(execFile);
 export class EdaExportError extends Error {}
-export async function createEdaArchive(input: unknown, signal?: AbortSignal) {
-  const document = parseDocument(input);
+export async function createEdaArchive(input: unknown, signal?: AbortSignal, catalog: ModuleCatalog = MODULES) {
+  const document = parseDocument(input, catalog);
   if (!document.components.length) throw new EdaExportError('请先添加器件');
   if (document.components.some(c => !PARTS[c.kind].native)) throw new EdaExportError('工程含旧版占位封装，请替换为官方库器件后导出交付包');
   const command = process.env.KICAD_CLI_PATH || 'kicad-cli';
@@ -21,9 +22,9 @@ export async function createEdaArchive(input: unknown, signal?: AbortSignal) {
   try {
     const files: Record<string, Uint8Array> = {
       'design.json': strToU8(JSON.stringify(document, null, 2)),
-      'design.kicad_sch': strToU8(exportKicadSchematic(document)),
-      'design.kicad_pcb': strToU8(exportKicadPcb(document)),
-      'bom.csv': strToU8(exportBomCsv(document)),
+      'design.kicad_sch': strToU8(exportKicadSchematic(document, catalog)),
+      'design.kicad_pcb': strToU8(exportKicadPcb(document, catalog)),
+      'bom.csv': strToU8(exportBomCsv(document, catalog)),
     };
     const board = join(directory, 'design.kicad_pcb');
     const plots = join(directory, 'gerbers'); await mkdir(plots);
@@ -42,7 +43,7 @@ export async function createEdaArchive(input: unknown, signal?: AbortSignal) {
       if (total > 30_000_000) throw new EdaExportError('工程输出超过 30 MB 限制');
       files[`gerbers/${entry.name}`] = content;
     }
-    const erc = await runEdaCheck(document, 'erc', signal); const drc = await runEdaCheck(document, 'drc', signal);
+    const erc = await runEdaCheck(document, 'erc', signal, catalog); const drc = await runEdaCheck(document, 'drc', signal, catalog);
     files['checks/erc.json'] = strToU8(JSON.stringify(erc, null, 2));
     files['checks/drc.json'] = strToU8(JSON.stringify(drc, null, 2));
     const manifest = { schemaVersion: 1, documentId: document.id, revision: document.revision, generatedAt: new Date().toISOString(), kicadVersion: version, checks: { ercExitCode: erc.exitCode ?? null, drcExitCode: drc.exitCode ?? null }, fabricationReviewed: false, artifacts: Object.entries(files).map(([path, data]) => ({ path, bytes: data.length, sha256: createHash('sha256').update(data).digest('hex') })) };
