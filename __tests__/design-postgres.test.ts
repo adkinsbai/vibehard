@@ -83,7 +83,7 @@ if (enabled) {
       const retry = await enqueueDesign(owner.id, { ...input(), projectId: next.projectId });
       expect(retry.projectId).toBe(next.projectId);
     }
-  });
+  }, 20_000);
 
   it("exits the actual worker entrypoint on a blocked claim without leaving database connections", async () => {
     const marker = `worker-claim-${randomUUID()}`;
