@@ -92,6 +92,10 @@ describe('controlled shared ingestion', () => {
     const path2 = registerBatch(first.root, next.staging, next.hash, randomUUID());
     expect(path2).not.toBe(path1); expect(fileHash(`${path1}.manifest.json`)).toBe(first.hash);
   });
+  it('rejects a version too large to produce a stable selectable build ID', async () => {
+    const f = fixture(randomUUID(), 1e21);
+    await expect(validateBatchPackage(f.index, f.hash)).rejects.toThrow();
+  });
   it('restores the previous pointer and process when activation health fails; supports explicit rollback', async () => {
     const f = fixture(); const previous = {id:'legacy',path:'/legacy/index'}; const target = {id:f.id,path:f.index,manifestHash:f.hash}; atomicControl(join(f.root,'current.json'),previous);
     const oldHistory={id:'older',path:'/older/index'}; atomicControl(join(f.root,'previous.json'),oldHistory);

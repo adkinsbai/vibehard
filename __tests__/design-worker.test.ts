@@ -19,6 +19,24 @@ it("bounds blocked phase persistence and failure settlement, requiring worker re
   await work;
   expect(deps.callLlm).not.toHaveBeenCalled();
 });
+it("recycles after a timed-out configuration query even if the failure record was saved", async () => {
+  vi.useFakeTimers();
+  const deps = {
+    claimDesign: vi.fn().mockResolvedValue({ id: crypto.randomUUID(), leaseToken: crypto.randomUUID(), createdAt: new Date(), diagnostics: queuedDiagnostics(new Date()) }),
+    saveDesignDiagnostics: vi.fn().mockResolvedValue(true),
+    finishDesign: vi.fn().mockResolvedValue(true),
+    runtimeLlm: vi.fn().mockImplementation(() => new Promise(() => {})),
+    retrieveDesignKnowledge: vi.fn(), callLlm: vi.fn(),
+  };
+  let outcome = "pending";
+  const work = processNextDesign(deps, 100).then(() => { outcome = "returned"; }, error => { outcome = error.name; });
+  await vi.advanceTimersByTimeAsync(101);
+  await work;
+  expect(outcome).toBe("DesignStorageUnavailableError");
+  expect(deps.finishDesign).toHaveBeenCalledWith(expect.any(String), expect.any(String),
+    expect.objectContaining({ diagnostics: expect.objectContaining({ errorCode: "TIMEOUT" }) }), expect.any(Number));
+  expect(deps.callLlm).not.toHaveBeenCalled();
+});
 it("enforces a hard deadline even when DNS/config/provider never resolves", async () => {
   vi.useFakeTimers(); let signal: AbortSignal | undefined;
   const promise = boundedDesign(s => { signal = s; return new Promise(() => {}); }, 100);
