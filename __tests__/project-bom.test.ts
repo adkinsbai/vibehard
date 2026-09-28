@@ -6,6 +6,7 @@ import { GET } from "@/app/api/projects/[id]/bom/route";
 import { requestUser } from "@/lib/server/http";
 import { ownedProject } from "@/lib/server/store";
 import { latestProjectBom } from "@/lib/server/project-bom";
+import { bomReferencePrice } from "@/lib/bom-price-snapshots";
 
 vi.mock("@/lib/server/http", async original => ({ ...await original<typeof import("@/lib/server/http")>(), requestUser: vi.fn() }));
 vi.mock("@/lib/server/store", () => ({ ownedProject: vi.fn() }));
@@ -52,4 +53,26 @@ it("escapes spreadsheet formulas, quotes and newlines in model-controlled cells"
   expect(csv).toContain(`"'=HYPERLINK(""evil"")"`);
   expect(csv).toContain(`"'+1,2"`);
   expect(csv).toContain('"¥5（估算）\n待核实"');
+});
+
+it("uses checked supplier snapshots only for an entire matching MPN", () => {
+  expect(bomReferencePrice("BH1750FVI-TR", "¥6–10/件（估算）")).toMatchObject({
+    kind: "supplier", display: "US$0.9515/件", supplierSku: "C78960", minimumQuantity: 1,
+  });
+  expect(bomReferencePrice("ESP32-S3-WROOM-1-N8R8", "¥30（估算）")).toMatchObject({
+    kind: "supplier-reference", display: "US$5.0496/件",
+  });
+  for (const model of ["BH1750/VEML7700", "BH1750FVI-TR 或同类", "ESP32-C3-MINI-1", "MCP73871"]) {
+    expect(bomReferencePrice(model, "¥8–15/件（估算）")).toEqual({ kind: "estimate", display: "¥8–15/件（估算）" });
+  }
+});
+
+it("exports supplier currency, SKU and source separately from model estimates", () => {
+  const csv = projectBomCsv({ ...bom, items: [
+    { item: "光照", model: "BH1750FVI-TR", qty: 2, estCost: "¥6–10/件（估算）", referencePrice: bomReferencePrice("BH1750FVI-TR", "¥6–10/件（估算）") },
+    { item: "主控", model: "ESP32-C3-MINI-1 或同类", qty: 1, estCost: "¥10–18/件（估算）" },
+  ] });
+  expect(csv).toContain('"US$0.9515/件","供应商公开报价快照","LCSC","C78960","1","2026-09-28"');
+  expect(csv).toContain('"¥10–18/件（估算）","模型估算"');
+  expect(csv).not.toContain('"ESP32-C3-MINI-1 或同类","1","US$');
 });

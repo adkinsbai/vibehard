@@ -55,3 +55,18 @@ it("requires idempotency IDs and rejects invalid projects/oversized input", () =
 it("does not create a fabricated markdown report for a failed task", () => {
   expect(() => designMarkdown({ result: null } as Parameters<typeof designMarkdown>[0])).toThrow("尚未生成");
 });
+
+it("labels supplier snapshots and estimated BOM rows in the downloaded design", () => {
+  const markdown = designMarkdown({
+    id: "design", projectId: "project", projectName: "测试工程", requirement: "测试", model: "test-model",
+    knowledgeVersion: null, completedAt: "2026-09-28T00:00:00.000Z",
+    result: { architecture: ["测试架构"], interfaces: ["I2C"], risks: [{ level: "低", desc: "核价" }], bom: [
+      { item: "光照", model: "BH1750FVI-TR", qty: 1, estCost: "¥6–10/件（估算）" },
+      { item: "主控", model: "ESP32-C3-MINI-1 或同类", qty: 1, estCost: "¥10–18/件（估算）" },
+    ] },
+  } as Parameters<typeof designMarkdown>[0]);
+  expect(markdown).toContain("US$0.9515/件（LCSC C78960");
+  expect(markdown).toContain("¥10–18/件（估算）");
+  expect(markdown).not.toContain("¥10–18/件（估算）（模型估算）");
+  expect(markdown).toContain("https://www.lcsc.com/product-detail/C78960.html");
+});

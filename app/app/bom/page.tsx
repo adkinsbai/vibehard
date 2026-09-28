@@ -76,7 +76,7 @@ export default function BomPage() {
       <PageHeader helpKey="bom"
         icon={Package}
         title="物料与 BOM"
-        description="查看项目最新已完成方案的真实 BOM，并导出 CSV；价格仅为模型估算"
+        description="查看项目最新已完成方案的 BOM；精确型号优先展示供应商公开报价，其余保留模型估算"
       />
 
       {/* 方案 BOM */}
@@ -137,15 +137,21 @@ export default function BomPage() {
                     <table className="w-full min-w-[600px] text-sm">
                       <thead><tr className="border-b border-border/60 bg-background/70 text-xs text-muted-foreground">
                         <th className="px-3 py-2 text-left">器件</th><th className="px-3 py-2 text-left">候选型号</th>
-                        <th className="px-3 py-2 text-right">数量</th><th className="px-3 py-2 text-left">参考单价（人民币）</th>
+                        <th className="px-3 py-2 text-right">数量</th><th className="px-3 py-2 text-left">参考单价与依据</th>
                       </tr></thead>
                       <tbody>{bom.items.map((item, index) => <tr key={`${index}-${item.model}`} className="border-b border-border/40 last:border-0">
                         <td className="px-3 py-2">{item.item}</td><td className="px-3 py-2">{item.model}</td>
-                        <td className="px-3 py-2 text-right">{item.qty}</td><td className="px-3 py-2">{item.estCost}</td>
+                        <td className="px-3 py-2 text-right">{item.qty}</td>
+                        <td className="px-3 py-2">
+                          <div>{item.referencePrice?.display ?? item.estCost}</div>
+                          {item.referencePrice?.sourceUrl ? <div className="mt-1 text-xs text-muted-foreground">
+                            {item.referencePrice.kind === "supplier-reference" ? "缺货·仅参考" : "公开报价快照"} · {item.referencePrice.supplier} {item.referencePrice.supplierSku} · {item.referencePrice.minimumQuantity}+ 件 · {item.referencePrice.checkedAt}核查 · <a href={item.referencePrice.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">来源</a>
+                          </div> : <div className="mt-1 text-xs text-muted-foreground">模型估算 · 型号/价格待核实</div>}
+                        </td>
                       </tr>)}</tbody>
                     </table>
                   </div>
-                  <p className="mt-3 text-xs text-muted-foreground">以上单价来自模型估算，非供应商实时价格或库存；采购前须核对型号、封装和报价。</p>
+                  <p className="mt-3 text-xs text-muted-foreground">供应商价格是按精确型号匹配的公开网页快照，不含汇率换算、税费及运费，也非实时报价或库存保证；未匹配项目为人民币模型估算。采购前须复核型号、封装和报价。</p>
                 </>}
         </div>
       )}
