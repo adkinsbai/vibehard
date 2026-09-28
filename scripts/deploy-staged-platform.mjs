@@ -8,17 +8,18 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from
 const [release, mode] = process.argv.slice(2);
 assert.equal(process.getuid(), 0);
 assert.ok(["preflight", "backup", "activate", "rollback", "cleanup"].includes(mode));
-assert.match(release ?? "", /^\/opt\/vibehard\/releases\/20260928-(?:audit-fixes-v1|bom-pricing-v2)$/);
+assert.match(release ?? "", /^\/opt\/vibehard\/releases\/20260928-(?:audit-fixes-v1|bom-pricing-v2|project-dashboard-v1)$/);
 assert.equal(new URL(process.env.DATABASE_URL).pathname, "/vibehard");
 const manifest = JSON.parse(readFileSync(`${release}/RELEASE.json`, "utf8"));
 assert.equal(release, `/opt/vibehard/releases/${manifest.release}`);
-assert.equal(manifest.stage === "audit" ? manifest.release : manifest.previousPlatform, "20260928-audit-fixes-v1");
+assert.equal(manifest.stage === "audit" ? manifest.release : manifest.previousPlatform,
+  manifest.stage === "dashboard" ? "20260928-bom-pricing-v2" : "20260928-audit-fixes-v1");
 const audit = manifest.stage === "audit";
 const previousPlatform = `/opt/vibehard/releases/${manifest.previousPlatform}`;
 const previousWorker = `/opt/vibehard/releases/${manifest.previousWorker}`;
 const previousRetrieval = `/opt/vibehard/releases/${manifest.previousRetrieval}`;
 const node = "/opt/vibehard/runtime/node-v22.23.1";
-const candidate = `vibehard-${audit ? "audit" : "bom"}-preflight-20260928.service`;
+const candidate = `vibehard-${manifest.stage}-preflight-20260928.service`;
 const backup = `${release}/backup`;
 const evidence = `${release}/evidence`;
 const units = audit ? ["vibehard.service", "vibehard-design-worker.service", "vibehard-knowledge-retrieval.service"] : ["vibehard.service"];
