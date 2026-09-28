@@ -1,6 +1,10 @@
 # ldcx.tech deployment
 
-## 2026-09-28 audit fixes and BOM pricing (current)
+## 2026-09-28 project dashboard truth (current)
+
+Platform `20260928-project-dashboard-v1`; design worker/private retrieval remain `20260928-audit-fixes-v1`, while the independent administrator knowledge CLI is `20260928-knowledge-control-v2`. Built from merged Git commit `2280836` only after PR #15's complete CI passed. Candidate, backup, activation, public PCB/Demo/BOM and anonymous access checks passed; protected services and their PIDs stayed unchanged. No database migration, new index, OSS, model or device deployment. The exact rollback command and remaining authenticated-user acceptance are in [dashboard release record](release-project-dashboard-20260928.md).
+
+## 2026-09-28 audit fixes and BOM pricing (previous platform)
 
 Platform `20260928-bom-pricing-v2`; design worker and private retrieval `20260928-audit-fixes-v1`. Cloud Runner remains `/opt/vibehard/cloud-runner`; Gateway/VibeBoard/EDA manager/nginx unchanged. The two stages passed separate candidate, backup, activation and public protection gates. The unactivated BOM v1 package had a verifier-only relative URL bug and must never be used. Full immutable archive hashes, validation limitations and reverse-order rollback are in [release record](release-audit-bom-20260928.md). No DB migration, OSS or model credential change.
 

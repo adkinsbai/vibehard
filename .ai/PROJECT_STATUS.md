@@ -1,5 +1,7 @@
 # 项目状态
 
+- 2026-09-28 21:26：工作台首页真实项目与方案任务状态已发布到 `20260928-project-dashboard-v1`，默认分支合并提交 `2280836`；PR #15 完整 CI（含两套隔离 PG 权限测试）全绿后才从该提交打包。候选/正式/公网 PCB、Demo、BOM 和匿名权限通过，旧 unit/数据库备份及回滚入口保留；Worker/检索/Runner/Gateway/VibeBoard/EDA 服务 PID 未变，云端与设备 Runner 心跳新鲜且 Gateway 有活连接。未做登录态人工项目点击或新付费任务，不能视作完成全部端到端验收。知识 CLI 独立更新已发布但索引未变；服务器约 4.8 GB 可用。见 `docs/release-project-dashboard-20260928.md`。
+
 - 2026-09-28 19:50 已分阶段发布：GitHub PR #9/#10/#11 已合并；平台 `20260928-bom-pricing-v2`，方案 Worker/受限检索 `20260928-audit-fixes-v1`，云端/设备 Runner、Gateway、VibeBoard、EDA manager 未重启。两阶段候选/正式/公网保护检查通过，现网相关服务 active、无重启，Runner 心跳新鲜；知识索引指针、模型配置、数据库结构和 OSS 原件未变。BOM v1 仅脚本预检失败，从未激活，v2 修正后通过。生产登录态 BOM 页面与真实模型任务本轮未复测；详见 `docs/release-audit-bom-20260928.md`。
 
 - 2026-09-28 BOM 公开报价快照本地开发中、未发布：只对完整精确型号匹配 5 个已核查供应商商品页价格；ESP32-S3-WROOM-1-N8R8 缺货价单独标为仅参考，其余仍为人民币模型估算。方案结果/Markdown 与项目 BOM/CSV 共用价格口径并标来源、币种、日期。本轮尚未生产发布或写数据库；以 `docs/design-reference-prices.md` 为准。
