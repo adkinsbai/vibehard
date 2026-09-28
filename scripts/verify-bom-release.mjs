@@ -8,7 +8,7 @@ const get = path => fetch(`${base}${path}`, { redirect: "manual", signal: AbortS
 assert.equal((await get("/login")).status, 200);
 const page = await get("/app/bom");
 assert.equal(page.status, 307);
-assert.equal(new URL(page.headers.get("location")).pathname, "/vibehard/login");
+assert.equal(new URL(page.headers.get("location"), base).pathname, "/vibehard/login");
 for (const path of ["/api/projects", "/api/projects/00000000-0000-4000-8000-000000000001/bom"]) {
   assert.equal((await get(path)).status, 401, path);
 }

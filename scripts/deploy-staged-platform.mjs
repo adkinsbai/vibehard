@@ -8,7 +8,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from
 const [release, mode] = process.argv.slice(2);
 assert.equal(process.getuid(), 0);
 assert.ok(["preflight", "backup", "activate", "rollback", "cleanup"].includes(mode));
-assert.match(release ?? "", /^\/opt\/vibehard\/releases\/20260928-(?:audit-fixes|bom-pricing)-v1$/);
+assert.match(release ?? "", /^\/opt\/vibehard\/releases\/20260928-(?:audit-fixes-v1|bom-pricing-v2)$/);
 assert.equal(new URL(process.env.DATABASE_URL).pathname, "/vibehard");
 const manifest = JSON.parse(readFileSync(`${release}/RELEASE.json`, "utf8"));
 assert.equal(release, `/opt/vibehard/releases/${manifest.release}`);
