@@ -17,6 +17,7 @@ import { GET as detail } from "@/app/api/design/[id]/route";
 import { GET as download } from "@/app/api/design/[id]/download/route";
 import { POST } from "@/app/api/design/route";
 import { processNextDesign } from "@/lib/server/design-job-worker";
+import { latestProjectBom } from "@/lib/server/project-bom";
 import { callLlm, LlmRequestError } from "@/lib/server/llm-client";
 vi.mock("@/lib/server/llm-settings", () => ({ runtimeLlm: vi.fn().mockResolvedValue({ model: "isolated-test", baseUrl: "https://example.invalid", apiKey: "fixture-not-real", protocol: "responses" }), publicLlm: vi.fn() }));
 vi.mock("@/lib/server/llm-client", async original => ({ ...await original<typeof import("@/lib/server/llm-client")>(), callLlm: vi.fn() }));
@@ -145,6 +146,12 @@ if (enabled) {
     expect(await saveDesignDiagnostics(claimed.id, claimed.leaseToken!, claimed.diagnostics!)).toBe(false);
     const owner = claimed.userId === a.id ? a : b;
     const stored = await getDesign(owner.id, claimed.id); expect(stored?.result).toEqual(result);
+    expect(await latestProjectBom(owner.id, claimed.projectId)).toMatchObject({
+      projectId: claimed.projectId, designId: claimed.id, items: result.bom,
+    });
+    expect(await latestProjectBom(owner.id, claimed.projectId, claimed.id)).toMatchObject({ designId: claimed.id, items: result.bom });
+    expect(await latestProjectBom(owner.id, claimed.projectId, crypto.randomUUID())).toBeNull();
+    expect(await latestProjectBom(claimed.userId === a.id ? b.id : a.id, claimed.projectId)).toBeNull();
     const response = await download(req(owner), { params: Promise.resolve({ id: claimed.id }) });
     expect(response.status).toBe(200); expect(await response.text()).toContain("持久化架构");
     expect(await claimDesign()).not.toBeNull();
