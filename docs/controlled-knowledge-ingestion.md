@@ -2,6 +2,8 @@
 
 2026-09-27。本工具是首版管理员/运维 CLI，不是普通用户网页上传，也不授权同伴直接登录生产机。正常团队交付仍走 Git PR。原件继续放私有 OSS；解析/OCR 在离线受控工作目录串行执行，不占用生产 Runner。数据库保存的小型已发布文本不迁移。
 
+本地修复补充（尚未发布）：下述 `build-id` 和多索引集合规则来自 `codex/audit-boundary-fixes`。现网旧 CLI 仍是单索引指针；不能直接用新格式控制文件配旧 Worker。修复验收见 [四项审计缺陷修复](audit-boundary-fixes.md)。
+
 ## 数据流与边界
 
 已验证 OSS 上传清单 + 同哈希本地原件 → 不可变输入快照 → 解析/OCR → 页内切片 → 自动筛查/隔离 → 独立索引包 → 管理员登记 → 隔离评估 → 显式激活。
@@ -41,13 +43,14 @@ python3 scripts/build-controlled-knowledge-index.py \
 
 ## 云端管理命令
 
-发布负责人先将三个工件放到固定 `/opt/vibehard/knowledge/staging/<batch-id>/`；只接受该前缀内普通文件，不接受链接。以 root 的既有部署通道执行打包后的 `knowledge-batch-control.cjs`，并加载平台环境文件（不要将数据库密码放到命令参数或日志）。命令第二参数必须是数据库中当前 `admin` 用户 UUID；`developer/member` 均拒绝。
+发布负责人先将三个工件放到固定 `/opt/vibehard/knowledge/staging/<build-id>/`；只接受该前缀内普通文件，不接受链接。原件 `batchId` 保持不变；索引 `build-id` 为 `<batch-uuid>-v<version>`，例如同一原件批次可登记 v1、v2，两版均不可覆盖。以 root 的既有部署通道执行打包后的 `knowledge-batch-control.cjs`，并加载平台环境文件（不要将数据库密码放到命令参数或日志）。命令第二参数必须是数据库中当前 `admin` 用户 UUID；`developer/member` 均拒绝。
 
 ```text
 register <admin-uuid> <固定 staging 目录> <manifest SHA256>
-evaluate <admin-uuid> <batch-uuid>
-activate <admin-uuid> <batch-uuid>
+evaluate <admin-uuid> <build-id>
+activate <admin-uuid> <build-id>
 rollback <admin-uuid> previous
+rollback <admin-uuid> <build-id>
 disable <admin-uuid> <source SHA256>
 enable <admin-uuid> <source SHA256>
 status <admin-uuid>
@@ -57,9 +60,12 @@ status <admin-uuid>
 
 生产控制目录 `/opt/vibehard/knowledge/control/`：
 
-- `batches/<uuid>/` 不可变工件及登记/评估记录；每索引最多 256 MiB/100,000 片段，最多 3 个登记版本且合计不超过 768 MiB。初始 legacy 基线约 102 MiB，另外保留，不自动删除。配额满时停止导入，由管理员另行制定归档，绝不自动清除当前/回滚版。
-- `current.json/previous.json` 只保存受控索引位置；只重启检索 unit，不重启网页、Runner、Gateway、nginx。切换健康检查失败恢复旧指针和进程。
+- `batches/<build-id>/` 不可变工件及登记/评估记录；兼容读取旧 `batches/<uuid>/` 登记。每索引最多 256 MiB/100,000 片段，最多 3 个登记版本且合计不超过 768 MiB。初始 legacy 基线约 102 MiB，另外保留，不自动删除。配额满时停止导入，由管理员另行制定归档，绝不自动清除当前/回滚版。
+- `current.json/previous.json` 保存 `vibehard-index-set/v1` 集合，兼容读取旧单索引指针。激活不同原件批次追加到集合；激活同批次新版本只替换该批次，旧批次仍可搜索。最多同时读 4 个索引，活动 SQLite 总容量不超过 256 MiB，最多 12 个引用、同一原件最多 2 片、跨批次去重；并发仍为 2。注册容量与活动容量是两项独立限制。
+- `rollback previous` 恢复整个上一集合，指定 `build-id` 则只替换同批次版本。只重启检索 unit，不重启网页、Runner、Gateway、nginx；健康检查失败恢复旧集合、旧进程以及原有回滚历史。
 - `disabled.json` 是全局停用来源哈希，切换/回滚也保留停用列表。片段返回前再次过滤；版本指纹包含清单哈希和停用列表，下一 Agent 回合重建旧资料上下文。
 - `transition-*.json/sources-*.json` 记录操作者和变更。一个操作锁串行化管理；进程异常退出导致遗留锁时，管理员先确认无导入进程，再处理精确锁文件，不自动抢占。
 
-当前阶段发布工具，不新增或替换线上知识正文；仍使用经核对的 legacy 索引及 95 条已发布文本。新批次需按上述步骤单独验收和激活。FTS 是关键词检索，不是向量索引；不能宣称已实现混合/语义检索。
+发布多索引修复时先备份旧 Worker/CLI 及单索引指针，以旧指针验证新 Worker，再同时发布新 CLI。新批次激活前还要在受限候选进程验证整个活动集合的旧/新查询、停用和引用，单批次 `evaluate` 通过不等于合集满足生产负载门槛。回滚到旧版程序时，必须恢复与其匹配的旧单索引指针，不能只回滚二进制。
+
+当前线上仍使用经核对的 legacy 索引及 95 条已发布文本；本地修复不新增或替换线上知识正文。FTS 是关键词检索，不是向量索引；不能宣称已实现混合/语义检索。

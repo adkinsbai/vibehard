@@ -5,6 +5,7 @@ import type { RetrievalSource } from "@/lib/agent/knowledge-retrieval";
 import boardAssociations from "@/lib/server/data/oss-rag-board-associations.json";
 import { readBatchManifest, type BatchManifest } from './knowledge-batch-policy';
 import { searchControlledIndex } from './controlled-index';
+import { MAX_ACTIVE_INDEXES } from './knowledge-index-set';
 
 // This is an internal, read-only service used by the single-concurrency design
 // worker after project ownership has been checked. No browser route or OSS key
@@ -22,8 +23,9 @@ type IndexRow = { id: string; source_sha: string; source_path: string; category:
 type IndexMetadata = { schema?: string; batchId: string; manifestSha256: string; sqliteSha256: string; indexedChunks: number };
 type BoardAssociation = { sourceSha256: string; citationPath: string; category: string };
 type BoardAssociations = { indexSha256: string; manifestSha256: string; boards: Record<string, BoardAssociation[]> };
-let cached: { path: string; database: DatabaseSync; indexSha256: string; manifest?: BatchManifest } | undefined;
-let opening: { path: string; promise: Promise<DatabaseSync> } | undefined;
+type OpenIndex = { database: DatabaseSync; indexSha256: string; manifest?: BatchManifest };
+const cached = new Map<string, OpenIndex>();
+const opening = new Map<string, Promise<OpenIndex>>();
 const boardNames = Object.keys(boardAssociations.boards).sort((a, b) => b.length - a.length);
 const approvedAssociatedShas = new Set(Object.values(boardAssociations.boards).flat().map(entry => entry.sourceSha256));
 
@@ -63,9 +65,8 @@ function referenceId(chunkId: string) {
 }
 
 async function openIndex(path: string) {
-  if (cached?.path === path) return cached.database;
-  cached?.database.close();
-  cached = undefined;
+  if (cached.has(path)) return cached.get(path)!;
+  if (cached.size + opening.size >= MAX_ACTIVE_INDEXES) throw new Error('Active index handle budget exceeded');
   const meta = JSON.parse(readFileSync(`${path}.meta.json`, "utf8")) as IndexMetadata;
   const manifest = meta.schema === 'vibehard-controlled-index/v2' ? readBatchManifest(path, meta.manifestSha256) : undefined;
   if ((manifest ? manifest.batchId !== meta.batchId || manifest.sqliteSha256 !== meta.sqliteSha256 || manifest.indexedChunks !== meta.indexedChunks : meta.batchId !== INDEX_BATCH || meta.manifestSha256 !== APPROVED_MANIFEST_SHA) ||
@@ -86,8 +87,9 @@ async function openIndex(path: string) {
     if (database.prepare("SELECT count(*) AS n FROM chunks").get()?.n !== meta.indexedChunks) {
       throw new Error("Knowledge index row count mismatch");
     }
-    cached = { path, database, indexSha256: digest, manifest };
-    return database;
+    const entry = { database, indexSha256: digest, manifest };
+    cached.set(path, entry);
+    return entry;
   } catch (error) { database.close(); throw error; }
 }
 
@@ -154,14 +156,15 @@ export async function searchIndexedKnowledge(requirement: string, indexPath = pr
   if (!indexPath) return [];
   // Open only the operator-selected immutable path. Versioned v2 policy is
   // checked before interpreting source/board associations; legacy remains exact.
-  if (!opening || opening.path !== indexPath) {
-    const promise = openIndex(indexPath).finally(() => { if (opening?.promise === promise) opening = undefined; });
-    opening = { path: indexPath, promise };
+  if (!opening.has(indexPath)) {
+    const promise = openIndex(indexPath).finally(() => { opening.delete(indexPath); });
+    opening.set(indexPath, promise);
   }
-  const opened = await opening.promise;
-  if (cached?.manifest) {
+  const entry = await opening.get(indexPath)!;
+  const database = entry.database;
+  if (entry.manifest) {
     const queryTerms = terms(requirement);
-    return queryTerms.length ? searchControlledIndex(opened, cached.manifest, requirement, queryTerms) : [];
+    return queryTerms.length ? searchControlledIndex(database, entry.manifest, requirement, queryTerms) : [];
   }
   // An explicit different board must never pick up ESP32-S3 corpus fragments.
   if (/\brv1106\b|\brv1126b\b/i.test(requirement) && !/\besp32[- ]?s3\b/i.test(requirement)) return [];
@@ -174,12 +177,7 @@ export async function searchIndexedKnowledge(requirement: string, indexPath = pr
   // Quoted terms are passed as SQLite parameters; no user-controlled path or
   // identifier is interpolated into SQL. Board hash lists are bundled evidence.
   const query = queryTerms.map(term => `text:${JSON.stringify(term)}`).join(" OR ");
-  if (!opening || opening.path !== indexPath) {
-    const promise = openIndex(indexPath).finally(() => { if (opening?.promise === promise) opening = undefined; });
-    opening = { path: indexPath, promise };
-  }
-  const database = await opening.promise;
-  if (associations.indexSha256 !== cached?.indexSha256 || associations.manifestSha256 !== APPROVED_MANIFEST_SHA) {
+  if (associations.indexSha256 !== entry.indexSha256 || associations.manifestSha256 !== APPROVED_MANIFEST_SHA) {
     throw new Error("Board associations do not match the approved knowledge index");
   }
   const boardMatches = board ? boardRows(database, board, queryTerms, preferredCategory(requirement), associations) : undefined;
@@ -212,4 +210,4 @@ export async function searchIndexedKnowledge(requirement: string, indexPath = pr
   return result;
 }
 
-export function closeIndexedKnowledge() { cached?.database.close(); cached = undefined; }
+export function closeIndexedKnowledge() { for (const entry of cached.values()) entry.database.close(); cached.clear(); }

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     const user = await createUser({ email: parsed.data.email, passwordHash: await hashPassword(parsed.data.password), inviteCode: parsed.data.inviteCode.trim().toUpperCase() });
     const sessionUser = { id: user.id, email: user.email, name: user.name, role: user.role };
     const response = NextResponse.json({ user: sessionUser }, { status: 201 });
-    writeSessionCookies(response, sessionUser);
+    writeSessionCookies(response, user);
     await writeAuditLog({ userId: user.id, action: "auth.register", metadata: { address: requestAddress(request) } });
     return response;
   } catch (error) {

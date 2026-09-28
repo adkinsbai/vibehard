@@ -69,12 +69,12 @@ const tools = [
   {
     id: "bom",
     title: "物料与 BOM",
-    description: "从物料库自动选型组合生成 BOM，一键导出，或对接立创商城 API 一键下单、一键 SMT。",
+    description: "查看工程已完成方案的 BOM，核对候选型号和模型估算价格，并下载实际 CSV 文件。",
     icon: Package,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10",
     borderColor: "hover:border-orange-500/35",
-    stats: "一键下单",
+    stats: "方案 BOM",
   },
   {
     id: "embedded",

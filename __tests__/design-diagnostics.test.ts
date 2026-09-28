@@ -25,11 +25,11 @@ it("records ordered phases and model revision without input, key, raw response, 
 });
 it.each(["runtimeLlm", "retrieveDesignKnowledge", "callLlm"] as const)("times out hung %s at the exact stage, persists error, and never retries", async name => {
   vi.useFakeTimers(); const deps = fixture(); deps[name].mockImplementation(() => new Promise(() => {}));
-  const work = processNextDesign(deps, 100); await vi.advanceTimersByTimeAsync(101); await work;
+  const work = expect(processNextDesign(deps, 100)).rejects.toMatchObject({ name: 'DesignStorageUnavailableError' }); await vi.advanceTimersByTimeAsync(101); await work;
   const outcome = deps.finishDesign.mock.calls[0][2];
   expect(outcome.diagnostics.errorCode).toBe("TIMEOUT");
   expect(outcome.diagnostics.currentPhase).toBe({ runtimeLlm: "config", retrieveDesignKnowledge: "retrieval", callLlm: "model" }[name]);
-  expect(outcome.diagnostics.totalMs).toBe(100); expect(deps.callLlm.mock.calls.length).toBeLessThanOrEqual(1);
+  expect(outcome.diagnostics.totalMs).toBe(90); expect(deps.callLlm.mock.calls.length).toBeLessThanOrEqual(1); // reserve 10ms for settlement inside the 100ms total
 });
 it.each(["not json", JSON.stringify({ architecture: [] })])("retains format failure at validation without writing raw content", async text => {
   const deps = fixture(); deps.callLlm.mockResolvedValue(text); await processNextDesign(deps);
@@ -48,7 +48,7 @@ it("aborts before the model when lease is lost", async () => {
 it("ignores a late configuration result after timeout and never advances to a paid model call", async () => {
   vi.useFakeTimers(); const deps = fixture(); let release!: (value: unknown) => void;
   deps.runtimeLlm.mockImplementation(() => new Promise(resolve => { release = resolve; }));
-  const work = processNextDesign(deps, 100); await vi.advanceTimersByTimeAsync(101); await work;
+  const work = expect(processNextDesign(deps, 100)).rejects.toMatchObject({ name: 'DesignStorageUnavailableError' }); await vi.advanceTimersByTimeAsync(101); await work;
   release({ model: "late", protocol: "responses", revision: "old", apiKey: "secret" }); await vi.advanceTimersByTimeAsync(1);
   expect(deps.callLlm).not.toHaveBeenCalled(); expect(deps.finishDesign).toHaveBeenCalledTimes(1);
   expect(deps.finishDesign.mock.calls[0][2].diagnostics.currentPhase).toBe("config");

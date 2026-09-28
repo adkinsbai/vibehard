@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
 import postgres from "postgres";
-import { closeDb, requireDb } from "@/lib/db";
+import { closeDb, configureWorkerDatabaseTimeouts, requireDb } from "@/lib/db";
 import { sharedKnowledge, users } from "@/lib/db/schema";
 import { runtimeLlm } from "@/lib/server/llm-settings";
 import { callLlm } from "@/lib/server/llm-client";
@@ -35,6 +35,7 @@ async function main() {
     assert.equal(status, 0, "Isolated model acceptance did not pass; see stage evidence"); return;
   }
   assert.equal(new URL(process.env.DATABASE_URL!).pathname, "/vibehard_reliability_test");
+  configureWorkerDatabaseTimeouts();
   const input: Buffer[] = []; for await (const chunk of process.stdin) input.push(Buffer.from(chunk));
   const config: RuntimeLlm = JSON.parse(Buffer.concat(input).toString());
   const corpus = postgres(isolated("vibehard_rag_test").DATABASE_URL, { max: 1 });
@@ -86,6 +87,6 @@ async function main() {
     }
     console.log(JSON.stringify({ acceptance: "design-reliability-v1", total: report.length, failures, passed: failures === 0, model: config.model, revision: config.revision, rssMiB: process.memoryUsage().rss / 1024 ** 2 }));
     if (failures) process.exitCode = 1;
-  } finally { index.close(); closeIndexedKnowledge(); await closeDb(); }
+  } finally { index.close(); closeIndexedKnowledge(); await closeDb(1); }
 }
 void main().catch(() => { console.error("Isolated acceptance failed (details suppressed; inspect retained stage diagnostics)"); process.exitCode = 1; });

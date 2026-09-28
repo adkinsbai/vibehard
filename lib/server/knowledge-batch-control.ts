@@ -5,9 +5,12 @@ import { DatabaseSync } from 'node:sqlite';
 import { z } from 'zod';
 import { digest, readBatchManifest } from './knowledge-batch-policy';
 import { closeIndexedKnowledge, searchIndexedKnowledge } from './oss-knowledge-index';
+import { activateInSet, indexSet, type IndexEntry, type IndexSet } from './knowledge-index-set';
 
 export const INDEX_BUDGET = 256 * 1024 ** 2;
 export const RETENTION_BUDGET = 768 * 1024 ** 2;
+export const buildIdSchema = z.string().regex(/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}(?:-v[1-9][0-9]*)?$/);
+export const indexBuildId = (manifest: { batchId: string; version: number }) => `${manifest.batchId}-v${manifest.version}`;
 export function requireBatchAdministrator(actor: { id: string; role: string } | undefined) {
   if (!actor || actor.role !== 'admin' || !z.uuid().safeParse(actor.id).success) throw Error('ADMIN_REQUIRED');
 }
@@ -59,7 +62,7 @@ export function registerBatch(root: string, staging: string, manifestHash: strin
   const entries = readdirSync(batches, { withFileTypes: true }).filter(e => e.isDirectory());
   const used = entries.reduce((n,e) => n + statSync(join(batches, e.name, 'knowledge-fts.sqlite')).size, 0);
   if (entries.length >= 3 || used + statSync(index).size > RETENTION_BUDGET) throw Error('RETENTION_BUDGET_EXCEEDED_ARCHIVE_EXPLICITLY');
-  const target = join(batches, manifest.batchId); mkdirSync(target, { mode: 0o750 });
+  const target = join(batches, indexBuildId(manifest)); mkdirSync(target, { mode: 0o750 });
   try {
     for (const suffix of ['', '.meta.json', '.manifest.json']) { copyFileSync(index + suffix, join(target, `knowledge-fts.sqlite${suffix}`), 1); chmodSync(join(target, `knowledge-fts.sqlite${suffix}`), 0o640); }
     atomicControl(join(target, 'registration.json'), { actorId, manifestHash, at: new Date().toISOString(), status: 'registered' });
@@ -83,19 +86,28 @@ export async function evaluateBatch(index: string, manifestHash: string) {
   } finally { closeIndexedKnowledge(); }
 }
 export function selectedBatch(root: string, id: string) {
-  z.uuid().parse(id); const directory = join(root, 'batches', id); const index = join(directory, 'knowledge-fts.sqlite');
+  buildIdSchema.parse(id); const directory = join(root, 'batches', id); const index = join(directory, 'knowledge-fts.sqlite');
   const registration = JSON.parse(readFileSync(join(directory, 'registration.json'), 'utf8'));
   const evaluation = JSON.parse(readFileSync(join(directory, 'evaluation.json'), 'utf8'));
   if (!evaluation.passed || evaluation.manifestHash !== registration.manifestHash || evaluation.sqliteSha256 !== fileHash(index) || evaluation.p95Ms >= 500 || evaluation.rssBytes > 384 * 1024 ** 2 || evaluation.requests !== 60) throw Error('EVALUATION_REQUIRED');
   const manifest = readBatchManifest(index, registration.manifestHash);
-  return { id: manifest.batchId, path: index, manifestHash: registration.manifestHash };
+  if (id !== manifest.batchId && id !== indexBuildId(manifest)) throw Error('BUILD_ID_MISMATCH');
+  return { id, batchId: manifest.batchId, path: index, manifestHash: registration.manifestHash };
 }
-export async function transitionBatch(root: string, target: { id: string; path: string; manifestHash?: string }, actorId: string, command: string, restart: (path: string) => Promise<void>) {
-  const currentPath = join(root, 'current.json'); const previous = JSON.parse(readFileSync(currentPath, 'utf8'));
+export async function transitionBatch(root: string, target: IndexEntry | IndexSet, actorId: string, command: string, restart: (selection: IndexSet) => Promise<void>) {
+  const currentPath = join(root, 'current.json'); const previous = indexSet(JSON.parse(readFileSync(currentPath, 'utf8')));
+  const selection = 'indexes' in target ? indexSet(target) : activateInSet(previous, target);
+  const previousPath = join(root, 'previous.json');
+  const oldPrevious = existsSync(previousPath) ? readFileSync(previousPath, 'utf8') : undefined;
   atomicControl(join(root, 'previous.json'), previous);
   atomicControl(join(root, `transition-${Date.now()}-${randomUUID()}.json`), { command, actorId, previous, target, at: new Date().toISOString() });
-  atomicControl(currentPath, target);
-  try { await restart(target.path); }
-  catch (error) { atomicControl(currentPath, previous); await restart(previous.path); throw error; }
-  return { command, active: target.id, previous: previous.id };
+  atomicControl(currentPath, selection);
+  try { await restart(selection); }
+  catch (error) {
+    atomicControl(currentPath, previous);
+    if (oldPrevious) atomicControl(previousPath, JSON.parse(oldPrevious));
+    else unlinkSync(previousPath);
+    await restart(previous); throw error;
+  }
+  return { command, active: selection.indexes.map(x=>x.id), previous: previous.indexes.map(x=>x.id) };
 }
