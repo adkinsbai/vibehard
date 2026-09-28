@@ -1,5 +1,5 @@
 // Package the reviewed September 28 audit and BOM releases from immutable Git trees.
-// Usage: node scripts/package-staged-platform.mjs <source-dir> <git-ref> <audit|bom|dashboard|pricefreeze> <output-dir> <previous-RELEASE.json>
+// Usage: node scripts/package-staged-platform.mjs <source-dir> <git-ref> <audit|bom|dashboard|pricefreeze|deviceentry> <output-dir> <previous-RELEASE.json>
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -7,14 +7,14 @@ import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, writeFileSyn
 import path from "node:path";
 
 const [source, ref, stage, output, previousManifestPath] = process.argv.slice(2);
-const names = { audit: "20260928-audit-fixes-v1", bom: "20260928-bom-pricing-v2", dashboard: "20260928-project-dashboard-v1", pricefreeze: "20260928-bom-price-freeze-v1" };
+const names = { audit: "20260928-audit-fixes-v1", bom: "20260928-bom-pricing-v2", dashboard: "20260928-project-dashboard-v1", pricefreeze: "20260928-bom-price-freeze-v1", deviceentry: "20260928-rv1126b-entry-v1" };
 assert.ok(stage in names);
 assert.match(output ?? "", /^\/private\/tmp\/vibehard-staged-release\.[A-Za-z0-9]+$/);
 assert.ok(path.isAbsolute(source) && existsSync(previousManifestPath));
 const release = path.join(output, names[stage]);
 assert.ok(!existsSync(release), "Never overwrite an existing release");
 const previous = JSON.parse(readFileSync(previousManifestPath, "utf8"));
-assert.equal(previous.release, stage === "audit" ? "20260927-unified-retrieval-v1" : stage === "bom" ? names.audit : stage === "dashboard" ? names.bom : names.dashboard);
+assert.equal(previous.release, stage === "audit" ? "20260927-unified-retrieval-v1" : stage === "bom" ? names.audit : stage === "dashboard" ? names.bom : stage === "pricefreeze" ? names.dashboard : names.pricefreeze);
 const hash = file => createHash("sha256").update(readFileSync(file)).digest("hex");
 const run = (command, args, cwd) => {
   const result = spawnSync(command, args, { cwd, encoding: "utf8", timeout: 120_000 });
@@ -37,6 +37,8 @@ if (stage === "audit") {
   for (const file of ["lib/server/project-bom.ts", "lib/bom-price-snapshots.ts", "app/api/projects/[id]/bom/route.ts"]) assert.ok(existsSync(path.join(source, file)));
 } else if (stage === "dashboard") {
   for (const file of ["app/app/page.tsx", "components/app/dashboard-grid.tsx"]) assert.ok(existsSync(path.join(source, file)));
+} else if (stage === "deviceentry") {
+  for (const file of ["app/app/taishan/page.tsx", "components/app/app-nav.tsx", "components/app/app-sidebar.tsx", "components/app/dashboard-grid.tsx", "lib/module-help.ts"]) assert.ok(existsSync(path.join(source, file)));
 } else {
   for (const file of ["lib/bom-price-snapshots.ts", "lib/server/design-job-worker.ts", "components/app/design-result.tsx"]) assert.ok(existsSync(path.join(source, file)));
 }
@@ -88,9 +90,16 @@ if (stage === "pricefreeze") {
   ]);
   assert.deepEqual(newRuntime, []);
 }
+if (stage === "deviceentry") {
+  assert.deepEqual(changedRuntime.sort(), [
+    "app/app/taishan/page.tsx", "components/app/app-nav.tsx", "components/app/app-sidebar.tsx",
+    "components/app/dashboard-grid.tsx", "lib/module-help.ts",
+  ]);
+  assert.deepEqual(newRuntime, []);
+}
 const manifest = { release: names[stage], stage, previousPlatform: previous.release,
-  previousWorker: stage === "audit" ? previous.release : names.audit,
-  previousRetrieval: stage === "dashboard" || stage === "pricefreeze" ? names.audit : "20260927-controlled-ingestion-v1", gitCommit: ref,
+  previousWorker: stage === "audit" ? previous.release : stage === "deviceentry" ? names.pricefreeze : names.audit,
+  previousRetrieval: ["dashboard", "pricefreeze", "deviceentry"].includes(stage) ? names.audit : "20260927-controlled-ingestion-v1", gitCommit: ref,
   sourceSha256: hashes, artifacts, toolSha256: toolHashes, changedRuntime, newRuntime,
   excluded: ["database migration", "OSS write", "model settings", "Gateway", "Runner", "VibeBoard", "EDA manager", "nginx"] };
 writeFileSync(path.join(release, "RELEASE.json"), JSON.stringify(manifest, null, 2));
