@@ -2,6 +2,7 @@ import { DESIGN_MODEL_MS } from "@/lib/agent/design-jobs";
 import { closePhase, designPhases, enterPhase, queuedDiagnostics, type DesignDiagnostics, type DesignPhase } from "@/lib/agent/design-diagnostics";
 import { designMessages } from "@/lib/agent/design-prompt";
 import { designResultSchema } from "@/lib/agent/llm";
+import { freezeBomPrices } from "@/lib/bom-price-snapshots";
 import { HARDWARE_DESIGN_KNOWLEDGE } from "@/lib/agent/hardware-design-knowledge";
 import { claimDesign, finishDesign, saveDesignDiagnostics } from "./design-job-store";
 import { callLlm, designRequestPolicy, LlmRequestError } from "./llm-client";
@@ -63,7 +64,7 @@ export async function processNextDesign(deps = defaults, timeoutMs = DESIGN_MODE
       const parsed = designResultSchema.omit({ retrieval: true }).safeParse(raw);
       if (!parsed.success) throw new LlmRequestError("模型返回的方案字段不完整，请手动重试", 502, "FORMAT");
       await stage("saving");
-      const saved = await deps.finishDesign(job.id, job.leaseToken!, { result: { ...parsed.data, retrieval: retrievalEvidence(retrieval) }, model: config.model, knowledgeVersion: HARDWARE_DESIGN_KNOWLEDGE.version, diagnostics: structuredClone(diagnostics) }, executionDeadline);
+      const saved = await deps.finishDesign(job.id, job.leaseToken!, { result: { ...freezeBomPrices(parsed.data), retrieval: retrievalEvidence(retrieval) }, model: config.model, knowledgeVersion: HARDWARE_DESIGN_KNOWLEDGE.version, diagnostics: structuredClone(diagnostics) }, executionDeadline);
       if (!saved) throw new LlmRequestError("任务保存期限或租约已失效，请手动重试", 409, Date.now() >= executionDeadline ? "TIMEOUT" : "LEASE_EXPIRED");
     }, Math.max(1, executionDeadline - Date.now()));
   } catch (error) {

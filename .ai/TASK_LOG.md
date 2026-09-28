@@ -460,6 +460,13 @@
 - Validation: PR #15 Verify 全绿；合并提交 `2280836` 的 `/vibehard` 构建和完整源码清单通过。工作台候选、正式回环与公网 PCB/Demo/BOM/匿名权限通过，切换前备份；受保护服务 PID、Runner 新鲜心跳与 Gateway 活连接复核。正式平台 `20260928-project-dashboard-v1`，未迁移数据库或改模型/OSS。
 - Limits: 生产浏览器登录态项目/BOM 点击、新付费方案和 RV1126B USB 本轮未复测；服务器约 4.8 GB 空余，8 GB 原件禁止云端本地处理。详见 `docs/release-project-dashboard-20260928.md`。
 
+## 2026-09-28 Task: BOM 价格依据冻结（本地候选）
+
+- Goal: 避免应用报价表更新导致同一历史方案的供应商报价无痕改变。
+- Changes: 新方案经模型结构校验后，由服务端保存每项精确型号的公开报价依据或模型估算；原始模型提供的报价字段一律剔除。页面、Markdown、项目 BOM/CSV 读取保存值；旧方案标明“当前参考报价”，不伪称生成时留痕。
+- Validation: 价格匹配、伪造字段剥离、快照优先、CSV 与 UI 定向 20 项通过；类型和定向 lint 通过。完整 CI、候选 HTTP、生产发布另行门禁。
+- Boundary: 没有实时供应商接口或采购承诺；旧记录保持兼容且不回填虚构历史价格；无数据库迁移或模型/OSS 配置更改。
+
 # 2026-09-27 统一检索候选
 
 - 在独立 `codex/unified-knowledge` 工作树实现方案/Agent/EDA 服务端权限与引用入口、私有 socket Worker、旧 Runner 降级和语料版本上下文重置。

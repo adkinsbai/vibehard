@@ -133,6 +133,7 @@ export default function BomPage() {
               : !bom ? <p className="mt-8 text-sm text-muted-foreground">此工程尚无已完成的方案 BOM。<Link className="ml-1 text-primary" href="/app/design">去生成方案</Link></p>
                 : <>
                   <p className="mb-3 text-xs text-muted-foreground">来源：方案 {bom.designId} · {new Date(bom.completedAt).toLocaleString("zh-CN")} · {bom.model ?? "未记录模型"}</p>
+                  <p className="mb-3 text-xs text-muted-foreground">{bom.priceRecorded ? "价格依据已在方案完成时保存，后续报价表更新不会改写本方案。" : "历史方案未保存生成时价格；下列供应商报价是当前参考快照，不代表当时价格。"}</p>
                   <div className="overflow-x-auto rounded-lg border border-border/60">
                     <table className="w-full min-w-[600px] text-sm">
                       <thead><tr className="border-b border-border/60 bg-background/70 text-xs text-muted-foreground">

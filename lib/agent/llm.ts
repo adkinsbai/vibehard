@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { retrievalEvidenceSchema } from "./retrieval-payload";
+import type { BomReferencePrice } from "@/lib/bom-price-snapshots";
 
 export const llmPurpose = z.enum(["design", "agent"]);
 export type LlmPurpose = z.infer<typeof llmPurpose>;
@@ -35,4 +36,8 @@ export const designResultSchema = z.object({
   // Added by the server after parsing model output; never trust model-provided citations.
   retrieval: retrievalEvidenceSchema.optional(),
 });
-export type DesignResult = z.infer<typeof designResultSchema>;
+type ModelDesignResult = z.infer<typeof designResultSchema>;
+export type DesignResult = Omit<ModelDesignResult, "bom"> & {
+  // The worker adds this after parsing the model JSON. Model-provided prices are stripped.
+  bom: (ModelDesignResult["bom"][number] & { referencePrice?: BomReferencePrice })[];
+};

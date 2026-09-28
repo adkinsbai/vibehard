@@ -46,6 +46,23 @@ it("enforces a hard deadline even when DNS/config/provider never resolves", asyn
 it("does not mask a successful result and clears the deadline", async () => {
   vi.useFakeTimers(); expect(await boundedDesign(async () => "done", 100)).toBe("done"); expect(vi.getTimerCount()).toBe(0);
 });
+it("persists server-selected BOM price evidence and strips a model-supplied price", async () => {
+  const deps = {
+    claimDesign: vi.fn().mockResolvedValue({ id: crypto.randomUUID(), userId: crypto.randomUUID(), projectId: crypto.randomUUID(),
+      requirement: "BH1750 光照检测", leaseToken: crypto.randomUUID(), createdAt: new Date(), diagnostics: queuedDiagnostics(new Date()) }),
+    saveDesignDiagnostics: vi.fn().mockResolvedValue(true),
+    finishDesign: vi.fn().mockResolvedValue(true),
+    runtimeLlm: vi.fn().mockResolvedValue({ baseUrl: "https://example.invalid/v1", model: "test-model", protocol: "responses", apiKey: "test-key", revision: crypto.randomUUID() }),
+    retrieveDesignKnowledge: vi.fn().mockResolvedValue({ status: "no-match", method: "keyword-chunks-v1", references: [], context: "" }),
+    callLlm: vi.fn().mockResolvedValue(JSON.stringify({ architecture: ["I2C"], interfaces: ["I2C"], risks: [{ level: "低", desc: "核价" }], bom: [
+      { item: "光照", model: "BH1750FVI-TR", qty: 1, estCost: "¥6–10/件（估算）", referencePrice: { kind: "supplier", display: "伪造报价" } },
+    ] })),
+  };
+  expect(await processNextDesign(deps, 5000)).toBe(true);
+  const saved = deps.finishDesign.mock.calls[0][2];
+  expect(saved.result.bom[0].referencePrice).toMatchObject({ display: "US$0.9515/件", checkedAt: "2026-09-28", supplierSku: "C78960" });
+  expect(JSON.stringify(saved.result)).not.toContain("伪造报价");
+});
 it("requires idempotency IDs and rejects invalid projects/oversized input", () => {
   expect(designJobInput.safeParse({ requestId: crypto.randomUUID(), requirement: "valid requirement" }).success).toBe(true);
   expect(designJobInput.safeParse({ requirement: "missing key" }).success).toBe(false);
