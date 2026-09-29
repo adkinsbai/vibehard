@@ -1,5 +1,18 @@
 # 文档索引
 
+- [RV1126B 设备入口发布](release-rv1126b-entry-20260928.md)：独立 VibeBoard 入口说明、前端候选/正式保护检查、边界与回滚。
+
+- [BOM 价格依据留痕发布](release-bom-price-freeze-20260928.md)：网页与方案 Worker 双服务候选、备份/上线/回滚及生产登录态待验。
+
+- [项目工作台真实数据发布](release-project-dashboard-20260928.md)：CI 追补、候选/正式验收、容量、登录态待验与回滚入口。
+
+- [9/28 审计修复与真实 BOM 发布](release-audit-bom-20260928.md)：两阶段 GitHub/候选/备份/上线证据、未覆盖验收和回滚步骤。
+- [平台功能验收矩阵](platform-feature-acceptance-matrix.md)：逐模块记录真实输入、实际执行、持久结果、失败提示和下一道验收门槛；明确本地与生产边界。
+- [四项修复与 BOM 候选验收](audit-bom-candidate-20260928.md)：隔离库、云端独立候选、检索资源限制、失败定位与候选清理；未切换生产。
+- [四项修复与真实 BOM 分项评审](review-audit-bom-20260928.md)：代码评审发现、修正、独立提交范围及正式发布前剩余闸门。
+- [四项审计缺陷修复](audit-boundary-fixes.md)：Worker 有界收尾、多批次/版本索引、改密撤销会话；本地修复与回归结果，未发布。
+- [两轮代码检查与 Debug 报告](code-audit-20260927.md)：修复前基线、两轮回归与真实隔离数据库复现、4 个确认问题及验证边界。
+
 - [管理员受控批量入库](controlled-knowledge-ingestion.md)：不可变清单、离线 OCR/切分、隔离评估、索引版本/停用/回滚；无用户大文件直传。
 
 - [方案可靠性与统一检索交付](reliability-knowledge-delivery-20260927.md)：三阶段已发布，任务诊断、隔离模型验收、权限/引用与回滚证据。

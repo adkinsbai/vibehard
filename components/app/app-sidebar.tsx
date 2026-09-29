@@ -54,7 +54,7 @@ const navSections: NavSection[] = [
     items: [
       { href: "/app/debug", label: "AI 调试", icon: Bug },
       { href: "/app/embedded", label: "嵌入式开发", icon: MonitorSmartphone },
-      { href: "/app/taishan", label: "泰山派开发", icon: Terminal },
+      { href: "/app/taishan", label: "设备开发", icon: Terminal },
     ],
   },
   {

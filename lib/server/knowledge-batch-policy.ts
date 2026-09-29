@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const digest = z.string().regex(/^[a-f0-9]{64}$/);
 const location = z.string().min(1).max(1200).refine(p => !p.startsWith('/') && !p.includes('\\') && !p.split(/[!/]/).includes('..') && !/^[a-z]:/i.test(p) && !/[\x00-\x1f]/.test(p));
 export const batchManifestSchema = z.object({
-  schema: z.literal('vibehard-controlled-index/v2'), batchId: z.uuid(), version: z.number().int().positive(),
+  schema: z.literal('vibehard-controlled-index/v2'), batchId: z.uuid(), version: z.number().int().min(1).max(1_000_000),
   sqliteSha256: digest, indexedChunks: z.number().int().min(1).max(100000),
   createdAt: z.iso.datetime(), reviewMethod: z.literal('automatic_rules_v1'), manualReview: z.literal(false),
   sources: z.array(z.object({ sha256: digest, path: location, aliases: z.array(location).max(128),

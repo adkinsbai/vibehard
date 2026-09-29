@@ -1,0 +1,71 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - codex/agent-platform-foundation
+
+permissions:
+  contents: read
+
+jobs:
+  platform:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: local-test-only
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          runtime: node@22.23.1
+          require-lockfile: true
+          cache: true
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+      - name: Unit and browser-component tests
+        run: pnpm test
+      - name: Build service bundles
+        run: pnpm build:services
+      - name: Build platform
+        run: pnpm build
+      - name: Create disposable databases
+        run: |
+          node --input-type=module -e '
+            import postgres from "postgres";
+            const sql = postgres("postgres://postgres:local-test-only@127.0.0.1:5432/postgres");
+            await sql.unsafe("create database vibehard_design_test");
+            await sql.unsafe("create database vibehard_rag_test");
+            await sql.end();
+          '
+      - name: Migrate design test database
+        env:
+          DATABASE_URL: postgres://postgres:local-test-only@127.0.0.1:5432/vibehard_design_test
+        run: pnpm db:migrate
+      - name: Test project and design database boundaries
+        env:
+          DATABASE_URL: postgres://postgres:local-test-only@127.0.0.1:5432/vibehard_design_test
+          VIBEHARD_DESIGN_TEST_DATABASE: "1"
+        run: pnpm exec vitest run __tests__/design-postgres.test.ts __tests__/store-postgres.test.ts __tests__/knowledge-postgres.test.ts
+      - name: Migrate RAG test database
+        env:
+          DATABASE_URL: postgres://postgres:local-test-only@127.0.0.1:5432/vibehard_rag_test
+        run: pnpm db:migrate
+      - name: Test knowledge access boundaries
+        env:
+          DATABASE_URL: postgres://postgres:local-test-only@127.0.0.1:5432/vibehard_rag_test
+          VIBEHARD_RAG_TEST_DATABASE: "1"
+        run: pnpm exec vitest run __tests__/shared-knowledge-postgres.test.ts

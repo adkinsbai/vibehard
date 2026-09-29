@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { DesignResult } from "./llm";
 import type { DesignDiagnostics } from "./design-diagnostics";
+import { recordedOrCurrentBomPrice } from "@/lib/bom-price-snapshots";
 
 export const designJobInput = z.object({
   requestId: z.uuid(),
@@ -25,9 +26,12 @@ export const designStatus = { queued: "排队中", running: "生成中", complet
 export function designMarkdown(job: DesignJob) {
   if (!job.result) throw new Error("方案尚未生成");
   return ["# 硬件方案草案", `项目：${job.projectName}`, `任务：${job.id}`, `模型：${job.model}`, `内置规则：${job.knowledgeVersion}`,
-    `时间：${job.completedAt}`, `需求：${job.requirement}`, "参考价格为小批量 AI 估算，未经过实时询价、数据手册逐项核验或电气验证。",
+    `时间：${job.completedAt}`, `需求：${job.requirement}`, `精确型号的供应商价格为标注日期的公开网页快照（原币种，不含税费、运费及汇率换算），其余为小批量 AI 估算；均非实时询价，未逐项核验数据手册或电气设计。${job.result.bom.some(x => !x.referencePrice) ? "历史方案未保存生成时价格，以下供应商报价为当前参考快照。" : "本方案价格依据已随结果保存，后续报价表更新不会改写此记录。"}`,
     "## 知识库检索记录", !job.result.retrieval ? "历史方案未记录检索来源。" : job.result.retrieval.status === "no-match" ? "未检索到匹配的可用资料；使用内置规则和模型通用知识，关键参数仍需核验。" : job.result.retrieval.references.map(r => `- ${r.title} v${r.version}（${r.reviewStatus === "auto-indexed" ? "平台自动入库、未人工复核" : r.scope === "platform" ? "平台已发布" : "本项目已发布"}）；来源：${r.source}；SHA256：${r.sha256}；片段：${r.excerpt.replace(/\s+/g, " ")}`).join("\n"),
     ...(job.result.retrieval?.status === "partial" ? ["部分知识不可用：本次并非完整知识库检索。"] : []),
-    "## 架构", ...job.result.architecture.map(x => `- ${x}`), "## BOM", ...job.result.bom.map(x => `- ${x.item}：${x.model} × ${x.qty}；参考单价 ${x.estCost}`),
+    "## 架构", ...job.result.architecture.map(x => `- ${x}`), "## BOM", ...job.result.bom.map(x => {
+      const price = recordedOrCurrentBomPrice(x);
+      return `- ${x.item}：${x.model} × ${x.qty}；参考单价 ${price.display}${price.kind === "estimate" ? "" : `（${price.supplier} ${price.supplierSku}，${price.minimumQuantity}+ 件，${price.checkedAt} 核查${price.kind === "supplier-reference" ? "，缺货仅供参考" : ""}，${price.sourceUrl}）`}`;
+    }),
     "## 接口", ...job.result.interfaces.map(x => `- ${x}`), "## 风险", ...job.result.risks.map(x => `- [${x.level}] ${x.desc}`)].join("\n\n");
 }

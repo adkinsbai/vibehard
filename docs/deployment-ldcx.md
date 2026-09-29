@@ -1,8 +1,24 @@
 # ldcx.tech deployment
 
-## 2026-09-27 staged reliability / unified retrieval / controlled ingestion
+## 2026-09-28 RV1126B entry clarification (current platform)
 
-Current verified units:
+Platform `20260928-rv1126b-entry-v1`; design worker `20260928-bom-price-freeze-v1`; private retrieval `20260928-audit-fixes-v1`; independent VibeBoard unchanged. Default merge commit `a38dd19` passed full CI. A platform-only candidate, backup, zero-active-task activation, public PCB/Demo/BOM and anonymous boundary checks passed; five allowed runtime files changed, no DB/OSS/index/model/device write. The exact archive hash, independent site/Runner checks, login-state limitation and rollback are in [RV1126B entry release record](release-rv1126b-entry-20260928.md).
+
+## 2026-09-28 BOM price evidence freeze (previous platform)
+
+Platform and independent design worker are `20260928-bom-price-freeze-v1`; restricted retrieval remains `20260928-audit-fixes-v1`. The default-branch merge commit `9d5d65c` passed full CI before a separate candidate/backup/activation of exactly those two units. No DB migration, model, index, OSS, Gateway, Runner, VibeBoard, EDA manager or nginx change. Exact hashes, limited authenticated-user acceptance and paired rollback are in [BOM freeze release record](release-bom-price-freeze-20260928.md).
+
+## 2026-09-28 project dashboard truth (previous platform)
+
+Platform `20260928-project-dashboard-v1`; design worker/private retrieval remain `20260928-audit-fixes-v1`, while the independent administrator knowledge CLI is `20260928-knowledge-control-v2`. Built from merged Git commit `2280836` only after PR #15's complete CI passed. Candidate, backup, activation, public PCB/Demo/BOM and anonymous access checks passed; protected services and their PIDs stayed unchanged. No database migration, new index, OSS, model or device deployment. The exact rollback command and remaining authenticated-user acceptance are in [dashboard release record](release-project-dashboard-20260928.md).
+
+## 2026-09-28 audit fixes and BOM pricing (previous platform)
+
+Platform `20260928-bom-pricing-v2`; design worker and private retrieval `20260928-audit-fixes-v1`. Cloud Runner remains `/opt/vibehard/cloud-runner`; Gateway/VibeBoard/EDA manager/nginx unchanged. The two stages passed separate candidate, backup, activation and public protection gates. The unactivated BOM v1 package had a verifier-only relative URL bug and must never be used. Full immutable archive hashes, validation limitations and reverse-order rollback are in [release record](release-audit-bom-20260928.md). No DB migration, OSS or model credential change.
+
+## 2026-09-27 staged reliability / unified retrieval / controlled ingestion (previous)
+
+Units verified at that time (now superseded above):
 
 | Scope | Release | Evidence |
 | --- | --- | --- |

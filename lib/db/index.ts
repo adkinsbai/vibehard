@@ -17,6 +17,16 @@ export function requireDb() {
   return db;
 }
 
-export async function closeDb() {
-  await client?.end();
+// Call before the worker's first query. PostgreSQL must cancel busy statements:
+// postgres-js end({timeout}) ends sockets but a server query may still be busy.
+// This is process-local; web/Runner connections retain their existing settings.
+export function configureWorkerDatabaseTimeouts() {
+  if (!client) return;
+  Object.assign(client.options.connection, {
+    statement_timeout: 4000, lock_timeout: 3000, idle_in_transaction_session_timeout: 4000,
+  });
+}
+
+export async function closeDb(timeout?: number) {
+  await client?.end(timeout === undefined ? undefined : { timeout });
 }

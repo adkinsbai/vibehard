@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     clearRateLimit("login", rateKey);
     const sessionUser = { id: user.id, email: user.email, name: user.name, role: user.role };
     const response = NextResponse.json({ user: sessionUser });
-    writeSessionCookies(response, sessionUser);
+    writeSessionCookies(response, user);
     await writeAuditLog({ userId: user.id, action: "auth.login", metadata: { address } });
     return response;
   } catch (error) {

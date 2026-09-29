@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { AUTH_COOKIE, createSessionToken, sessionCookiePath, type SessionUser } from "./security";
+import { AUTH_COOKIE, createSessionToken, sessionCookiePath, type SessionAccount } from "./security";
 
 /** Set/clear the current session and expire the legacy root cookie atomically. */
-export function writeSessionCookies(response: NextResponse, user: SessionUser | null) {
+export function writeSessionCookies(response: NextResponse, user: SessionAccount | null) {
   const path = sessionCookiePath();
   const secure = process.env.NODE_ENV === "production";
   const token = user ? createSessionToken(user) : "";

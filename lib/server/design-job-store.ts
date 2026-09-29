@@ -78,6 +78,7 @@ export async function getDesign(userId: string, id: string) {
 }
 export async function claimDesign() {
   return requireDb().transaction(async tx => {
+    await tx.execute(sql`select set_config('statement_timeout', '4000', true), set_config('lock_timeout', '3000', true)`);
     await lockQueue(tx);
     if ((await tx.select({ id: designJobs.id }).from(designJobs).where(eq(designJobs.status, "running")).limit(1)).length) return null;
     const next = (await tx.select().from(designJobs).where(eq(designJobs.status, "queued")).orderBy(asc(designJobs.createdAt), asc(designJobs.id)).limit(1))[0];
@@ -87,8 +88,11 @@ export async function claimDesign() {
   });
 }
 export async function saveDesignDiagnostics(id: string, leaseToken: string, diagnostics: DesignDiagnostics) {
-  const rows = await requireDb().update(designJobs).set({ diagnostics, updatedAt: sql`now()` })
+  const rows = await requireDb().transaction(async tx => {
+    await tx.execute(sql`select set_config('statement_timeout', '4000', true), set_config('lock_timeout', '3000', true)`);
+    return tx.update(designJobs).set({ diagnostics, updatedAt: sql`now()` })
     .where(and(eq(designJobs.id, id), eq(designJobs.status, "running"), eq(designJobs.leaseToken, leaseToken), sql`${designJobs.deadlineAt} > clock_timestamp()`)).returning({ id: designJobs.id });
+  });
   return rows.length === 1;
 }
 export async function listDesignDiagnostics() {
@@ -104,10 +108,11 @@ export async function finishDesign(id: string, leaseToken: string, outcome: ({ r
       const start = outcome.diagnostics.phases.find(p => p.phase !== "queue");
       if (start) outcome.diagnostics.totalMs = now.getTime() - Date.parse(start.startedAt);
     }
-    if (executionDeadline && !("error" in outcome)) {
-      const remaining = executionDeadline - Date.now();
+    {
+      const remaining = executionDeadline ? executionDeadline - Date.now() : 4000;
       if (remaining <= 0) throw new Error("design deadline expired before save");
-      await tx.execute(sql`select set_config('statement_timeout', ${String(Math.max(1, Math.floor(remaining)))}, true)`);
+      const budget = String(Math.max(1, Math.min(4000, Math.floor(remaining))));
+      await tx.execute(sql`select set_config('statement_timeout', ${budget}, true), set_config('lock_timeout', ${budget}, true)`);
     }
     const [job] = await tx.update(designJobs).set({ ...outcome, status: "error" in outcome ? "failed" : "completed",
       leaseToken: null, completedAt: sql`now()`, updatedAt: sql`now()` })

@@ -1,23 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ArrowRight,
   FolderKanban,
   Loader2,
   Package,
   FileDown,
-  ShoppingCart,
-  Zap,
-  ShieldCheck,
-  FlaskConical,
-  Store,
-  Info,
 } from "lucide-react";
 import { PageHeader } from "@/components/app/page-header";
-import { Button } from "@/components/ui/button";
-import { apiPath, cn } from "@/lib/utils";
+import { apiPath } from "@/lib/utils";
+import type { ProjectBom } from "@/lib/server/project-bom";
 
 interface Project {
   id: string;
@@ -26,66 +19,12 @@ interface Project {
   defaultModel: string;
 }
 
-interface BomItem {
-  ref: string;
-  item: string;
-  model: string;
-  package: string;
-  qty: number;
-  unitPrice: number;
-  source: "库内" | "立创商城";
-  smt?: "基础库" | "推荐库" | "扩展库";
-  stock: string;
-  verified: boolean;
-}
-
-const bomItems: BomItem[] = [
-  { ref: "U1", item: "主控 MCU", model: "ESP32-S3-WROOM-1-N8R2", package: "SMD-41", qty: 1, unitPrice: 18.5, source: "库内", stock: "126", verified: true },
-  { ref: "U2", item: "温湿度传感器", model: "SHT30-DIS", package: "DFN-8", qty: 1, unitPrice: 8.2, source: "库内", stock: "88", verified: true },
-  { ref: "U3", item: "光照传感器", model: "BH1750FVI", package: "WSOF-6", qty: 1, unitPrice: 2.1, source: "库内", stock: "340", verified: true },
-  { ref: "U4", item: "充电管理", model: "TP4056", package: "SOP-8", qty: 1, unitPrice: 0.55, source: "立创商城", smt: "基础库", stock: "充足", verified: true },
-  { ref: "U5", item: "LDO 稳压", model: "HT7833", package: "SOT-89", qty: 1, unitPrice: 0.32, source: "立创商城", smt: "基础库", stock: "充足", verified: true },
-  { ref: "OLED1", item: "显示屏", model: 'SSD1306 0.96" 模组', package: "4P 排针", qty: 1, unitPrice: 9.0, source: "库内", stock: "52", verified: true },
-  { ref: "J1", item: "USB-C 母座", model: "TYPE-C-16P", package: "SMD-16P", qty: 1, unitPrice: 0.85, source: "立创商城", smt: "推荐库", stock: "充足", verified: true },
-  { ref: "BAT1", item: "电池座", model: "18650 单节", package: "插件", qty: 1, unitPrice: 2.3, source: "立创商城", stock: "充足", verified: true },
-  { ref: "R1,R2", item: "分压电阻", model: "100K ±1%", package: "0603", qty: 2, unitPrice: 0.01, source: "立创商城", smt: "基础库", stock: "充足", verified: true },
-  { ref: "C1-C5", item: "去耦电容", model: "100nF ±10%", package: "0603", qty: 5, unitPrice: 0.008, source: "立创商城", smt: "基础库", stock: "充足", verified: true },
-  { ref: "C6,C7", item: "滤波电容", model: "10µF ±20%", package: "0805", qty: 2, unitPrice: 0.05, source: "立创商城", smt: "基础库", stock: "充足", verified: true },
-];
-
-const totalCost = bomItems.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
-
-/* -------------------- 物料库 -------------------- */
-
-interface StockItem {
-  model: string;
-  category: string;
-  spec: string;
-  stock: number;
-  status: "已验证" | "待审核" | "已学习未验证";
-}
-
-const stockItems: StockItem[] = [
-  { model: "ESP32-S3-WROOM-1", category: "核心板库", spec: "Wi-Fi+BLE · 8MB Flash", stock: 126, status: "已验证" },
-  { model: "STM32F103 核心板", category: "核心板库", spec: "72MHz · 64KB Flash", stock: 84, status: "已验证" },
-  { model: "ESP32-C3-MINI", category: "核心板库", spec: "Wi-Fi+BLE · RISC-V", stock: 230, status: "待审核" },
-  { model: "SHT30-DIS", category: "传感器库", spec: "温湿度 · I2C · ±2%RH", stock: 88, status: "已验证" },
-  { model: "BH1750FVI", category: "传感器库", spec: "光照 · I2C · 1-65535lx", stock: 340, status: "已验证" },
-  { model: "DS18B20", category: "传感器库", spec: "温度 · 单总线 · ±0.5°C", stock: 175, status: "已学习未验证" },
-  { model: "MPU6050", category: "传感器库", spec: "6 轴 IMU · I2C", stock: 96, status: "待审核" },
-  { model: "TP4056 充电模块", category: "电源管理", spec: "1A 锂电充电 · 带保护", stock: 412, status: "已验证" },
-  { model: "HT7833", category: "电源管理", spec: "LDO 3.3V · 500mA", stock: 830, status: "已验证" },
-];
-
-const stockCategories = ["全部", "核心板库", "传感器库", "电源管理"];
-
 export default function BomPage() {
-  const [category, setCategory] = useState("全部");
-  const [exported, setExported] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [projectsLoading, setProjectsLoading] = useState(true);
   const [projectsError, setProjectsError] = useState("");
+  const [bomState, setBomState] = useState<{ projectId: string; bom: ProjectBom | null; error: string } | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -111,19 +50,33 @@ export default function BomPage() {
     };
   }, []);
 
-  const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? null;
+  useEffect(() => {
+    if (!selectedProjectId) return;
+    const controller = new AbortController();
+    void fetch(apiPath(`/api/projects/${selectedProjectId}/bom`), { cache: "no-store", signal: controller.signal })
+      .then(async response => {
+        const data = await response.json() as { bom?: ProjectBom | null; error?: string };
+        if (!response.ok) throw new Error(data.error ?? "BOM 加载失败");
+        return data.bom ?? null;
+      })
+      .then(value => { if (!controller.signal.aborted) setBomState({ projectId: selectedProjectId, bom: value, error: "" }); })
+      .catch(error => { if (!controller.signal.aborted) setBomState({ projectId: selectedProjectId, bom: null, error: error instanceof Error ? error.message : "BOM 加载失败" }); });
+    return () => controller.abort();
+  }, [selectedProjectId]);
 
-  const filteredStock = useMemo(
-    () => stockItems.filter((s) => category === "全部" || s.category === category),
-    [category]
-  );
+  const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? null;
+  const currentBom = bomState?.projectId === selectedProjectId ? bomState : null;
+  const bom = currentBom?.bom ?? null;
+  const bomLoading = Boolean(selectedProjectId && !currentBom);
+  const bomError = currentBom?.error ?? "";
+
 
   return (
     <div className="p-6 lg:p-8">
       <PageHeader helpKey="bom"
         icon={Package}
         title="物料与 BOM"
-        description="从物料库自动选型组合生成 BOM，一键导出或对接立创商城下单、SMT 贴片"
+        description="查看项目最新已完成方案的 BOM；精确型号优先展示供应商公开报价，其余保留模型估算"
       />
 
       {/* 方案 BOM */}
@@ -149,7 +102,6 @@ export default function BomPage() {
             className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             去创建工程
-            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       ) : (
@@ -162,7 +114,6 @@ export default function BomPage() {
                 value={selectedProject.id}
                 onChange={(event) => {
                   setSelectedProjectId(event.target.value);
-                  setExported(false);
                 }}
                 className="max-w-56 truncate rounded-md border border-border bg-background px-2 py-1 text-[11px] font-medium text-primary outline-none"
               >
@@ -171,163 +122,41 @@ export default function BomPage() {
                 ))}
               </select>
             </h3>
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant="outline"
-                className="gap-2"
-                onClick={() => setExported(true)}
-                disabled={exported}
-              >
-                <FileDown className="h-4 w-4" />
-                {exported ? "已导出 BOM.csv" : "导出 BOM"}
-              </Button>
-              <Button variant="outline" className="gap-2">
-                <ShoppingCart className="h-4 w-4" />
-                立创一键下单
-              </Button>
-              <Button className="gap-2">
-                <Zap className="h-4 w-4" />
-                一键 SMT 贴片
-              </Button>
-            </div>
+            {bom && <a
+              href={apiPath(`/api/projects/${selectedProjectId}/bom?format=csv&designId=${bom.designId}`)}
+              className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm hover:bg-muted"
+            ><FileDown className="h-4 w-4" />下载真实 BOM.csv</a>}
           </div>
 
-          <div className="overflow-x-auto rounded-lg border border-border/60">
-            <table className="w-full min-w-[820px] text-sm">
-              <thead>
-                <tr className="border-b border-border/60 bg-background/70 text-xs text-muted-foreground">
-                  <th className="px-3 py-2 text-left font-medium">位号</th>
-                  <th className="px-3 py-2 text-left font-medium">物料</th>
-                  <th className="px-3 py-2 text-left font-medium">型号 / 封装</th>
-                  <th className="px-3 py-2 text-right font-medium">数量</th>
-                  <th className="px-3 py-2 text-right font-medium">单价</th>
-                  <th className="px-3 py-2 text-right font-medium">小计</th>
-                  <th className="px-3 py-2 text-left font-medium">来源</th>
-                  <th className="px-3 py-2 text-right font-medium">库存</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bomItems.map((item) => (
-                  <tr key={item.ref} className="border-b border-border/40 last:border-0">
-                    <td className="px-3 py-2 font-mono text-xs text-muted-foreground">{item.ref}</td>
-                    <td className="px-3 py-2 text-foreground">{item.item}</td>
-                    <td className="px-3 py-2">
-                      <span className="font-mono text-xs font-medium text-foreground">{item.model}</span>
-                      <span className="ml-1.5 font-mono text-[11px] text-muted-foreground">{item.package}</span>
-                    </td>
-                    <td className="px-3 py-2 text-right text-muted-foreground">{item.qty}</td>
-                    <td className="px-3 py-2 text-right text-muted-foreground">¥{item.unitPrice.toFixed(2)}</td>
-                    <td className="px-3 py-2 text-right font-medium text-foreground">
-                      ¥{(item.unitPrice * item.qty).toFixed(2)}
-                    </td>
-                    <td className="px-3 py-2">
-                      {item.source === "库内" ? (
-                        <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-1.5 py-0.5 text-[11px] font-semibold text-emerald-500">
-                          <ShieldCheck className="h-3 w-3" />
-                          库内·已验证
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 rounded bg-blue-500/10 px-1.5 py-0.5 text-[11px] font-semibold text-blue-500">
-                          <Store className="h-3 w-3" />
-                          立创{item.smt ? `·${item.smt}` : ""}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-3 py-2 text-right text-xs text-muted-foreground">{item.stock}</td>
-                  </tr>
-                ))}
-                <tr className="bg-background/70">
-                  <td colSpan={5} className="px-3 py-2.5 text-right text-sm font-medium text-muted-foreground">
-                    单板物料合计（不含 PCB 板费与贴片费）
-                  </td>
-                  <td className="px-3 py-2.5 text-right text-sm font-bold text-primary">
-                    ¥{totalCost.toFixed(2)}
-                  </td>
-                  <td colSpan={2} />
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <p className="mt-3 flex items-start gap-1.5 text-xs text-muted-foreground">
-            <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-            当前展示的是该工程的方案 BOM；库内已验证物料优先，库外器件按基础库 → 推荐库 → 扩展库匹配
-          </p>
+          {bomLoading ? <p className="mt-8 text-sm text-muted-foreground">正在读取最新已完成方案...</p>
+            : bomError ? <p role="alert" className="mt-8 text-sm text-red-500">{bomError}</p>
+              : !bom ? <p className="mt-8 text-sm text-muted-foreground">此工程尚无已完成的方案 BOM。<Link className="ml-1 text-primary" href="/app/design">去生成方案</Link></p>
+                : <>
+                  <p className="mb-3 text-xs text-muted-foreground">来源：方案 {bom.designId} · {new Date(bom.completedAt).toLocaleString("zh-CN")} · {bom.model ?? "未记录模型"}</p>
+                  <p className="mb-3 text-xs text-muted-foreground">{bom.priceRecorded ? "价格依据已在方案完成时保存，后续报价表更新不会改写本方案。" : "历史方案未保存生成时价格；下列供应商报价是当前参考快照，不代表当时价格。"}</p>
+                  <div className="overflow-x-auto rounded-lg border border-border/60">
+                    <table className="w-full min-w-[600px] text-sm">
+                      <thead><tr className="border-b border-border/60 bg-background/70 text-xs text-muted-foreground">
+                        <th className="px-3 py-2 text-left">器件</th><th className="px-3 py-2 text-left">候选型号</th>
+                        <th className="px-3 py-2 text-right">数量</th><th className="px-3 py-2 text-left">参考单价与依据</th>
+                      </tr></thead>
+                      <tbody>{bom.items.map((item, index) => <tr key={`${index}-${item.model}`} className="border-b border-border/40 last:border-0">
+                        <td className="px-3 py-2">{item.item}</td><td className="px-3 py-2">{item.model}</td>
+                        <td className="px-3 py-2 text-right">{item.qty}</td>
+                        <td className="px-3 py-2">
+                          <div>{item.referencePrice?.display ?? item.estCost}</div>
+                          {item.referencePrice?.sourceUrl ? <div className="mt-1 text-xs text-muted-foreground">
+                            {item.referencePrice.kind === "supplier-reference" ? "缺货·仅参考" : "公开报价快照"} · {item.referencePrice.supplier} {item.referencePrice.supplierSku} · {item.referencePrice.minimumQuantity}+ 件 · {item.referencePrice.checkedAt}核查 · <a href={item.referencePrice.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">来源</a>
+                          </div> : <div className="mt-1 text-xs text-muted-foreground">模型估算 · 型号/价格待核实</div>}
+                        </td>
+                      </tr>)}</tbody>
+                    </table>
+                  </div>
+                  <p className="mt-3 text-xs text-muted-foreground">供应商价格是按精确型号匹配的公开网页快照，不含汇率换算、税费及运费，也非实时报价或库存保证；未匹配项目为人民币模型估算。采购前须复核型号、封装和报价。</p>
+                </>}
         </div>
       )}
 
-      <p className="mt-3 text-xs text-muted-foreground">
-        当前工程 BOM 与下方全局物料库相互独立；物料库中的器件不会自动计入工程 BOM。
-      </p>
-
-      {/* 物料库 */}
-      <div className="mt-8">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h3 className="text-sm font-semibold text-foreground">物料库</h3>
-          <div className="flex flex-wrap gap-2">
-            {stockCategories.map((c) => (
-              <button
-                key={c}
-                onClick={() => setCategory(c)}
-                className={cn(
-                  "rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
-                  category === c
-                    ? "bg-primary text-primary-foreground"
-                    : "border border-border/70 bg-card/80 text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border/60 bg-background/70 text-xs text-muted-foreground">
-                <th className="px-4 py-2.5 text-left font-medium">型号</th>
-                <th className="px-4 py-2.5 text-left font-medium">类别</th>
-                <th className="px-4 py-2.5 text-left font-medium">关键参数</th>
-                <th className="px-4 py-2.5 text-right font-medium">库存</th>
-                <th className="px-4 py-2.5 text-right font-medium">状态</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredStock.map((s) => (
-                <tr key={s.model} className="border-b border-border/40 last:border-0">
-                  <td className="px-4 py-2.5 font-mono text-xs font-medium text-foreground">{s.model}</td>
-                  <td className="px-4 py-2.5 text-muted-foreground">{s.category}</td>
-                  <td className="px-4 py-2.5 text-xs text-muted-foreground">{s.spec}</td>
-                  <td className="px-4 py-2.5 text-right text-muted-foreground">{s.stock}</td>
-                  <td className="px-4 py-2.5 text-right">
-                    <span
-                      className={cn(
-                        "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-semibold",
-                        s.status === "已验证"
-                          ? "bg-emerald-500/10 text-emerald-500"
-                          : s.status === "待审核"
-                            ? "bg-amber-500/10 text-amber-500"
-                            : "bg-violet-500/10 text-violet-500"
-                      )}
-                    >
-                      {s.status === "已验证" ? (
-                        <ShieldCheck className="h-3 w-3" />
-                      ) : (
-                        <FlaskConical className="h-3 w-3" />
-                      )}
-                      {s.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          「已学习未验证」：来自开源原理图切片学习，待硬件工程师审核后方可用于生成
-        </p>
-      </div>
     </div>
   );
 }

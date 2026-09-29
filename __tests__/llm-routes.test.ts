@@ -78,17 +78,20 @@ describe("LLM routes", () => {
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify(result));
     vi.mocked(claimDesign).mockResolvedValue({ id: "job", createdAt: new Date(), leaseToken: "lease", requirement: "独立的机器人方案" } as Awaited<ReturnType<typeof claimDesign>>);
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({ ...result, retrieval: { status: "no-match", method: "keyword-chunks-v1", references: [] } }) }), expect.any(Number));
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ result: expect.objectContaining({
+      ...result, bom: [{ ...result.bom[0], referencePrice: { kind: "estimate", display: result.bom[0].estCost } }],
+      retrieval: { status: "no-match", method: "keyword-chunks-v1", references: [] },
+    }) }), expect.any(Number));
     expect(callLlm).toHaveBeenCalledWith(expect.objectContaining({ model: "design-model" }), expect.any(String), "独立的机器人方案", expect.any(AbortSignal), expect.any(Number), undefined, expect.any(Object), { profile: "design-draft" });
     expect(vi.mocked(callLlm).mock.calls[0][4]).toBeLessThanOrEqual(90_000);
     expect(vi.mocked(callLlm).mock.calls[0][1]).toContain("内置方案知识库（基础工程规则）");
     expect(vi.mocked(callLlm).mock.calls[0][1]).toContain("人民币参考单价范围");
     vi.mocked(callLlm).mockRejectedValue(new LlmRequestError("模型服务额度不足"));
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: "模型服务额度不足" }));
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: "模型服务额度不足" }), expect.any(Number));
     vi.mocked(callLlm).mockResolvedValue("not json");
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: expect.stringContaining("格式不正确") }));
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: expect.stringContaining("格式不正确") }), expect.any(Number));
   });
   it("rejects a generated BOM that omits its reference price", async () => {
     const { record } = await user();
@@ -96,7 +99,7 @@ describe("LLM routes", () => {
     vi.mocked(callLlm).mockResolvedValue(JSON.stringify({ architecture: ["方案"], bom: [{ item: "主控", model: "待选", qty: 1, estCost: "未核价" }], interfaces: ["USB"], risks: [{ level: "中", desc: "验证" }] }));
     vi.mocked(claimDesign).mockResolvedValue({ id: "job", createdAt: new Date(), leaseToken: "lease", requirement: "带主控的方案" } as Awaited<ReturnType<typeof claimDesign>>);
     await processNextDesign();
-    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: expect.stringContaining("字段不完整") }));
+    expect(finishDesign).toHaveBeenLastCalledWith("job", "lease", expect.objectContaining({ error: expect.stringContaining("字段不完整") }), expect.any(Number));
   });
   it("sends reviewed context, but never accepts model-forged citations", async () => {
     const { record } = await user(); await saveLlm(input, record.id);

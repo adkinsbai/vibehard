@@ -1,14 +1,14 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { AUTH_COOKIE, readSessionToken } from "./security";
+import { AUTH_COOKIE, readSessionToken, sessionMatchesAccount } from "./security";
 import { findUserById } from "./store";
 
 export async function requestUser(request: NextRequest) {
   const session = readSessionToken(request.cookies.get(AUTH_COOKIE)?.value);
   if (!session) return null;
   const user = await findUserById(session.id);
-  return user ? { id: user.id, email: user.email, name: user.name, role: user.role } : null;
+  return user && sessionMatchesAccount(session, user) ? { id: user.id, email: user.email, name: user.name, role: user.role } : null;
 }
 export function unauthorized(message = "请先登录") { return NextResponse.json({ error: message }, { status: 401 }); }
 export function forbidden(message = "无权访问该资源") { return NextResponse.json({ error: message }, { status: 403 }); }

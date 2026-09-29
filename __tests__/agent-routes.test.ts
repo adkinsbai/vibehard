@@ -12,7 +12,7 @@ async function fixture() {
   const project = await createProject(user.id, { name: "Route project", workspaceKey: `route-${suffix}` });
   const thread = await createThread(user.id, project.id, "Route thread");
   if (!thread) throw new Error("thread was not created");
-  const cookie = `${AUTH_COOKIE}=${createSessionToken({ id: user.id, email: user.email, name: user.name, role: user.role })}`;
+  const cookie = `${AUTH_COOKIE}=${createSessionToken(user)}`;
   return { cookie, thread };
 }
 
