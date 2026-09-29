@@ -518,3 +518,9 @@
 - Validation: 305 测试通过/16 条件跳过、TypeScript、定向 lint、两个 `/vibehard` 构建通过；两个不可变候选均通过 PCB/Demo、资源和匿名权限预检，正式回环与公网再验。BOM v1 脚本预检失败且未激活；v2 修正并完整重跑。零活跃任务、两份可回查数据库/旧 unit 备份、配置/PID/索引指针保护均已检查。
 - Deployment: 平台 `20260928-bom-pricing-v2`；设计 Worker/检索 `20260928-audit-fixes-v1`。Runner/Gateway/VibeBoard/EDA manager 未重启；Cloud Runner 心跳 13 秒，设备 Runner 7 秒。3211 候选已停。详情与归档哈希、回滚见 `docs/release-audit-bom-20260928.md`。
 - Limits: 未在本轮上线后使用真实用户会话点开 BOM/CSV，也未调用付费模型；Mac 锁屏导致浏览器验收不可用。旧报价非实时采购价；自动知识仍非工程师验证。下一步由项目所有者登录后验证真实已完成项目 BOM/CSV，再抽样检查新方案与引用。
+
+## 2026-09-29 Task: PR #8 公开测试版发布准备
+
+- Scope: 按用户改定的公开测试版标准，修复 KiCad worker 镜像打包缺文件、样板模块文件摘要跨平台不一致，工作台首屏标注“不可用于正式硬件设计”；保留正式模块的独立硬件审核发布闸门。
+- Evidence: PR #8 当前头提交 `f67c5e8` 的 Linux `platform` 和 `image` CI 均通过；镜像含 KiCad 9、Java、TigerVNC、固定摘要的 Freerouting。定向 22 项测试通过；此前真实 KiCad/Freerouting 测试 2 项未布通降至 0、源 PCB 不变，36 项 Python worker 测试与 Next 生产构建通过。
+- Release status: PR 已推送但尚待上游审查合并；当前 GitHub 身份无上游写权限，本机到生产服务器 SSH 22 不通。未构建生产候选、迁移或切换服务，未做公网双账号验收；不能称已上线。LED 软件样板仍待审核，正式模块目录不开放。
