@@ -328,6 +328,7 @@ export function DesktopWorkbench() {
   const current = projects.find(project => project.id === projectId);
   return <main className={styles.shell} ref={frame}>
     <header className={styles.header}><a href={apiPath('/app')} className={styles.brand}><CircuitBoard size={23} /><strong>VibeHard</strong><span>KiCad 工作台</span></a><span className={styles.projectName}>{current?.name ?? '原生工程编辑'}</span><span className={styles.badge}>独立工程桌面</span></header>
+    <div className={styles.betaNotice} role="note" aria-label="公开测试版说明"><strong>公开测试版 · 不可用于正式硬件设计</strong><span>AI 生成的原理图、模块及 PCB 布线均需硬件工程师审核；ERC/DRC 通过不代表电路功能或可制造性已验证。</span></div>
     <div className={styles.toolbar} role="toolbar" aria-label="KiCad 工作台工具">
       <button aria-label={sidebar ? '收起工程面板' : '展开工程面板'} onClick={() => setSidebar(!sidebar)}>{sidebar ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}</button>
       <div className={styles.tabs}><button disabled={!projectId || busy} aria-pressed={editor === 'schematic'} onClick={() => void run(() => start(projectId, 'schematic'))}>原理图</button><button disabled={!projectId || busy} aria-pressed={editor === 'pcb'} onClick={() => void run(() => start(projectId, 'pcb'))}>PCB</button></div>

@@ -1,3 +1,5 @@
 *
 !Dockerfile
 !server.py
+!routing.py
+!module_verify.py

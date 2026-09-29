@@ -27,6 +27,13 @@ it('shows login without creating a simulated editor for unauthenticated users', 
   expect(await screen.findByRole('link', { name: '登录平台' })).toHaveAttribute('href', '/login');
   expect(mocks.clients).toHaveLength(0);
 });
+it('identifies the public beta and hardware review boundary before login', async () => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 401 })));
+  render(<DesktopWorkbench />);
+  expect(screen.getByRole('note', { name: '公开测试版说明' })).toHaveTextContent('公开测试版');
+  expect(screen.getByRole('note', { name: '公开测试版说明' })).toHaveTextContent('不可用于正式硬件设计');
+  expect(screen.getByRole('note', { name: '公开测试版说明' })).toHaveTextContent('硬件工程师审核');
+});
 it('exposes the Agent conversation in the real KiCad workbench', async () => {
   vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string) => Promise.resolve(Response.json(url.includes('capabilities') ? { agent: false } : url.includes('/modules') ? { modules: [] } : { projects: [] }))));
   render(<DesktopWorkbench />);
