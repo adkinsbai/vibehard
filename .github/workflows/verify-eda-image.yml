@@ -1,0 +1,27 @@
+name: Verify EDA image
+
+on:
+  pull_request:
+    paths:
+      - 'services/eda-desktop/**'
+      - '.github/workflows/verify-eda-image.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build isolated KiCad worker image
+        run: docker build --file services/eda-desktop/Dockerfile --tag vibehard-eda-worker:verify services/eda-desktop
+      - name: Verify native tools and pinned router
+        run: |
+          docker run --rm --entrypoint /bin/sh vibehard-eda-worker:verify -ec '
+            test "$(kicad-cli --version | cut -d. -f1)" = 9
+            command -v java
+            command -v Xtigervnc
+            printf "%s  %s\n" fb2e91df901fa50cd23a09ab42793af0ece4f3b1f3857d6724dd6f9c0c00be98 /opt/vibehard-eda/freerouting.jar | sha256sum --check -
+          '
